@@ -20,7 +20,7 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected FileService fileService;
 
-    @Value("${jopsd.import.directory}")
+    @Value("${mpp.import.directory}")
     protected String mmpPath;
 
     protected void logError(Exception e) {
