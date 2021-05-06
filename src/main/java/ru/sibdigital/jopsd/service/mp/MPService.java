@@ -1,10 +1,10 @@
 package ru.sibdigital.jopsd.service.mp;
 
 import net.sf.mpxj.MPXJException;
-import net.sf.mpxj.Task;
-import ru.sibdigital.jopsd.model.WorkPackage;
+
+import java.io.File;
+import java.util.Map;
 
 public interface MPService {
-    void importFiles() throws MPXJException;
-    WorkPackage createNewWorkPackage(Task task, Long projectId);
+    void importFile(File file, Map<String, Object> params) throws MPXJException;
 }

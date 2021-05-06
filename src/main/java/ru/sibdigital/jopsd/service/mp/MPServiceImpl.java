@@ -3,7 +3,6 @@ package ru.sibdigital.jopsd.service.mp;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.mpxj.MPXJException;
 import net.sf.mpxj.ProjectFile;
-import net.sf.mpxj.ResourceAssignment;
 import net.sf.mpxj.Task;
 import net.sf.mpxj.reader.UniversalProjectReader;
 import org.springframework.stereotype.Service;
@@ -23,70 +22,43 @@ import java.util.stream.Collectors;
 public class MPServiceImpl extends SuperServiceImpl implements MPService {
 
     @Override
-    public void importFiles() throws MPXJException {
-        File[] directoryList = fileService.getSubfolders(mmpPath);
-        for (File dir : directoryList) {
-            Long projectId = getProjectIdByDir(dir);
-
-            if (projectId != null) {
-                Collection<File> files = fileService.getFiles(dir);
-                if (files != null && !files.isEmpty()) {
-                    for (File file: files) {
-                        processMPFiles(file, projectId);
-                    }
-                }
-            }
-        }
+    public void importFile(File file, Map<String, Object> params) throws MPXJException {
+        processMPFile(file, params);
     }
 
-    private void processMPFiles(File file, Long projectId) {
-        try {
-            UniversalProjectReader reader = new UniversalProjectReader();
-            ProjectFile projectFile = reader.read(file);
-            List<MPWorkPackage> mpWorkPackages = getMpWorkPackages(projectFile, projectId);
-            getAndSaveWorkPackages(mpWorkPackages);
-            getAndSaveRelations(mpWorkPackages);
-        } catch (MPXJException e) {
-            logError(e);
-        }
+    private void processMPFile(File file, Map<String, Object> params) throws MPXJException {
+        ProjectFile mpFile = readMPFile(file);
+        List<Task> tasks = mpFile.getTasks();
+        List<MPWorkPackage> mpWorkPackages = generateMpWorkPackages(tasks, params);
+        saveData(mpWorkPackages);
     }
 
-    @Override
-    public WorkPackage createNewWorkPackage(Task task, Long projectId) {
-        Long overallPercentComplete = (task.getOverallPercentComplete() != null) ? task.getOverallPercentComplete().longValue() : 0;
-
-        WorkPackage wp = WorkPackage.builder()
-                        .projectId(projectId)
-                        .outerId(Long.valueOf(task.getID()))
-                        .typeId(Types.CHECK_POINT.getValue())
-                        .subject(task.getName())
-                        .description(task.getNotes())
-                        .startDate(task.getStart())
-                        .dueDate(task.getFinish())
-                        .statusId(Statuses.IN_WORK.getValue())
-                        .authorId(Long.valueOf(2)) // admin
-                        .lockVersion(Long.valueOf(0)) // 0
-                        .doneRatio(overallPercentComplete)
-                        .build();
-
-        return wp;
+    private void saveData(List<MPWorkPackage> mpWorkPackages) {
+        getAndSaveWorkPackages(mpWorkPackages);
+        getAndSaveRelations(mpWorkPackages);
     }
 
-    private List<MPWorkPackage> getMpWorkPackages(ProjectFile projectFile, Long projectId) {
+    private ProjectFile readMPFile(File file) throws MPXJException {
+        UniversalProjectReader reader = new UniversalProjectReader();
+        ProjectFile projectFile = reader.read(file);
+        return projectFile;
+    }
+
+    private List<MPWorkPackage> generateMpWorkPackages(List<Task> tasks, Map<String, Object> params) {
         List<MPWorkPackage> mpWorkPackages = new ArrayList<>();
-        List<ResourceAssignment> ralist = projectFile.getResourceAssignments();
-        for (ResourceAssignment resourceAssignment: ralist ) {
-            Task task = resourceAssignment.getTask();
-
-            WorkPackage wp = createNewWorkPackage(task, projectId);
+        Map<Long, WorkPackage> foundWPMap = findWorkPackagesInDBByTaskIds(tasks);
+        for (Task task : tasks) {
+            Map<String, Object> newParams = paramsWithWPId(params, task, foundWPMap);
+            WorkPackage workPackage = changeOrCreateWorkPackage(task, newParams);
             MPWorkPackage mpWp = MPWorkPackage.builder()
                     .mpId(task.getID())
                     .mpParentId((task.getParentTask() != null) ? task.getParentTask().getID() : null)
-                    .workPackage(wp)
+                    .workPackage(workPackage)
                     .build();
 
             mpWorkPackages.add(mpWp);
         }
+
         return mpWorkPackages;
     }
 
@@ -99,8 +71,11 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
     }
 
     private void getAndSaveRelations(List<MPWorkPackage> mpWorkPackages) {
-        Map<Integer, MPWorkPackage> map = new HashMap<>();
-        mpWorkPackages.forEach(ctr -> map.put(ctr.getMpId(), ctr));
+        Map<Integer, MPWorkPackage> map = mpWorkPackages.stream()
+                                .collect(Collectors.toMap(MPWorkPackage::getMpId, workPackage -> workPackage));
+        List<Long> wpIds = mpWorkPackages.stream()
+                            .map(ctr -> ctr.getWorkPackage().getId())
+                            .collect(Collectors.toList());
 
         List<Relation> relations = new ArrayList<>();
 
@@ -116,11 +91,19 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
                                     .fromId(parentWp.getId())
                                     .toId(wpId)
                                     .hierarchy(hierarchy)
+                                    .relates(0)
+                                    .duplicates(0)
+                                    .blocks(0)
+                                    .follows(0)
+                                    .commonstart(0)
+                                    .commonfinish(0)
+                                    .includes(0)
+                                    .requires(0)
                                     .count(1)
                                     .build();
                 relations.add(relation);
 
-                if (mpParentWorkPackage.getMpParentId() != null) {
+                if (mpParentWorkPackage.getMpParentId() != null && mpParentWorkPackage.getMpParentId() != 0) {
                     mpParentWorkPackage = map.get(mpParentWorkPackage.getMpParentId());
                     hierarchy = hierarchy + 1;
                 } else {
@@ -129,18 +112,64 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
             }
         }
 
+        relationRepo.deleteWorkPackagesRelations(wpIds);
         relationRepo.saveAll(relations);
     }
 
-    private Long getProjectIdByDir(File dir) {
-        String projectIdString = dir.getName();
-        Long projectId = null;
-        try {
-            projectId = Long.valueOf(projectIdString);
-        } catch (NumberFormatException e) {
-            logError(e);
+    private WorkPackage changeOrCreateWorkPackage(Task task, Map<String, Object> params) {
+        Long overallPercentComplete = (task.getOverallPercentComplete() != null) ? task.getOverallPercentComplete().longValue() : 0;
+        Long id = (Long) params.get("id");
+        Long projectId = (Long) params.get("projectId");
+        Long authorId = (Long) params.get("authorId");
+
+        WorkPackage wp = WorkPackage.builder()
+                .id(id)
+                .projectId(projectId)
+                .outerId(Long.valueOf(task.getID()))
+                .typeId(Types.CHECK_POINT.getValue())
+                .subject(task.getName())
+                .description(task.getNotes())
+                .startDate(task.getStart())
+                .dueDate(task.getFinish())
+                .statusId(Statuses.NOT_STARTED.getValue())
+                .authorId(authorId)
+                .lockVersion(Long.valueOf(0)) // 0
+                .doneRatio(overallPercentComplete)
+                .build();
+
+        return wp;
+    }
+
+    private Long findWorkPackageId(Map<Long, WorkPackage> foundWPMap, Long outerId) {
+        Long wpId = null;
+
+        WorkPackage wp = foundWPMap.get(outerId);
+        if (wp != null) {
+            wpId = wp.getId();
         }
 
-        return  projectId;
+        return wpId;
     }
+
+    private Map<Long, WorkPackage> findWorkPackagesInDBByTaskIds(List<Task> tasks) {
+        List<Long> outerIds = tasks.stream()
+                .map(ctr -> Long.valueOf(ctr.getID()))
+                .collect(Collectors.toList());
+
+        List<WorkPackage> foundWP = workPackageRepo.findAllByOuterIds(outerIds);
+        Map<Long, WorkPackage> foundWPMap = foundWP.stream()
+                                            .collect(Collectors.toMap(WorkPackage::getOuterId, ctr -> ctr));
+
+        return foundWPMap;
+    }
+
+    private Map<String, Object> paramsWithWPId(Map<String, Object> params, Task task, Map<Long, WorkPackage> foundWPMap) {
+        Long outerId = Long.valueOf(task.getID());
+        Long wpId = findWorkPackageId(foundWPMap, outerId);
+        Map<String, Object> newParams = new HashMap<>(params);
+        newParams.put("id", wpId);
+
+        return newParams;
+    }
+
 }

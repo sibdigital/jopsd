@@ -17,12 +17,6 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected RelationRepo relationRepo;
 
-    @Autowired
-    protected FileService fileService;
-
-    @Value("${mpp.import.directory}")
-    protected String mmpPath;
-
     protected void logError(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();
