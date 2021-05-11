@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sibdigital.jopsd.controller.SuperController;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,19 +22,19 @@ public class MPImportController extends SuperController {
                                             @RequestParam("projectId") Long projectId,
                                             @RequestParam("authorId") Long authorId) {
         try {
-            File file = File.createTempFile("upload-", ".mpp");
-            multipartFile.transferTo(file);
+            InputStream inputStream = multipartFile.getInputStream();
 
             Map<String, Object> params = new HashMap<>();
             params.put("projectId", projectId);
             params.put("authorId", authorId);
 
-            MPService.importFile(file, params);
+            MPService.importFile(inputStream, params);
 
             return ResponseEntity.ok()
                     .body("{\"cause\": \"Файл успешно загружен\"," +
                             "\"status\": \"server\"," +
                             "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+
         } catch (Exception e) {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

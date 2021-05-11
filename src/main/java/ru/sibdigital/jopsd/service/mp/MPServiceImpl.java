@@ -13,7 +13,7 @@ import ru.sibdigital.jopsd.model.enums.Statuses;
 import ru.sibdigital.jopsd.model.enums.Types;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 public class MPServiceImpl extends SuperServiceImpl implements MPService {
 
     @Override
-    public void importFile(File file, Map<String, Object> params) throws MPXJException {
-        processMPFile(file, params);
+    public void importFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
+        processMPFile(inputStream, params);
     }
 
-    private void processMPFile(File file, Map<String, Object> params) throws MPXJException {
-        ProjectFile mpFile = readMPFile(file);
+    private void processMPFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
+        ProjectFile mpFile = readMPFile(inputStream);
         List<Task> tasks = mpFile.getTasks();
         List<MPWorkPackage> mpWorkPackages = generateMpWorkPackages(tasks, params);
         saveData(mpWorkPackages);
@@ -38,9 +38,9 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
         getAndSaveRelations(mpWorkPackages);
     }
 
-    private ProjectFile readMPFile(File file) throws MPXJException {
+    private ProjectFile readMPFile(InputStream inputStream) throws MPXJException {
         UniversalProjectReader reader = new UniversalProjectReader();
-        ProjectFile projectFile = reader.read(file);
+        ProjectFile projectFile = reader.read(inputStream);
         return projectFile;
     }
 
