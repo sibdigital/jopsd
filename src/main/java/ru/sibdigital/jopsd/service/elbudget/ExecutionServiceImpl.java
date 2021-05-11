@@ -3,11 +3,14 @@ package ru.sibdigital.jopsd.service.elbudget;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
+import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.WorkPackageProblem;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -22,12 +25,55 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
             return;
         }
 
-        Resultsexecution resultsexecution = null;
+        Resultsexecution resultsExecution = null;
         try {
-            resultsexecution = (Resultsexecution) unmarshaller.unmarshal(file);
+            resultsExecution = (Resultsexecution) unmarshaller.unmarshal(file);
         } catch (Exception e) {
             logError(e);
         }
     }
 
+
+    private void processResultExecution(Resultsexecution resultsExecution, Map<String, Object> params) {
+        List<Resultsexecution.RegProject.Results.Result.Risks> riskList = getRisks(resultsExecution);
+        for (Resultsexecution.RegProject.Results.Result.Risks risks : riskList) {
+            Resultsexecution.RegProject.Results.Result.Risks.Risk risk = risks.getRisk();
+        }
+    }
+
+    private List<Resultsexecution.RegProject.Results.Result.Risks> getRisks(Resultsexecution resultsExecution) {
+        List<Resultsexecution.RegProject.Results.Result.Risks> riskList = null;
+        Resultsexecution.RegProject regProject = resultsExecution.getRegProject();
+        if (regProject != null) {
+            Resultsexecution.RegProject.Results results = regProject.getResults();
+            if (results != null) {
+                List<Resultsexecution.RegProject.Results.Result> resultList = results.getResult();
+                if (resultList != null && !resultList.isEmpty()) {
+                    Resultsexecution.RegProject.Results.Result result = resultList.get(0);
+                    riskList = result.getRisks();
+                }
+            }
+        }
+
+        return riskList;
+    }
+
+    private WorkPackageProblem parseRisk(Resultsexecution.RegProject.Results.Result.Risks.Risk risk, Map<String, Object> params) {
+
+        Long workPackageId = (Long) params.get("workPackageId");
+        Long authorId = (Long) params.get("authorId");
+        WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
+        Long projectId = (workPackage == null) ? null : workPackage.getProjectId();
+
+
+        WorkPackageProblem workPackageProblem = WorkPackageProblem.builder()
+                                                .projectId(projectId)
+                                                .workPackageId(workPackageId)
+                                                .userCreatorId(authorId)
+                                                .description(risk.getName() + "\n" + risk.getReason())
+//                                                .type()
+                                                .build();
+
+        return workPackageProblem;
+    }
 }

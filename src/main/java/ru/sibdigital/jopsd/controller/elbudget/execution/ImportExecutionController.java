@@ -21,7 +21,7 @@ public class ImportExecutionController extends SuperController {
     @GetMapping("/import/execution")
     public ResponseEntity<String> importExecution(
 //                                            @RequestParam("file") MultipartFile multipartFile,
-                                            @RequestParam("projectId") Long projectId,
+                                            @RequestParam("workPackageId") Long workPackageId,
                                             @RequestParam("authorId") Long authorId
                                             ) {
         try {
@@ -30,7 +30,7 @@ public class ImportExecutionController extends SuperController {
             File file = new File("D:/sibdigital/New_workplaces.xml");
 
             Map<String, Object> params = new HashMap<>();
-            params.put("projectId", projectId);
+            params.put("workPackageId", workPackageId);
             params.put("authorId", authorId);
 
             executionService.importFile(file, params);
