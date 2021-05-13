@@ -6,5 +6,4 @@ import ru.sibdigital.jopsd.model.WorkPackage;
 
 @Repository
 public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long> {
-
 }
