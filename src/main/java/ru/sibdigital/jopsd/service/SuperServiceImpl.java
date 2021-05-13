@@ -7,6 +7,7 @@ import ru.sibdigital.jopsd.repository.RelationRepo;
 import ru.sibdigital.jopsd.repository.RiskRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageProblemRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageRepo;
+import ru.sibdigital.jopsd.service.elbudget.execution.RiskService;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -27,6 +28,9 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected WorkPackageProblemRepo workPackageProblemRepo;
+
+    @Autowired
+    protected RiskService riskService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
