@@ -22,20 +22,24 @@ import java.util.stream.Collectors;
 public class MPServiceImpl extends SuperServiceImpl implements MPService {
 
     @Override
-    public void importFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
-        processMPFile(inputStream, params);
+    public List<WorkPackage> importFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
+        List<WorkPackage> wps = processMPFile(inputStream, params);
+        return wps;
     }
 
-    private void processMPFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
+    private List<WorkPackage> processMPFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
         ProjectFile mpFile = readMPFile(inputStream);
         List<Task> tasks = mpFile.getTasks();
         List<MPWorkPackage> mpWorkPackages = generateMpWorkPackages(tasks, params);
-        saveData(mpWorkPackages);
+        List<WorkPackage> wps = saveData(mpWorkPackages);
+        return wps;
     }
 
-    private void saveData(List<MPWorkPackage> mpWorkPackages) {
-        getAndSaveWorkPackages(mpWorkPackages);
+    private List<WorkPackage> saveData(List<MPWorkPackage> mpWorkPackages) {
+        List<WorkPackage> wps = getAndSaveWorkPackages(mpWorkPackages);
         getAndSaveRelations(mpWorkPackages);
+
+        return wps;
     }
 
     private ProjectFile readMPFile(InputStream inputStream) throws MPXJException {
@@ -48,26 +52,30 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
         List<MPWorkPackage> mpWorkPackages = new ArrayList<>();
         Map<Long, WorkPackage> foundWPMap = findWorkPackagesInDBByTaskIds(tasks);
         for (Task task : tasks) {
-            Map<String, Object> newParams = paramsWithWPId(params, task, foundWPMap);
-            WorkPackage workPackage = changeOrCreateWorkPackage(task, newParams);
-            MPWorkPackage mpWp = MPWorkPackage.builder()
-                    .mpId(task.getID())
-                    .mpParentId((task.getParentTask() != null) ? task.getParentTask().getID() : null)
-                    .workPackage(workPackage)
-                    .build();
+            if (task.getID() != 0) {
+                Map<String, Object> newParams = paramsWithWPId(params, task, foundWPMap);
+                WorkPackage workPackage = changeOrCreateWorkPackage(task, newParams);
+                MPWorkPackage mpWp = MPWorkPackage.builder()
+                        .mpId(task.getID())
+                        .mpParentId((task.getParentTask() != null) ? task.getParentTask().getID() : null)
+                        .workPackage(workPackage)
+                        .build();
 
-            mpWorkPackages.add(mpWp);
+                mpWorkPackages.add(mpWp);
+            }
         }
 
         return mpWorkPackages;
     }
 
-    private void getAndSaveWorkPackages(List<MPWorkPackage> mpWorkPackages) {
+    private List<WorkPackage> getAndSaveWorkPackages(List<MPWorkPackage> mpWorkPackages) {
         List<WorkPackage> workPackages = mpWorkPackages.stream()
                 .map(ctr -> ctr.getWorkPackage())
                 .collect(Collectors.toList());
 
         workPackageRepo.saveAll(workPackages);
+
+        return workPackages;
     }
 
     private void getAndSaveRelations(List<MPWorkPackage> mpWorkPackages) {

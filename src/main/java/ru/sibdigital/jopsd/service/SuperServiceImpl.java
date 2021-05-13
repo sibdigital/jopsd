@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.sibdigital.jopsd.repository.ProjectRepo;
 import ru.sibdigital.jopsd.repository.RelationRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageRepo;
 
@@ -16,6 +17,9 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected RelationRepo relationRepo;
+
+    @Autowired
+    protected ProjectRepo projectRepo;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
