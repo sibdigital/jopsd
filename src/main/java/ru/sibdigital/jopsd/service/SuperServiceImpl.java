@@ -3,6 +3,9 @@ package ru.sibdigital.jopsd.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.sibdigital.jopsd.repository.ProjectRepo;
+import ru.sibdigital.jopsd.repository.RelationRepo;
+import ru.sibdigital.jopsd.repository.WorkPackageRepo;
 import ru.sibdigital.jopsd.repository.RelationRepo;
 import ru.sibdigital.jopsd.repository.RiskRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageProblemRepo;
@@ -31,6 +34,9 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected RiskService riskService;
+
+    @Autowired
+    protected ProjectRepo projectRepo;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
