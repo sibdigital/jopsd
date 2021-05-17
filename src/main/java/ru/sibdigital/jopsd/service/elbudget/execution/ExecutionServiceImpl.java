@@ -28,6 +28,7 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
         Resultsexecution.RegProject regProject = resultsExecution.getRegProject();
         if (regProject != null) {
             riskService.saveRisks(regProject, params);
+            targetService.saveTargets(regProject, params);
         }
     }
 }

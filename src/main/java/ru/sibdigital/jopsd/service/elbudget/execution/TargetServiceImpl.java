@@ -8,6 +8,7 @@ import ru.sibdigital.jopsd.model.WorkPackageTarget;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +17,14 @@ import java.util.Map;
 public class TargetServiceImpl extends SuperServiceImpl implements TargetService {
     @Override
     public void saveTargets(Resultsexecution.RegProject regProject, Map<String, Object> params) {
+        List<WorkPackageTarget> targetList = new ArrayList<>();
         List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> criteriaList = getPurposeCriteriaList(regProject);
         for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria : criteriaList) {
             List<WorkPackageTarget> targets = parsePurposeCriteria(criteria, params);
+            targetList.addAll(targets);
         }
+
+        workPackageTargetRepo.saveAll(targetList);
     }
 
     private  List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> getPurposeCriteriaList(Resultsexecution.RegProject regProject) {
