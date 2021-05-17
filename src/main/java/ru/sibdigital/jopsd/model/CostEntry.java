@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class CostEntry {
     private String comments;
     private Boolean blocked;
     private Double overriddenCosts;
-    private Double costs;
+    private BigDecimal costs;
     private Long rateId;
     private Integer tyear;
     private Integer tmonth;
@@ -157,11 +158,11 @@ public class CostEntry {
 
     @Basic
     @Column(name = "costs")
-    public Double getCosts() {
+    public BigDecimal getCosts() {
         return costs;
     }
 
-    public void setCosts(Double costs) {
+    public void setCosts(BigDecimal costs) {
         this.costs = costs;
     }
 
