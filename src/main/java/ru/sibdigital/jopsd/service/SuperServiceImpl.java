@@ -43,7 +43,7 @@ public class SuperServiceImpl implements SuperService {
     protected TargetService targetService;
 
     @Autowired
-    protected CostObjectRepo costObjectRepo;
+    protected CostEntryRepo costEntryRepo;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

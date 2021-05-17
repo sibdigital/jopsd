@@ -3,10 +3,12 @@ package ru.sibdigital.jopsd.service.elbudget.execution;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
-import ru.sibdigital.jopsd.model.CostObject;
+import ru.sibdigital.jopsd.model.CostEntry;
 import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.enums.CostTypes;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
 public class CostEntryServiceImpl extends SuperServiceImpl implements CostEntryService {
     @Override
     public void saveCostObjects(Resultsexecution.RegProject regProject, Map<String, Object> params) {
-        List<CostObject> costObjectList = new ArrayList<>();
+        List<CostEntry> costEntryList = new ArrayList<>();
 
         List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = getFinancialSourceList(regProject);
         Map<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceMap = financialSourceList.stream()
@@ -28,7 +30,7 @@ public class CostEntryServiceImpl extends SuperServiceImpl implements CostEntryS
 //        }
 
 
-        costObjectRepo.saveAll(costObjectList);
+        costEntryRepo.saveAll(costEntryList);
     }
 
     private  List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> getFinancialSourceList(Resultsexecution.RegProject regProject) {
@@ -48,32 +50,38 @@ public class CostEntryServiceImpl extends SuperServiceImpl implements CostEntryS
         return financialSourceList;
     }
 
-    private List<CostObject> parseFinancialSources(Map<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceMap, Map<String, Object> params) {
-        List<CostObject> costObjects = null;
+    private List<CostEntry> parseFinancialSources(Map<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceMap, Map<String, Object> params) {
+        List<CostEntry> costEntries = null;
 
         Long authorId = (Long) params.get("authorId");
         Long workPackageId = (Long) params.get("workPackageId");
         WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
         Long projectId = (workPackage == null) ? null : workPackage.getProjectId();
 
-//        for (Map.Entry<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> entry : financialSourceMap.entrySet()) {
             // 220 - бюджет субъекта
             // 221 - федеральный бюджет
             // 250 - внебюджетные источники
             // 230 - свод бюджетов муниципальных образований
 
         Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource = financialSourceMap.get("220");
-        CostObject costObject1 = CostObject.builder()
-                                .projectId(projectId)
-                                .authorId(authorId)
-                                .subject(workPackage.getSubject())
-                                .description(financialSource.getComment())
-                                .type("VariableCostObject")
-//                                .fixedDate()
-//                                .createdAt(new Timestamp(System.currentTimeMillis()))
-//                                .updatedAt(new Timestamp(System.currentTimeMillis()))
-                                .build();
-//        }
+        if (financialSource != null) {
+            CostEntry costEntry1 = CostEntry.builder()
+                    .userId(authorId)
+                    .projectId(projectId)
+                    .workPackageId(workPackageId)
+                    .costTypeId(CostTypes.REGIONAL_BUDGET.getValue())
+                    .units(financialSource.getCBR().doubleValue())
+                    .costs(financialSource.getCBR())
+//                    .spentOn()
+                    .createdOn(new Timestamp(System.currentTimeMillis()))
+                    .updatedOn(new Timestamp(System.currentTimeMillis()))
+                    .comments(financialSource.getComment())
+                    .blocked(false)
+//                    .tyear()
+//                    .tmonth()
+//                    .tweek()
+                    .build();
+        }
 
 //
 //        Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
