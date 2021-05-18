@@ -7,6 +7,7 @@ import ru.sibdigital.jopsd.model.WorkPackageTarget;
 import ru.sibdigital.jopsd.repository.*;
 import ru.sibdigital.jopsd.repository.RelationRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageRepo;
+import ru.sibdigital.jopsd.service.elbudget.execution.CostEntryService;
 import ru.sibdigital.jopsd.service.elbudget.execution.RiskService;
 import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 
@@ -44,6 +45,9 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected CostEntryRepo costEntryRepo;
+
+    @Autowired
+    protected CostEntryService costEntryService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

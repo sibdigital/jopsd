@@ -9,28 +9,30 @@ import ru.sibdigital.jopsd.model.enums.CostTypes;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class CostEntryServiceImpl extends SuperServiceImpl implements CostEntryService {
     @Override
-    public void saveCostObjects(Resultsexecution.RegProject regProject, Map<String, Object> params) {
-        List<CostEntry> costEntryList = new ArrayList<>();
-
+    public void saveCostEntries(Resultsexecution.RegProject regProject, Map<String, Object> params) {
         List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = getFinancialSourceList(regProject);
-        Map<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceMap = financialSourceList.stream()
-                                                                            .collect(Collectors.toMap(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource::getRegProjFinValue, ctr -> ctr));
-//        for (Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource : financialSourceList) {
-//            List<CostObject> targets = parseFinancialSource(financialSource, params);
-//            costObjectList.addAll(targets);
-//        }
+        if (financialSourceList != null) {
+
+            // Могут быть строки с одинаковым getRegProjFinValue;
+//            Map<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceMap = financialSourceList.stream()
+//                    .collect(Collectors.toMap(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource::getRegProjFinValue, ctr -> ctr));
+//            List<CostEntry> costEntryList = parseFinancialSources(financialSourceMap, params);
+            ArrayList<String> codes = new ArrayList<>(Arrays.asList("220", "221", "250", "230"));
+            List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources =
+                            financialSourceList.stream()
+                            .filter(ctr -> codes.contains(ctr.getRegProjFinValue()))
+                            .collect(Collectors.toList());
 
 
-        costEntryRepo.saveAll(costEntryList);
+//        costEntryRepo.saveAll(costEntryList);
+        }
     }
 
     private  List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> getFinancialSourceList(Resultsexecution.RegProject regProject) {
@@ -53,61 +55,53 @@ public class CostEntryServiceImpl extends SuperServiceImpl implements CostEntryS
     private List<CostEntry> parseFinancialSources(Map<String, Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceMap, Map<String, Object> params) {
         List<CostEntry> costEntries = null;
 
+        // 220 - бюджет субъекта
+        // 221 - федеральный бюджет
+        // 250 - внебюджетные источники
+        // 230 - свод бюджетов муниципальных образований
+        Map<String, CostTypes> mapCode = new HashMap<>();
+        mapCode.put("220", CostTypes.REGIONAL_BUDGET);
+        mapCode.put("221", CostTypes.FEDERAL_BUDGET);
+        mapCode.put("250", CostTypes.EXTRABUDGETARY_FUNDS);
+        mapCode.put("230", CostTypes.MUNICIPAL_BUDGET);
+
+        for (Map.Entry<String, CostTypes> item : mapCode.entrySet()) {
+            String elBudgetCode = item.getKey();
+            CostTypes costType = item.getValue();
+            Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource = financialSourceMap.get(elBudgetCode);
+            if (financialSource != null) {
+                costEntries.add(createCostEntry(financialSource, costType, params));
+            }
+        }
+        return costEntries;
+    }
+
+
+
+    private CostEntry createCostEntry(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource,
+                                      CostTypes costType, Map<String, Object> params) {
+
         Long authorId = (Long) params.get("authorId");
         Long workPackageId = (Long) params.get("workPackageId");
         WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
         Long projectId = (workPackage == null) ? null : workPackage.getProjectId();
-
-            // 220 - бюджет субъекта
-            // 221 - федеральный бюджет
-            // 250 - внебюджетные источники
-            // 230 - свод бюджетов муниципальных образований
-
-        Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource = financialSourceMap.get("220");
-        if (financialSource != null) {
-            CostEntry costEntry1 = CostEntry.builder()
-                    .userId(authorId)
-                    .projectId(projectId)
-                    .workPackageId(workPackageId)
-                    .costTypeId(CostTypes.REGIONAL_BUDGET.getValue())
-                    .units(financialSource.getCBR().doubleValue())
-                    .costs(financialSource.getCBR())
+        CostEntry costEntry = CostEntry.builder()
+                .userId(authorId)
+                .projectId(projectId)
+                .workPackageId(workPackageId)
+                .costTypeId(costType.getValue())
+                .units(financialSource.getCBR().doubleValue())
+                .costs(financialSource.getCBR())
 //                    .spentOn()
-                    .createdOn(new Timestamp(System.currentTimeMillis()))
-                    .updatedOn(new Timestamp(System.currentTimeMillis()))
-                    .comments(financialSource.getComment())
-                    .blocked(false)
+                .createdOn(new Timestamp(System.currentTimeMillis()))
+                .updatedOn(new Timestamp(System.currentTimeMillis()))
+                .comments(financialSource.getComment())
+                .blocked(false)
 //                    .tyear()
 //                    .tmonth()
 //                    .tweek()
-                    .build();
-        }
+                .build();
 
-//
-//        Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
-//        if (monthlyExecutions != null) {
-//            List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution> monthlyExecutionList =
-//                monthlyExecutions.getPurposeCriteriaMonthlyExecution();
-//
-//            for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
-//                WorkPackageTarget workPackageTarget= WorkPackageTarget.builder()
-//                        .projectId(projectId)
-//                        .workPackageId(workPackageId)
-////                        .targetId(null)
-////                        .year()
-////                        .quarter()
-//                        .month(Long.parseLong(monthlyExecution.getMonth()))
-////                        .value()
-////                        .type()
-//                        .createdAt(new Timestamp(System.currentTimeMillis()))
-//                        .updatedAt(new Timestamp(System.currentTimeMillis()))
-////                        .planValue()
-//                      .build();
-//                targets.add(workPackageTarget);
-//            }
-//        }
-
-//        return targets;
-        return null;
+        return costEntry;
     }
 }

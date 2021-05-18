@@ -22,13 +22,15 @@ public class RiskServiceImpl extends SuperServiceImpl implements RiskService {
     public void saveRisks(Resultsexecution.RegProject regProject, Map<String, Object> params) {
         List<WorkPackageProblem> problems = new ArrayList<>();
         List<Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator.Risks> riskList = getRisks(regProject);
-        for (Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator.Risks risks : riskList) {
-            Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator.Risks.Risk risk = risks.getRisk();
-            WorkPackageProblem problem = parseRisk(risk, params);
-            problems.add(problem);
-        }
+        if (riskList != null) {
+            for (Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator.Risks risks : riskList) {
+                Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator.Risks.Risk risk = risks.getRisk();
+                WorkPackageProblem problem = parseRisk(risk, params);
+                problems.add(problem);
+            }
 
-        workPackageProblemRepo.saveAll(problems);
+//        workPackageProblemRepo.saveAll(problems);
+        }
     }
 
     private List<Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator.Risks> getRisks(Resultsexecution.RegProject regProject) {

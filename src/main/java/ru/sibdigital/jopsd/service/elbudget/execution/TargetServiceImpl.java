@@ -19,12 +19,14 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
     public void saveTargets(Resultsexecution.RegProject regProject, Map<String, Object> params) {
         List<WorkPackageTarget> targetList = new ArrayList<>();
         List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> criteriaList = getPurposeCriteriaList(regProject);
-        for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria : criteriaList) {
-            List<WorkPackageTarget> targets = parsePurposeCriteria(criteria, params);
-            targetList.addAll(targets);
-        }
+        if (criteriaList != null) {
+            for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria : criteriaList) {
+                List<WorkPackageTarget> targets = parsePurposeCriteria(criteria, params);
+                targetList.addAll(targets);
+            }
 
-        workPackageTargetRepo.saveAll(targetList);
+//        workPackageTargetRepo.saveAll(targetList);
+        }
     }
 
     private  List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> getPurposeCriteriaList(Resultsexecution.RegProject regProject) {
