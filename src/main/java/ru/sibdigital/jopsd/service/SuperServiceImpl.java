@@ -7,9 +7,7 @@ import ru.sibdigital.jopsd.model.WorkPackageTarget;
 import ru.sibdigital.jopsd.repository.*;
 import ru.sibdigital.jopsd.repository.RelationRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageRepo;
-import ru.sibdigital.jopsd.service.elbudget.execution.CostEntryService;
-import ru.sibdigital.jopsd.service.elbudget.execution.RiskService;
-import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
+import ru.sibdigital.jopsd.service.elbudget.execution.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -32,22 +30,33 @@ public class SuperServiceImpl implements SuperService {
     protected WorkPackageProblemRepo workPackageProblemRepo;
 
     @Autowired
-    protected RiskService riskService;
-
-    @Autowired
     protected ProjectRepo projectRepo;
 
     @Autowired
     protected WorkPackageTargetRepo workPackageTargetRepo;
 
     @Autowired
-    protected TargetService targetService;
-
-    @Autowired
     protected CostEntryRepo costEntryRepo;
 
     @Autowired
-    protected CostEntryService costEntryService;
+    protected CostObjectRepo costObjectRepo;
+
+    @Autowired
+    protected MaterialBudgetItemRepo materialBudgetItemRepo;
+
+    @Autowired
+    protected TargetRepo targetRepo;
+
+    @Autowired
+    protected RiskService riskService;
+
+    @Autowired
+    protected TargetService targetService;
+    @Autowired
+    protected ExecutionParseService executionParseService;
+
+    @Autowired
+    protected FinancialService financialService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

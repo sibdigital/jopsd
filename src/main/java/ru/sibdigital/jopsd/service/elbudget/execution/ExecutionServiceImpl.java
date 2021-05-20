@@ -3,6 +3,7 @@ package ru.sibdigital.jopsd.service.elbudget.execution;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
+import ru.sibdigital.jopsd.model.WorkPackage;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import javax.xml.bind.Unmarshaller;
@@ -26,10 +27,21 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
 
     private void processResultExecution(Resultsexecution resultsExecution, Map<String, Object> params) {
         Resultsexecution.RegProject regProject = resultsExecution.getRegProject();
+        WorkPackage workPackage = getWorkPackage(params);
+
+
         if (regProject != null) {
             riskService.saveRisks(regProject, params);
             targetService.saveTargets(regProject, params);
-            costEntryService.saveCostEntries(regProject, params);
+            financialService.saveFinances(regProject, workPackage, params);
         }
     }
+
+    private WorkPackage getWorkPackage(Map<String, Object> params) {
+        Long workPackageId = (Long) params.get("workPackageId");
+        WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
+        return  workPackage;
+    }
+
+
 }

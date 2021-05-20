@@ -15,4 +15,6 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long> {
     @Query(nativeQuery = true,
             value = "SELECT * FROM work_packages WHERE outer_id in :outer_ids")
     List<WorkPackage> findAllByOuterIds(@Param("outer_ids") List<Long> outerId);
+
+    List<WorkPackage> findAllByCostObjectId(Long costObjectId);
 }
