@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
@@ -30,11 +31,11 @@ public class WorkPackageTarget {
     private Long year;
     private Long quarter;
     private Long month;
-    private Double value;
+    private BigDecimal value;
     private String type;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private Double planValue;
+    private BigDecimal planValue;
 
     @Basic
     @Column(name = "project_id")
@@ -98,11 +99,11 @@ public class WorkPackageTarget {
 
     @Basic
     @Column(name = "value")
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -138,11 +139,11 @@ public class WorkPackageTarget {
 
     @Basic
     @Column(name = "plan_value")
-    public Double getPlanValue() {
+    public BigDecimal getPlanValue() {
         return planValue;
     }
 
-    public void setPlanValue(Double planValue) {
+    public void setPlanValue(BigDecimal planValue) {
         this.planValue = planValue;
     }
 
