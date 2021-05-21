@@ -78,4 +78,18 @@ public class SuperServiceImpl implements SuperService {
         }
         return unmarshaller;
     }
+
+    protected Integer getQuarterByMonth(Integer monthValue) {
+        if ((monthValue >= 1) && (monthValue <= 3)) {
+            return 1;
+        } else if ((monthValue >= 4) && (monthValue <= 6)) {
+            return 2;
+        } else if ((monthValue >= 7) && (monthValue <= 9)) {
+            return 3;
+        } else if ((monthValue >= 10) && (monthValue <= 12)) {
+            return 4;
+        }  else {
+            return null;
+        }
+    }
 }

@@ -45,4 +45,15 @@ public class ExecutionParseServiceImpl extends SuperServiceImpl implements Execu
         }
         return financialSourceList;
     }
+
+    @Override
+    public List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> getPurposeCriteriaList(Resultsexecution.RegProject regProject) {
+        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> purposeCriteriaList = null;
+        Resultsexecution.RegProject.PurposeCriterias criterias = regProject.getPurposeCriterias();
+        if (criterias != null) {
+            purposeCriteriaList = criterias.getPurposeCriteria();
+        }
+
+        return purposeCriteriaList;
+    }
 }

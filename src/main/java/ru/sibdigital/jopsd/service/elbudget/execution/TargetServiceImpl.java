@@ -9,6 +9,7 @@ import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +17,12 @@ import java.util.Map;
 @Slf4j
 public class TargetServiceImpl extends SuperServiceImpl implements TargetService {
     @Override
-    public void saveTargets(Resultsexecution.RegProject regProject, Map<String, Object> params) {
+    public void saveTargets(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
         List<WorkPackageTarget> targetList = new ArrayList<>();
-        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> criteriaList = getPurposeCriteriaList(regProject);
+        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> criteriaList =  executionParseService.getPurposeCriteriaList(regProject);
         if (criteriaList != null) {
             for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria : criteriaList) {
-                List<WorkPackageTarget> targets = parsePurposeCriteria(criteria, params);
+                List<WorkPackageTarget> targets = parsePurposeCriteria(criteria, workPackage, params);
                 targetList.addAll(targets);
             }
 
@@ -29,21 +30,8 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         }
     }
 
-    private  List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> getPurposeCriteriaList(Resultsexecution.RegProject regProject) {
-        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> purposeCriteriaList = null;
-        Resultsexecution.RegProject.PurposeCriterias criterias = regProject.getPurposeCriterias();
-        if (criterias != null) {
-            purposeCriteriaList = criterias.getPurposeCriteria();
-        }
-
-        return purposeCriteriaList;
-    }
-
-    private List<WorkPackageTarget> parsePurposeCriteria(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria, Map<String, Object> params) {
+    private List<WorkPackageTarget> parsePurposeCriteria(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria, WorkPackage workPackage, Map<String, Object> params) {
         List<WorkPackageTarget> targets = null;
-        Long workPackageId = (Long) params.get("workPackageId");
-        WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
-        Long projectId = (workPackage == null) ? null : workPackage.getProjectId();
 
         Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
         if (monthlyExecutions != null) {
@@ -51,23 +39,29 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
                 monthlyExecutions.getPurposeCriteriaMonthlyExecution();
 
             for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
+                Integer month =  getMonth(monthlyExecution);
                 WorkPackageTarget workPackageTarget= WorkPackageTarget.builder()
-                        .projectId(projectId)
-                        .workPackageId(workPackageId)
-//                        .targetId(null)
-//                        .year()
-//                        .quarter()
-                        .month(Long.parseLong(monthlyExecution.getMonth()))
-//                        .value()
-//                        .type()
+                        .projectId(workPackage.getProjectId())
+                        .workPackageId(workPackage.getId())
+//                        .targetId(null) // TODO вставить значение сопоставленного target'а
+                        .year(Long.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
+                        .quarter(Long.valueOf(getQuarterByMonth(month)))
+                        .month(Long.valueOf(month))
+                        .value(monthlyExecution.getFactPrognos()) // TODO В master изменить тип value на BigDecimal
                         .createdAt(new Timestamp(System.currentTimeMillis()))
                         .updatedAt(new Timestamp(System.currentTimeMillis()))
-//                        .planValue()
+//                        .planValue() // TODO подтянуть из TargetExecutionValue
                       .build();
                 targets.add(workPackageTarget);
             }
         }
 
         return targets;
+    }
+
+    private Integer getMonth(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution) {
+        String str = monthlyExecution.getMonth();
+        Integer monthNumber = Integer.parseInt(str) + 1;
+        return monthNumber;
     }
 }
