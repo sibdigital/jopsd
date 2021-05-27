@@ -4,36 +4,71 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sibdigital.jopsd.controller.SuperController;
+import ru.sibdigital.jopsd.model.CostObject;
+import ru.sibdigital.jopsd.model.Project;
+import ru.sibdigital.jopsd.model.WorkPackage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Controller
 public class ImportExecutionController extends SuperController {
-//    @PostMapping("/import/execution")
-    @GetMapping("/import/execution")
+    @PostMapping("/import/execution")
     public ResponseEntity<String> importExecution(
-//                                            @RequestParam("file") MultipartFile multipartFile,
+                                            @RequestParam("file") MultipartFile multipartFile,
+                                            @RequestParam("workPackageId") Long workPackageId
+//                                            @RequestParam("authorId") Long authorId
+                                            ) {
+        try {
+            InputStream inputStream = multipartFile.getInputStream();
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("workPackageId", workPackageId);
+//            params.put("authorId", authorId);
+            params.put("authorId", Long.valueOf(2));
+
+            executionService.importFile(inputStream, params);
+
+            return ResponseEntity.ok()
+                    .body("{\"cause\": \"Файл успешно загружен\"," +
+                            "\"status\": \"server\"," +
+                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+//                            "}");
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Ошибка сохранения\"," +
+                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+//                            "}");
+        }
+    }
+
+//    @PostMapping("/import/elbudget")
+    @GetMapping("/import/execution")
+    public ResponseEntity<String> importElBudget(
+//            @RequestParam("file") MultipartFile multipartFile
                                             @RequestParam("workPackageId") Long workPackageId,
                                             @RequestParam("authorId") Long authorId
-                                            ) {
+    ) {
         try {
 //            InputStream inputStream = multipartFile.getInputStream();
             File file = new File("D:/sibdigital/xml/New_workplaces.xml"); // Для теста Post на GetMapping
             InputStream inputStream = new FileInputStream(file);
 
             Map<String, Object> params = new HashMap<>();
-            params.put("workPackageId", workPackageId);
-            params.put("authorId", authorId);
+//            params.put("workPackageId", workPackageId);
+//            params.put("authorId", authorId);
 
             executionService.importFile(inputStream, params);
 
@@ -51,5 +86,33 @@ public class ImportExecutionController extends SuperController {
 //                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
                             "}");
         }
+    }
+
+
+    @GetMapping("/import/execution1")
+    public String getTest() {
+        return "";
+    }
+
+    @GetMapping("/cost_objects_all")
+    public @ResponseBody
+    List<CostObject> getCostObject(){
+        return costObjectRepo.findAll();
+    }
+
+    @GetMapping("/projects")
+    public @ResponseBody
+    List<Project> getProjects(){
+        List<Project> projects = projectService.getProjects();
+        projects.sort(Comparator.comparing(Project::getName));
+        return projects;
+    }
+
+    @GetMapping("/work_packages")
+    public @ResponseBody
+    List<WorkPackage> getWorkPackages(@RequestParam("projectId") Long projectId){ //TODO В service перенести
+        List<WorkPackage> workPackages = workPackageRepo.findAllByProjectId(projectId);
+        workPackages.sort(Comparator.comparing(WorkPackage::getSubject));
+        return workPackages;
     }
 }

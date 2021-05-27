@@ -17,4 +17,6 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long> {
     List<WorkPackage> findAllByOuterIds(@Param("outer_ids") List<Long> outerId);
 
     List<WorkPackage> findAllByCostObjectId(Long costObjectId);
+
+    List<WorkPackage> findAllByProjectId(Long projectId);
 }

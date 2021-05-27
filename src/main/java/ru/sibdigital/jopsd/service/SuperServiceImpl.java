@@ -52,6 +52,7 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected TargetService targetService;
+
     @Autowired
     protected ExecutionParseService executionParseService;
 

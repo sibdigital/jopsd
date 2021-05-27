@@ -3,6 +3,9 @@ package ru.sibdigital.jopsd.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.repository.CostObjectRepo;
+import ru.sibdigital.jopsd.repository.WorkPackageRepo;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
@@ -22,6 +25,12 @@ public class SuperController {
 
     @Autowired
     protected ExecutionService executionService;
+
+    @Autowired
+    protected CostObjectRepo costObjectRepo;
+
+    @Autowired
+    protected WorkPackageRepo workPackageRepo; //TODO убрать, когда в service обернуто все будет
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

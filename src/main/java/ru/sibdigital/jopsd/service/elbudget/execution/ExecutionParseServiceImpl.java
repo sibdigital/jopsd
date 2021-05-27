@@ -25,6 +25,13 @@ public class ExecutionParseServiceImpl extends SuperServiceImpl implements Execu
     }
 
     @Override
+    public Resultsexecution.RegProject.Results.Result getResult(Resultsexecution resultsExecution) {
+        Resultsexecution.RegProject regProject = resultsExecution.getRegProject();
+        Resultsexecution.RegProject.Results.Result result = getResult(regProject);
+        return result;
+    }
+
+    @Override
     public  List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> getFinancialSourceList(Resultsexecution.RegProject.Results.Result result) {
         List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = null;
 

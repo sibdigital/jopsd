@@ -18,8 +18,6 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
 
     public void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
         CostObject costObject = getCostObjectByWorkPackage(workPackage, params);
-        costObject = null; // TODO Бюджет может быть создан и исполнен дочерними КТ. Выше поиск некорректный
-
 
         List<MaterialBudgetItem> materialBudgetItemList = new ArrayList<>();
         List<CostEntry> costEntryList = new ArrayList<>();
@@ -176,7 +174,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
     }
 
     private CostObject createCostObjectByWorkPackage(WorkPackage workPackage, Map<String, Object> params) {
-        Long targetId = (Long) params.get("targetId");
+//        Long targetId = (Long) params.get("targetId");
         Long authorId = (Long) params.get("authorId");
 
         CostObject costObject = CostObject.builder()
@@ -188,10 +186,14 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                                 .fixedDate(new Date())
                                 .createdOn(new Timestamp(System.currentTimeMillis()))
                                 .updatedOn(new Timestamp(System.currentTimeMillis()))
-                                .targetId(targetId)
+//                                .targetId(targetId)
                                 .build();
 
         costObjectRepo.save(costObject);
+
+        workPackage.setCostObjectId(costObject.getId());
+        workPackageRepo.save(workPackage);
+
         return costObject;
     }
 
@@ -213,29 +215,41 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                                       WorkPackage workPackage, CostTypes costType, Map<String, Object> params) {
 
         Long authorId = (Long) params.get("authorId");
+        Date spentOn = new Date(); //TODO какая дата?
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(spentOn);
+        Integer year = calendar.get(Calendar.YEAR);
+        Integer month = calendar.get(Calendar.MONTH) + 1;
+        Integer week = calendar.get(Calendar.WEEK_OF_YEAR);
 
         return CostEntry.builder()
                 .userId(authorId)
                 .projectId(workPackage.getProjectId())
                 .workPackageId(workPackage.getId())
                 .costTypeId(costType.getValue())
-                .units(financialSource.getCBR().doubleValue())
-                .costs(financialSource.getCBR())
-//                    .spentOn()
+                .units(financialSource.getCashExecution().doubleValue())
+                .costs(financialSource.getCashExecution())
+                .recordedLiability(financialSource.getBudgetCommitments().doubleValue())
+                .spentOn(spentOn)
                 .createdOn(new Timestamp(System.currentTimeMillis()))
                 .updatedOn(new Timestamp(System.currentTimeMillis()))
-                .comments(financialSource.getComment())
+                .comments("Загружено из Эл. Бюджета")
                 .blocked(false)
-//                    .tyear()
-//                    .tmonth()
-//                    .tweek()
+                .tyear(year)
+                .tmonth(month)
+                .tweek(week)
                 .build();
 
     }
 
     private CostObject findCostObjectByWorkPackage(WorkPackage workPackage) {
         Long costObjectId = workPackage.getCostObjectId();
-        return costObjectRepo.findById(costObjectId).orElse(null);
+        if (costObjectId != null) {
+            return costObjectRepo.findById(costObjectId).orElse(null);
+        } else {
+            return null;
+        }
     }
 
     private List<MaterialBudgetItem> findMaterialBudgetItemsByCostObjectAndCostType(CostObject costObject, CostTypes costType) {
@@ -247,7 +261,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         List<Long> workPackageIds = workPackagesWithCostObject.stream()
                                     .map(WorkPackage::getId)
                                     .collect(Collectors.toList());
-        return costEntryRepo.findAllByWorkPackageIdsAnAndCostTypeId(costType.getValue(), workPackageIds);
+        return costEntryRepo.findAllByWorkPackageIdsAndCostTypeId(workPackageIds, costType.getValue());
     }
 
 }
