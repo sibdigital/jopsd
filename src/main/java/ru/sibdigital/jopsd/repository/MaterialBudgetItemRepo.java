@@ -9,5 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface MaterialBudgetItemRepo extends JpaRepository<MaterialBudgetItem, Long> {
-    Optional<List<MaterialBudgetItem>> findAllByCostObjectIdAndAndCostTypeId(Long costObjectId, Long costTypeId);
+    Optional<List<MaterialBudgetItem>> findAllByCostObjectIdAndCostTypeId(Long costObjectId, Long costTypeId);
+
+    Optional<List<MaterialBudgetItem>> findAllByCostObjectId(Long costObjectId);
 }

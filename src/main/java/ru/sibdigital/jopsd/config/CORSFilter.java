@@ -24,6 +24,7 @@ public class CORSFilter implements Filter {
     @Value("${cors.access-control-allow-methods}") String accessControlAllowMethods;
     @Value("${cors.access-control-max-age}") String accessControlMaxAge;
     @Value("${cors.access-control-allow-headers}") String accessControlAllowHeaders;
+    @Value("${cors.access-control-expose-headers}") String accessControlExposeHeaders;
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -36,6 +37,7 @@ public class CORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", accessControlAllowMethods);
         response.setHeader("Access-Control-Max-Age", accessControlMaxAge);
         response.setHeader("Access-Control-Allow-Headers", accessControlAllowHeaders);
+        response.setHeader("Access-Control-Expose-Headers", accessControlExposeHeaders);
 
         chain.doFilter(req, res);
     }

@@ -2,6 +2,7 @@ package ru.sibdigital.jopsd.controller.elbudget.execution;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -89,6 +90,89 @@ public class ImportExecutionController extends SuperController {
     }
 
 
+    @PostMapping(value = "/import/execution/find_work_package")
+    public @ResponseBody Object findWorkPackage(@RequestParam("file") MultipartFile multipartFile) {
+        try {
+            InputStream inputStream = multipartFile.getInputStream();
+            WorkPackage workPackage = executionService.findWorkPackage(inputStream);
+
+            if (workPackage == null) {
+                return ResponseEntity.ok()
+                        .body("{\"status\": \"server\"," +
+                                "\"cause\":\"Файл успешно обработан\"," +
+                                "\"sname\": \"null\"}");
+            } else {
+                return workPackage;
+            }
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Ошибка сохранения\"," +
+                            "\"sname\": \"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @PostMapping(value = "/import/execution/create_work_package")
+    public @ResponseBody Object createWorkPackage(@RequestParam("file") MultipartFile multipartFile,
+                                                  @RequestParam("workPackageName") String workPackageName,
+                                                  @RequestParam("projectId") Long projectId,
+                                                  @RequestParam("projectName") String projectName,
+                                                  @RequestParam("authorId") Long authorId) {
+        try {
+            InputStream inputStream = multipartFile.getInputStream();
+            WorkPackage workPackage = executionService.createWorkPackage(inputStream, workPackageName, projectId, projectName, authorId);
+
+            if (workPackage == null) {
+                return ResponseEntity.ok()
+                        .body("{\"status\": \"server\"," +
+                                "\"cause\":\"Ошибка сохранения\"," +
+                                "\"sname\": \"" + workPackageName + "\"}");
+            } else {
+                return workPackage;
+            }
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Ошибка сохранения\"," +
+                            "\"sname\": \"" + e.getMessage() + "\"}");
+        }
+    }
+
+    @PostMapping("/import/execution/save_finance")
+    public ResponseEntity<String> saveFinance(
+            @RequestParam("file") MultipartFile multipartFile,
+            @RequestParam("workPackageId") Long workPackageId,
+            @RequestParam("authorId") Long authorId
+    ) {
+        try {
+            InputStream inputStream = multipartFile.getInputStream();
+
+            Map<String, Object> params = new HashMap<>();
+            params.put("workPackageId", workPackageId);
+            params.put("authorId", authorId);
+
+            financialService.saveFinances(inputStream, params);
+
+            return ResponseEntity.ok()
+                    .body("{\"cause\": \"Файл успешно загружен\"," +
+                            "\"status\": \"server\"," +
+                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Ошибка сохранения\"," +
+                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+        }
+    }
+
+
+
     @GetMapping("/import/execution1")
     public String getTest() {
         return "";
@@ -100,7 +184,7 @@ public class ImportExecutionController extends SuperController {
         return costObjectRepo.findAll();
     }
 
-    @GetMapping("/projects")
+    @GetMapping("/project_list")
     public @ResponseBody
     List<Project> getProjects(){
         List<Project> projects = projectService.getProjects();
@@ -108,7 +192,7 @@ public class ImportExecutionController extends SuperController {
         return projects;
     }
 
-    @GetMapping("/work_packages")
+    @GetMapping("/work_package_list")
     public @ResponseBody
     List<WorkPackage> getWorkPackages(@RequestParam("projectId") Long projectId){ //TODO В service перенести
         List<WorkPackage> workPackages = workPackageRepo.findAllByProjectId(projectId);

@@ -48,6 +48,21 @@ public class SuperServiceImpl implements SuperService {
     protected TargetRepo targetRepo;
 
     @Autowired
+    protected BoardRepo boardRepo;
+
+    @Autowired
+    protected EnabledModuleRepo enabledModuleRepo;
+
+    @Autowired
+    protected EnumerationRepo enumerationRepo;
+
+    @Autowired
+    protected ProjectTypeRepo projectTypeRepo;
+
+    @Autowired
+    protected WikiRepo wikiRepo;
+
+    @Autowired
     protected RiskService riskService;
 
     @Autowired
@@ -58,6 +73,12 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected FinancialService financialService;
+
+    @Autowired
+    protected TranscriptorService transcriptorService;
+
+    @Autowired
+    protected ProjectService projectService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

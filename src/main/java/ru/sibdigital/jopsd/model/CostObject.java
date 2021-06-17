@@ -33,6 +33,7 @@ public class CostObject {
     private Timestamp createdOn;
     private Timestamp updatedOn;
     private Long targetId;
+    private Long metaId;
 
     @Basic
     @Column(name = "project_id")
@@ -124,16 +125,26 @@ public class CostObject {
         this.targetId = targetId;
     }
 
+    @Basic
+    @Column(name = "meta_id")
+    public Long getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(Long metaId) {
+        this.metaId = metaId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CostObject that = (CostObject) o;
-        return Objects.equals(id, that.id) && Objects.equals(projectId, that.projectId) && Objects.equals(authorId, that.authorId) && Objects.equals(subject, that.subject) && Objects.equals(description, that.description) && Objects.equals(type, that.type) && Objects.equals(fixedDate, that.fixedDate) && Objects.equals(createdOn, that.createdOn) && Objects.equals(updatedOn, that.updatedOn) && Objects.equals(targetId, that.targetId);
+        return Objects.equals(id, that.id) && Objects.equals(projectId, that.projectId) && Objects.equals(authorId, that.authorId) && Objects.equals(subject, that.subject) && Objects.equals(description, that.description) && Objects.equals(type, that.type) && Objects.equals(fixedDate, that.fixedDate) && Objects.equals(createdOn, that.createdOn) && Objects.equals(updatedOn, that.updatedOn) && Objects.equals(targetId, that.targetId) && Objects.equals(metaId, that.metaId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, projectId, authorId, subject, description, type, fixedDate, createdOn, updatedOn, targetId);
+        return Objects.hash(id, projectId, authorId, subject, description, type, fixedDate, createdOn, updatedOn, targetId, metaId);
     }
 }

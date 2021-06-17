@@ -5,11 +5,24 @@ import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
+import javax.xml.bind.Unmarshaller;
+import java.io.InputStream;
 import java.util.List;
 
 @Service
 @Slf4j
 public class ExecutionParseServiceImpl extends SuperServiceImpl implements ExecutionParseService {
+
+    @Override
+    public Resultsexecution unmarshalInputStream(InputStream inputStream) throws Exception {
+        Unmarshaller unmarshaller = getUnmarshaller(Resultsexecution.class);
+        if (unmarshaller == null) {
+            throw new Exception("Не удалось создать демаршаллизатор");
+        }
+
+        Resultsexecution resultsExecution = (Resultsexecution) unmarshaller.unmarshal(inputStream);
+        return  resultsExecution;
+    }
 
     @Override
     public Resultsexecution.RegProject.Results.Result getResult(Resultsexecution.RegProject regProject) {
