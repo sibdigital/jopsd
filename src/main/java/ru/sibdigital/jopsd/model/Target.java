@@ -46,6 +46,7 @@ public class Target {
     private String nationalProjectCharact;
     private Date resultDueDate;
     private Long resultAssigned;
+    private Long metaId;
 
     @Basic
     @Column(name = "status_id")
@@ -267,16 +268,26 @@ public class Target {
         this.resultAssigned = resultAssigned;
     }
 
+    @Basic
+    @Column(name = "meta_id")
+    public Long getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(Long metaId) {
+        this.metaId = metaId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Target target = (Target) o;
-        return Objects.equals(id, target.id) && Objects.equals(statusId, target.statusId) && Objects.equals(name, target.name) && Objects.equals(typeId, target.typeId) && Objects.equals(unit, target.unit) && Objects.equals(basicValue, target.basicValue) && Objects.equals(planValue, target.planValue) && Objects.equals(comment, target.comment) && Objects.equals(projectId, target.projectId) && Objects.equals(createdAt, target.createdAt) && Objects.equals(updatedAt, target.updatedAt) && Objects.equals(isApprove, target.isApprove) && Objects.equals(parentId, target.parentId) && Objects.equals(measureUnitId, target.measureUnitId) && Objects.equals(isAdditional, target.isAdditional) && Objects.equals(type, target.type) && Objects.equals(basicDate, target.basicDate) && Objects.equals(planDate, target.planDate) && Objects.equals(nationalProjectGoal, target.nationalProjectGoal) && Objects.equals(nationalProjectResult, target.nationalProjectResult) && Objects.equals(nationalProjectCharact, target.nationalProjectCharact) && Objects.equals(resultDueDate, target.resultDueDate) && Objects.equals(resultAssigned, target.resultAssigned);
+        return Objects.equals(id, target.id) && Objects.equals(statusId, target.statusId) && Objects.equals(name, target.name) && Objects.equals(typeId, target.typeId) && Objects.equals(unit, target.unit) && Objects.equals(basicValue, target.basicValue) && Objects.equals(planValue, target.planValue) && Objects.equals(comment, target.comment) && Objects.equals(projectId, target.projectId) && Objects.equals(createdAt, target.createdAt) && Objects.equals(updatedAt, target.updatedAt) && Objects.equals(isApprove, target.isApprove) && Objects.equals(parentId, target.parentId) && Objects.equals(measureUnitId, target.measureUnitId) && Objects.equals(isAdditional, target.isAdditional) && Objects.equals(type, target.type) && Objects.equals(basicDate, target.basicDate) && Objects.equals(planDate, target.planDate) && Objects.equals(nationalProjectGoal, target.nationalProjectGoal) && Objects.equals(nationalProjectResult, target.nationalProjectResult) && Objects.equals(nationalProjectCharact, target.nationalProjectCharact) && Objects.equals(resultDueDate, target.resultDueDate) && Objects.equals(resultAssigned, target.resultAssigned) && Objects.equals(metaId, target.metaId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, statusId, name, typeId, unit, basicValue, planValue, comment, projectId, createdAt, updatedAt, isApprove, parentId, measureUnitId, isAdditional, type, basicDate, planDate, nationalProjectGoal, nationalProjectResult, nationalProjectCharact, resultDueDate, resultAssigned);
+        return Objects.hash(id, statusId, name, typeId, unit, basicValue, planValue, comment, projectId, createdAt, updatedAt, isApprove, parentId, measureUnitId, isAdditional, type, basicDate, planDate, nationalProjectGoal, nationalProjectResult, nationalProjectCharact, resultDueDate, resultAssigned, metaId);
     }
 }

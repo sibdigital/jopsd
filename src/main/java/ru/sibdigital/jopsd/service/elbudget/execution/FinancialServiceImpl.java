@@ -27,7 +27,8 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         if (result != null) {
             CostObject costObject = costObjectRepo.findCostObjectByMetaId(result.getResultMetaId()).orElse(null);
             if (costObject == null) {
-                costObject = createCostObjectByWorkPackage(workPackage, params);
+                params.put("resultMetaId", result.getResultMetaId());
+                costObject = createCostObjectByWorkPackageAndResultMetaId(workPackage, params);
             }
 
             List<MaterialBudgetItem> newMaterialBudgetItemList = new ArrayList<>();
@@ -55,38 +56,38 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         }
     }
 
-    public void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
-        CostObject costObject = getCostObjectByWorkPackage(workPackage, params);
-
-        List<MaterialBudgetItem> materialBudgetItemList = new ArrayList<>();
-        List<CostEntry> costEntryList = new ArrayList<>();
-
-        List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = executionParseService.getFinancialSourceList(regProject);
-        if (financialSourceList != null) {
-            Map<String, CostTypes> mapCostTypes = getMapCostTypes();
-            List<String> codes = new ArrayList<>(mapCostTypes.keySet());
-            for (String code : codes) {
-                CostTypes costType = mapCostTypes.get(code);
-
-                List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources =
-                        getFinancialSourcesByCode(financialSourceList, code);
-
-                List<MaterialBudgetItem> materialBudgetItems = parseMaterialBudgetItems(financialSources, costType, costObject);
-                materialBudgetItemList.addAll(materialBudgetItems);
-
-                List<CostEntry> costEntries = parseCostEntries(financialSources, workPackage, costType, costObject, params);
-                costEntryList.addAll(costEntries);
-            }
-        }
-
-        if (!materialBudgetItemList.isEmpty()) {
-            materialBudgetItemRepo.saveAll(materialBudgetItemList);
-        }
-
-        if (!costEntryList.isEmpty()) {
-            costEntryRepo.saveAll(costEntryList);
-        }
-    }
+//    public void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
+//        CostObject costObject = getCostObjectByWorkPackage(workPackage, params);
+//
+//        List<MaterialBudgetItem> materialBudgetItemList = new ArrayList<>();
+//        List<CostEntry> costEntryList = new ArrayList<>();
+//
+//        List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = executionParseService.getFinancialSourceList(regProject);
+//        if (financialSourceList != null) {
+//            Map<String, CostTypes> mapCostTypes = getMapCostTypes();
+//            List<String> codes = new ArrayList<>(mapCostTypes.keySet());
+//            for (String code : codes) {
+//                CostTypes costType = mapCostTypes.get(code);
+//
+//                List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources =
+//                        getFinancialSourcesByCode(financialSourceList, code);
+//
+//                List<MaterialBudgetItem> materialBudgetItems = parseMaterialBudgetItems(financialSources, costType, costObject);
+//                materialBudgetItemList.addAll(materialBudgetItems);
+//
+//                List<CostEntry> costEntries = parseCostEntries(financialSources, workPackage, costType, costObject, params);
+//                costEntryList.addAll(costEntries);
+//            }
+//        }
+//
+//        if (!materialBudgetItemList.isEmpty()) {
+//            materialBudgetItemRepo.saveAll(materialBudgetItemList);
+//        }
+//
+//        if (!costEntryList.isEmpty()) {
+//            costEntryRepo.saveAll(costEntryList);
+//        }
+//    }
 
     private List<MaterialBudgetItem> parseMaterialBudgetItems(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources,
                                           CostTypes costType, CostObject costObject) {
@@ -203,17 +204,18 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         return mapCode;
     }
 
-    private CostObject getCostObjectByWorkPackage(WorkPackage workPackage, Map<String, Object> params) {
-        CostObject costObject = findCostObjectByWorkPackage(workPackage);
-        if (costObject == null) {
-            costObject = createCostObjectByWorkPackage(workPackage, params);
-        }
+//    private CostObject getCostObjectByWorkPackage(WorkPackage workPackage, Map<String, Object> params) {
+//        CostObject costObject = findCostObjectByWorkPackage(workPackage);
+//        if (costObject == null) {
+//            costObject = createCostObjectByWorkPackage(workPackage, params);
+//        }
+//
+//        return costObject;
+//    }
 
-        return costObject;
-    }
-
-    private CostObject createCostObjectByWorkPackage(WorkPackage workPackage, Map<String, Object> params) {
+    private CostObject createCostObjectByWorkPackageAndResultMetaId(WorkPackage workPackage, Map<String, Object> params) {
         Long authorId = (Long) params.get("authorId");
+        Long resultMetaId = (Long) params.get("resultMetaId");
 
         CostObject costObject = CostObject.builder()
                                 .projectId(workPackage.getProjectId())
@@ -224,6 +226,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                                 .fixedDate(new Date())
                                 .createdOn(new Timestamp(System.currentTimeMillis()))
                                 .updatedOn(new Timestamp(System.currentTimeMillis()))
+                                .metaId(resultMetaId)
 //                                .targetId(targetId)
                                 .build();
 

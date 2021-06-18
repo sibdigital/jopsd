@@ -63,6 +63,9 @@ public class SuperServiceImpl implements SuperService {
     protected WikiRepo wikiRepo;
 
     @Autowired
+    protected TargetExecutionValueRepo targetExecutionValueRepo;
+
+    @Autowired
     protected RiskService riskService;
 
     @Autowired

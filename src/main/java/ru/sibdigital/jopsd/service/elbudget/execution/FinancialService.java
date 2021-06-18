@@ -8,5 +8,5 @@ import java.util.Map;
 
 public interface FinancialService {
     void saveFinances(InputStream inputStream, Map<String, Object> params) throws Exception;
-    void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params);
+//    void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params);
 }

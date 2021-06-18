@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sibdigital.jopsd.controller.SuperController;
+import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.model.CostObject;
 import ru.sibdigital.jopsd.model.Project;
+import ru.sibdigital.jopsd.model.Target;
 import ru.sibdigital.jopsd.model.WorkPackage;
 
 import java.io.File;
@@ -158,7 +160,7 @@ public class ImportExecutionController extends SuperController {
             financialService.saveFinances(inputStream, params);
 
             return ResponseEntity.ok()
-                    .body("{\"cause\": \"Файл успешно загружен\"," +
+                    .body("{\"cause\": \"Бюджет успешно сохранен\"," +
                             "\"status\": \"server\"," +
                             "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
         }
@@ -171,6 +173,46 @@ public class ImportExecutionController extends SuperController {
         }
     }
 
+    @PostMapping("/import/execution/match_purpose_criteria")
+    public @ResponseBody Object matchPurposeCriteria(@RequestParam("file") MultipartFile multipartFile) {
+        try {
+            InputStream inputStream = multipartFile.getInputStream();
+
+            List<TargetMatch> targetMatches = targetService.matchTargets(inputStream);
+
+            return targetMatches;
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Ошибка сохранения\"," +
+                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+        }
+    }
+
+    @PostMapping("/import/execution/process_targets")
+    public @ResponseBody Object processPurposeCriteria(@RequestBody List<TargetMatch> targetMatches,
+                                                     @RequestParam("workPackageId") Long workPackageId,
+                                                     @RequestParam("authorId") Long authorId) {
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("workPackageId", workPackageId);
+            params.put("authorId", authorId);
+            targetService.createAndSaveTargetValues(targetMatches, params);
+            return ResponseEntity.ok()
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Целевые показатели сохранены\"," +
+                            "\"sname\": \" work-package-id:" + workPackageId + "\"}");
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\"Ошибка сохранения\"," +
+                            "\"sname\": \" work-package-id:" + workPackageId + "\"}");
+        }
+    }
 
 
     @GetMapping("/import/execution1")
@@ -198,5 +240,13 @@ public class ImportExecutionController extends SuperController {
         List<WorkPackage> workPackages = workPackageRepo.findAllByProjectId(projectId);
         workPackages.sort(Comparator.comparing(WorkPackage::getSubject));
         return workPackages;
+    }
+
+    @GetMapping("/target_list")
+    public @ResponseBody
+    List<Target> getTargets(@RequestParam("projectId") Long projectId){ //TODO В service перенести
+        List<Target> targets = targetRepo.findAllByProjectId(projectId);
+        targets.sort(Comparator.comparing(Target::getName));
+        return targets;
     }
 }

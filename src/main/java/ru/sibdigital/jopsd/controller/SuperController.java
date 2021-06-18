@@ -6,9 +6,11 @@ import org.springframework.stereotype.Controller;
 import ru.sibdigital.jopsd.model.WorkPackage;
 import ru.sibdigital.jopsd.repository.CostObjectRepo;
 import ru.sibdigital.jopsd.repository.ProjectRepo;
+import ru.sibdigital.jopsd.repository.TargetRepo;
 import ru.sibdigital.jopsd.repository.WorkPackageRepo;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
 import ru.sibdigital.jopsd.service.elbudget.execution.FinancialService;
+import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.service.ProjectService;
@@ -38,7 +40,13 @@ public class SuperController {
     protected ProjectRepo projectRepo; //TODO убрать, когда в service обернуто все будет
 
     @Autowired
+    protected TargetRepo targetRepo; //TODO убрать, когда в service обернуто все будет
+
+    @Autowired
     protected FinancialService financialService;
+
+    @Autowired
+    protected TargetService targetService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
