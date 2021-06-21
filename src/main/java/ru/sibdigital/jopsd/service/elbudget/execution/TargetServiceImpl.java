@@ -16,10 +16,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -39,8 +36,9 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
     }
 
     @Override
-    public void createAndSaveTargetValues(List<TargetMatch> targetMatches, Map<String, Object> params) {
+    public List<TargetMatch> createAndSaveTargetValues(List<TargetMatch> targetMatches, Map<String, Object> params) {
         List<WorkPackageTarget> workPackageTargetList = new ArrayList<>();
+        List<TargetMatch> targetMatchesAfterProcess = new ArrayList<>();
         Target target;
 
         Long workPackageId = (Long) params.get("workPackageId");
@@ -61,56 +59,20 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
             List<WorkPackageTarget> workPackageTargets = parsePurposeCriteria(purposeCriteria, target, workPackage);
 
             workPackageTargetList.addAll(workPackageTargets);
+            targetMatchesAfterProcess.add(TargetMatch.builder().target(target).purposeCriteria(purposeCriteria).createNewTarget(false).build());
         }
 
         workPackageTargetRepo.saveAll(workPackageTargetList);
-    }
 
-    @Override
-    public void saveTargets(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
-        List<WorkPackageTarget> targetList = new ArrayList<>();
-        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> criteriaList =  executionParseService.getPurposeCriteriaList(regProject);
-        if (criteriaList != null) {
-            for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria : criteriaList) {
-                List<WorkPackageTarget> targets = parsePurposeCriteria(criteria, workPackage, params);
-                targetList.addAll(targets);
-            }
-
-//        workPackageTargetRepo.saveAll(targetList);
-        }
-    }
-
-    private List<WorkPackageTarget> parsePurposeCriteria(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria, WorkPackage workPackage, Map<String, Object> params) {
-        List<WorkPackageTarget> targets = null;
-
-        Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
-        if (monthlyExecutions != null) {
-            List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution> monthlyExecutionList =
-                monthlyExecutions.getPurposeCriteriaMonthlyExecution();
-
-            for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
-                Integer month =  getMonth(monthlyExecution);
-                WorkPackageTarget workPackageTarget= WorkPackageTarget.builder()
-                        .projectId(workPackage.getProjectId())
-                        .workPackageId(workPackage.getId())
-//                        .targetId(null) // TODO вставить значение сопоставленного target'а
-                        .year(Long.valueOf(Calendar.getInstance().get(Calendar.YEAR)))
-                        .quarter(Long.valueOf(getQuarterByMonth(month)))
-                        .month(Long.valueOf(month))
-                        .value(monthlyExecution.getFactPrognos()) // TODO В master изменить тип value на BigDecimal
-                        .createdAt(new Timestamp(System.currentTimeMillis()))
-                        .updatedAt(new Timestamp(System.currentTimeMillis()))
-//                        .planValue() // TODO подтянуть из TargetExecutionValue
-                      .build();
-                targets.add(workPackageTarget);
-            }
-        }
-
-        return targets;
+        return targetMatchesAfterProcess;
     }
 
     private List<WorkPackageTarget> parsePurposeCriteria(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria, Target target, WorkPackage workPackage) {
         List<WorkPackageTarget> workPackageTargets = new ArrayList<>();
+
+        Integer year = Calendar.getInstance().get(Calendar.YEAR);
+        Map<Integer, WorkPackageTarget> workPackageTargetMap = getWorkPackageTargetsByMonths(workPackage, target, year);
+        Map<Integer, TargetExecutionValue> targetExecutionValueMap = getTargetExecutionValuesByQuarters(target, year);
 
         Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
         if (monthlyExecutions != null) {
@@ -120,28 +82,50 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
             for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
                 Integer month =  getMonth(monthlyExecution);
                 Integer quarter = getQuarterByMonth(month);
-                Integer year = Calendar.getInstance().get(Calendar.YEAR);
 
-                TargetExecutionValue targetExecutionValue = targetExecutionValueRepo.findTargetExecutionValueByTargetIdAndYearAndQuarter(target.getId(), year, quarter).orElse(null);
-                BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
+                WorkPackageTarget workPackageTarget = workPackageTargetMap.get(month);
+                if (workPackageTarget != null) {
+                    workPackageTarget.setValue(monthlyExecution.getFactPrognos());
+                    workPackageTarget.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+                } else {
+                    TargetExecutionValue targetExecutionValue = targetExecutionValueMap.get(quarter);
+                    BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
 
-                WorkPackageTarget workPackageTarget= WorkPackageTarget.builder()
-                        .projectId(workPackage.getProjectId())
-                        .workPackageId(workPackage.getId())
-                        .targetId(target.getId())
-                        .year(Long.valueOf(year)) // TODO изменить на Integer тут и в master
-                        .quarter(Long.valueOf(quarter)) // TODO изменить на Integer тут и в master
-                        .month(Long.valueOf(month)) // TODO изменить на Integer тут и в master
-                        .value(monthlyExecution.getFactPrognos()) // TODO В master изменить тип value на BigDecimal
-                        .createdAt(new Timestamp(System.currentTimeMillis()))
-                        .updatedAt(new Timestamp(System.currentTimeMillis()))
-                        .planValue(planValue)
-                        .build();
+                    workPackageTarget= WorkPackageTarget.builder()
+                            .projectId(workPackage.getProjectId())
+                            .workPackageId(workPackage.getId())
+                            .targetId(target.getId())
+                            .year(year) // TODO изменить на Integer в master
+                            .quarter(quarter) // TODO изменить на Integer в master
+                            .month(month) // TODO изменить на Integer в master
+                            .value(monthlyExecution.getFactPrognos()) // TODO В master изменить тип value на BigDecimal
+                            .createdAt(new Timestamp(System.currentTimeMillis()))
+                            .updatedAt(new Timestamp(System.currentTimeMillis()))
+                            .planValue(planValue)
+                            .build();
+                }
+
                 workPackageTargets.add(workPackageTarget);
             }
         }
 
         return workPackageTargets;
+    }
+
+    private Map<Integer, WorkPackageTarget> getWorkPackageTargetsByMonths(WorkPackage workPackage, Target target, Integer year) {
+        Map<Integer, WorkPackageTarget> map = new HashMap<>();
+        List<WorkPackageTarget> workPackageTargets = workPackageTargetRepo.findAllByWorkPackageIdAndTargetIdAndYear(workPackage.getId(), target.getId(), year);
+        workPackageTargets.forEach(workPackageTarget -> map.put(workPackageTarget.getMonth(), workPackageTarget));
+
+        return map;
+    }
+
+    private Map<Integer, TargetExecutionValue> getTargetExecutionValuesByQuarters(Target target, Integer year) {
+        Map<Integer, TargetExecutionValue> map = new HashMap<>();
+        List<TargetExecutionValue> targetExecutionValues = targetExecutionValueRepo.findAllByTargetIdAndYear(target.getId(), year);
+        targetExecutionValues.forEach(targetExecutionValue -> {map.put(targetExecutionValue.getQuarter(), targetExecutionValue);});
+
+        return map;
     }
 
     private Integer getMonth(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution) {

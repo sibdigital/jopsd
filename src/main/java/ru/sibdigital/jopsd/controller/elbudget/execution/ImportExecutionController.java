@@ -145,11 +145,10 @@ public class ImportExecutionController extends SuperController {
     }
 
     @PostMapping("/import/execution/save_finance")
-    public ResponseEntity<String> saveFinance(
+    public @ResponseBody Object saveFinance(
             @RequestParam("file") MultipartFile multipartFile,
             @RequestParam("workPackageId") Long workPackageId,
-            @RequestParam("authorId") Long authorId
-    ) {
+            @RequestParam("authorId") Long authorId) {
         try {
             InputStream inputStream = multipartFile.getInputStream();
 
@@ -157,12 +156,16 @@ public class ImportExecutionController extends SuperController {
             params.put("workPackageId", workPackageId);
             params.put("authorId", authorId);
 
-            financialService.saveFinances(inputStream, params);
+            CostObject costObject = financialService.saveFinances(inputStream, params);
 
-            return ResponseEntity.ok()
-                    .body("{\"cause\": \"Бюджет успешно сохранен\"," +
-                            "\"status\": \"server\"," +
-                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+            if (costObject != null) {
+                return costObject;
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("{\"status\": \"server\"," +
+                                "\"cause\":\"Ошибка сохранения\"," +
+                                "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+            }
         }
         catch (Exception e) {
             logError(e);
@@ -199,11 +202,8 @@ public class ImportExecutionController extends SuperController {
             Map<String, Object> params = new HashMap<>();
             params.put("workPackageId", workPackageId);
             params.put("authorId", authorId);
-            targetService.createAndSaveTargetValues(targetMatches, params);
-            return ResponseEntity.ok()
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Целевые показатели сохранены\"," +
-                            "\"sname\": \" work-package-id:" + workPackageId + "\"}");
+            List<TargetMatch> targetMatchesAfterProcess = targetService.createAndSaveTargetValues(targetMatches, params);
+            return targetMatchesAfterProcess;
         }
         catch (Exception e) {
             logError(e);

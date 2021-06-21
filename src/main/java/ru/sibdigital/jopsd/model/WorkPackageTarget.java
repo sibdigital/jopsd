@@ -28,9 +28,9 @@ public class WorkPackageTarget {
     private Long projectId;
     private Long workPackageId;
     private Long targetId;
-    private Long year;
-    private Long quarter;
-    private Long month;
+    private Integer year;
+    private Integer quarter;
+    private Integer month;
     private BigDecimal value;
     private String type;
     private Timestamp createdAt;
@@ -69,31 +69,31 @@ public class WorkPackageTarget {
 
     @Basic
     @Column(name = "year")
-    public Long getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Long year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
     @Basic
     @Column(name = "quarter")
-    public Long getQuarter() {
+    public Integer getQuarter() {
         return quarter;
     }
 
-    public void setQuarter(Long quarter) {
+    public void setQuarter(Integer quarter) {
         this.quarter = quarter;
     }
 
     @Basic
     @Column(name = "month")
-    public Long getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public void setMonth(Long month) {
+    public void setMonth(Integer month) {
         this.month = month;
     }
 

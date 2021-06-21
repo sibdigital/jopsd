@@ -10,6 +10,5 @@ import java.util.Map;
 
 public interface TargetService {
     List<TargetMatch> matchTargets(InputStream inputStream) throws Exception;
-    void saveTargets(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params);
-    void createAndSaveTargetValues(List<TargetMatch> targetMatches, Map<String, Object> params);
+    List<TargetMatch> createAndSaveTargetValues(List<TargetMatch> targetMatches, Map<String, Object> params);
 }

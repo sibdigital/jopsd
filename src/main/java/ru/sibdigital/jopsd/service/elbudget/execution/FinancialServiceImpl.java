@@ -18,14 +18,16 @@ import java.util.stream.Collectors;
 public class FinancialServiceImpl extends SuperServiceImpl implements FinancialService {
 
     @Override
-    public void saveFinances(InputStream inputStream, Map<String, Object> params) throws Exception {
+    public CostObject saveFinances(InputStream inputStream, Map<String, Object> params) throws Exception {
+        CostObject costObject = null;
+
         Long workPackageId = (Long) params.get("workPackageId");
         WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
 
         Resultsexecution resultsExecution = executionParseService.unmarshalInputStream(inputStream);
         Resultsexecution.RegProject.Results.Result result = executionParseService.getResult(resultsExecution);
         if (result != null) {
-            CostObject costObject = costObjectRepo.findCostObjectByMetaId(result.getResultMetaId()).orElse(null);
+            costObject = costObjectRepo.findCostObjectByMetaId(result.getResultMetaId()).orElse(null);
             if (costObject == null) {
                 params.put("resultMetaId", result.getResultMetaId());
                 costObject = createCostObjectByWorkPackageAndResultMetaId(workPackage, params);
@@ -54,6 +56,8 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
 
             materialBudgetItemRepo.saveAll(newMaterialBudgetItemList);
         }
+
+        return costObject;
     }
 
 //    public void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
