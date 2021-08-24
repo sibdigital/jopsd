@@ -32,7 +32,7 @@ public class CORSFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        response.setHeader("Access-Control-Allow-Origin", accessControlAllowOrigin); // TODO вынести в properties
+        response.setHeader("Access-Control-Allow-Origin", accessControlAllowOrigin);
         response.setHeader("Access-Control-Allow-Credentials", accessControlAllowCredentials);
         response.setHeader("Access-Control-Allow-Methods", accessControlAllowMethods);
         response.setHeader("Access-Control-Max-Age", accessControlMaxAge);
