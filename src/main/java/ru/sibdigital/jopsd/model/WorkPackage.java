@@ -63,6 +63,7 @@ public class WorkPackage {
     private Long periodId;
     private Long controlLevelId;
     private Long outerId;
+    private Long metaId;
 
     @Basic
     @Column(name = "type_id")
@@ -454,17 +455,26 @@ public class WorkPackage {
         this.outerId = outerId;
     }
 
+    @Basic
+    @Column(name = "meta_id")
+    public Long getMetaId() {
+        return metaId;
+    }
+
+    public void setMetaId(Long metaId) {
+        this.metaId = metaId;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WorkPackage that = (WorkPackage) o;
-        return Objects.equals(id, that.id) && Objects.equals(typeId, that.typeId) && Objects.equals(projectId, that.projectId) && Objects.equals(subject, that.subject) && Objects.equals(description, that.description) && Objects.equals(dueDate, that.dueDate) && Objects.equals(categoryId, that.categoryId) && Objects.equals(statusId, that.statusId) && Objects.equals(assignedToId, that.assignedToId) && Objects.equals(priorityId, that.priorityId) && Objects.equals(fixedVersionId, that.fixedVersionId) && Objects.equals(authorId, that.authorId) && Objects.equals(lockVersion, that.lockVersion) && Objects.equals(doneRatio, that.doneRatio) && Objects.equals(estimatedHours, that.estimatedHours) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(startDate, that.startDate) && Objects.equals(responsibleId, that.responsibleId) && Objects.equals(costObjectId, that.costObjectId) && Objects.equals(position, that.position) && Objects.equals(storyPoints, that.storyPoints) && Objects.equals(remainingHours, that.remainingHours) && Objects.equals(planType, that.planType) && Objects.equals(contractId, that.contractId) && Objects.equals(resultAgreed, that.resultAgreed) && Objects.equals(organizationId, that.organizationId) && Objects.equals(sedHref, that.sedHref) && Objects.equals(arbitaryObjectId, that.arbitaryObjectId) && Objects.equals(planNumPp, that.planNumPp) && Objects.equals(raionId, that.raionId) && Objects.equals(requiredDocTypeId, that.requiredDocTypeId) && Objects.equals(factDueDate, that.factDueDate) && Objects.equals(firstDueDate, that.firstDueDate) && Objects.equals(lastDueDate, that.lastDueDate) && Objects.equals(firstStartDate, that.firstStartDate) && Objects.equals(lastStartDate, that.lastStartDate) && Objects.equals(periodId, that.periodId) && Objects.equals(controlLevelId, that.controlLevelId) && Objects.equals(outerId, that.outerId);
+        return Objects.equals(id, that.id) && Objects.equals(typeId, that.typeId) && Objects.equals(projectId, that.projectId) && Objects.equals(subject, that.subject) && Objects.equals(description, that.description) && Objects.equals(dueDate, that.dueDate) && Objects.equals(categoryId, that.categoryId) && Objects.equals(statusId, that.statusId) && Objects.equals(assignedToId, that.assignedToId) && Objects.equals(priorityId, that.priorityId) && Objects.equals(fixedVersionId, that.fixedVersionId) && Objects.equals(authorId, that.authorId) && Objects.equals(lockVersion, that.lockVersion) && Objects.equals(doneRatio, that.doneRatio) && Objects.equals(estimatedHours, that.estimatedHours) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(startDate, that.startDate) && Objects.equals(responsibleId, that.responsibleId) && Objects.equals(costObjectId, that.costObjectId) && Objects.equals(position, that.position) && Objects.equals(storyPoints, that.storyPoints) && Objects.equals(remainingHours, that.remainingHours) && Objects.equals(planType, that.planType) && Objects.equals(contractId, that.contractId) && Objects.equals(resultAgreed, that.resultAgreed) && Objects.equals(organizationId, that.organizationId) && Objects.equals(sedHref, that.sedHref) && Objects.equals(arbitaryObjectId, that.arbitaryObjectId) && Objects.equals(planNumPp, that.planNumPp) && Objects.equals(raionId, that.raionId) && Objects.equals(requiredDocTypeId, that.requiredDocTypeId) && Objects.equals(factDueDate, that.factDueDate) && Objects.equals(firstDueDate, that.firstDueDate) && Objects.equals(lastDueDate, that.lastDueDate) && Objects.equals(firstStartDate, that.firstStartDate) && Objects.equals(lastStartDate, that.lastStartDate) && Objects.equals(periodId, that.periodId) && Objects.equals(controlLevelId, that.controlLevelId) && Objects.equals(outerId, that.outerId) && Objects.equals(metaId, that.metaId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, typeId, projectId, subject, description, dueDate, categoryId, statusId, assignedToId, priorityId, fixedVersionId, authorId, lockVersion, doneRatio, estimatedHours, createdAt, updatedAt, startDate, responsibleId, costObjectId, position, storyPoints, remainingHours, planType, contractId, resultAgreed, organizationId, sedHref, arbitaryObjectId, planNumPp, raionId, requiredDocTypeId, factDueDate, firstDueDate, lastDueDate, firstStartDate, lastStartDate, periodId, controlLevelId, outerId);
+        return Objects.hash(id, typeId, projectId, subject, description, dueDate, categoryId, statusId, assignedToId, priorityId, fixedVersionId, authorId, lockVersion, doneRatio, estimatedHours, createdAt, updatedAt, startDate, responsibleId, costObjectId, position, storyPoints, remainingHours, planType, contractId, resultAgreed, organizationId, sedHref, arbitaryObjectId, planNumPp, raionId, requiredDocTypeId, factDueDate, firstDueDate, lastDueDate, firstStartDate, lastStartDate, periodId, controlLevelId, outerId, metaId);
     }
 }

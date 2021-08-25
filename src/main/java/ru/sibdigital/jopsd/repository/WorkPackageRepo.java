@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.sibdigital.jopsd.model.WorkPackage;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long> {
@@ -15,4 +16,10 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long> {
     @Query(nativeQuery = true,
             value = "SELECT * FROM work_packages WHERE outer_id in :outer_ids")
     List<WorkPackage> findAllByOuterIds(@Param("outer_ids") List<Long> outerId);
+
+    List<WorkPackage> findAllByCostObjectId(Long costObjectId);
+
+    List<WorkPackage> findAllByProjectId(Long projectId);
+
+    Optional<WorkPackage> findWorkPackageByMetaId(Long metaId);
 }
