@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Загруженные контрольные точки</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/libs/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Загруженные контрольные точки</th>
+            </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="work_package : ${work_packages}">
+            <tr>
+                <td>
+                    <a th:text="${work_package.subject}"
+                    th:href="@{{ref_portal}projects/{project_id}/work_packages/{work_package_id}(ref_portal=${ref_portal},project_id=${work_package.projectId},
+                                                            work_package_id=${work_package.id})}">
+                    </a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
