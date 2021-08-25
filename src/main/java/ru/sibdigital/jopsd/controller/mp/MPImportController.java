@@ -1,6 +1,7 @@
 package ru.sibdigital.jopsd.controller.mp;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,10 @@ import org.springframework.web.servlet.view.RedirectView;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.model.Project;
 import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.service.ProjectService;
 
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,12 @@ import java.util.Map;
 @Controller
 public class MPImportController extends SuperController {
 
+    @Autowired
+    ProjectService projectService;
+
     @GetMapping("/upload_mpp")
     public String viewAppointment(Model model, HttpSession session) {
-       List<Project> projectList = projectService.getProjectList();
+       List<Project> projectList = projectService.getProjects();
         model.addAttribute("projectList", projectList);
         return "upload_mpp";
     }
