@@ -2,7 +2,6 @@ package ru.sibdigital.jopsd.controller.elbudget.execution;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.model.CostObject;
-import ru.sibdigital.jopsd.model.Project;
 import ru.sibdigital.jopsd.model.Target;
 import ru.sibdigital.jopsd.model.WorkPackage;
 
@@ -226,13 +224,13 @@ public class ImportExecutionController extends SuperController {
         return costObjectRepo.findAll();
     }
 
-    @GetMapping("/project_list")
-    public @ResponseBody
-    List<Project> getProjects(){
-        List<Project> projects = projectService.getProjects();
-        projects.sort(Comparator.comparing(Project::getName));
-        return projects;
-    }
+//    @GetMapping("/project_list")
+//    public @ResponseBody
+//    List<Project> getProjects(){
+//        List<Project> projects = projectService.getProjects();
+//        projects.sort(Comparator.comparing(Project::getName));
+//        return projects;
+//    }
 
     @GetMapping("/work_package_list")
     public @ResponseBody
