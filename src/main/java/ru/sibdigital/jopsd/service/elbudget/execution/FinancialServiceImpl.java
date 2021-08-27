@@ -10,6 +10,7 @@ import ru.sibdigital.jopsd.service.SuperServiceImpl;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -227,7 +228,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                                 .subject(workPackage.getSubject())
                                 .description("Загружен из Эл. Бюджета")
                                 .type("VariableCostObject")
-                                .fixedDate(new Date())
+                                .fixedDate(LocalDateTime.now())
                                 .createdOn(new Timestamp(System.currentTimeMillis()))
                                 .updatedOn(new Timestamp(System.currentTimeMillis()))
                                 .metaId(resultMetaId)
@@ -275,8 +276,8 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                 .costTypeId(costType.getValue())
                 .units(financialSource.getCashExecution().doubleValue())
                 .costs(financialSource.getCashExecution())
-                .recordedLiability(financialSource.getBudgetCommitments().doubleValue())
-                .spentOn(spentOn)
+                .recordedLiability(financialSource.getBudgetCommitments())
+                .spentOn(LocalDateTime.now())
                 .createdOn(new Timestamp(System.currentTimeMillis()))
                 .updatedOn(new Timestamp(System.currentTimeMillis()))
                 .comments("Загружено из Эл. Бюджета")
