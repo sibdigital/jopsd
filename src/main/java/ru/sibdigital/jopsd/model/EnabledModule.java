@@ -5,28 +5,28 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
 
+@Table(name = "enabled_modules", indexes = {
+        @Index(name = "enabled_modules_project_id", columnList = "project_id"),
+        @Index(name = "index_enabled_modules_on_name", columnList = "name")
+})
 @Entity
-@Table(name = "enabled_modules", schema = "public")
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class EnabledModule {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @SequenceGenerator(name = "ENABLED_MODULES_GEN", sequenceName = "enabled_modules_id_seq", allocationSize = 1, schema = "public")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ENABLED_MODULES_GEN")
     private Long id;
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
 
+    @Column(name = "project_id")
     private Long projectId;
+
+    @Lob
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -35,8 +35,6 @@ public class EnabledModule {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "project_id")
     public Long getProjectId() {
         return projectId;
     }
@@ -45,16 +43,11 @@ public class EnabledModule {
         this.projectId = projectId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EnabledModule that = (EnabledModule) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(projectId, that.projectId);
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, projectId);
+    public void setId(Long id) {
+        this.id = id;
     }
 }

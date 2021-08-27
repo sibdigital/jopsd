@@ -7,217 +7,85 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
+@Table(name = "cost_entries")
 @Entity
-@Table(name = "cost_entries", schema = "public")
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class CostEntry {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @SequenceGenerator(name = "COST_ENTRIES_GEN", sequenceName = "cost_entries_id_seq", allocationSize = 1, schema = "public")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COST_ENTRIES_GEN")
     private Long id;
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
 
+    @Column(name = "user_id", nullable = false)
     private Long userId;
+
+    @Column(name = "project_id", nullable = false)
     private Long projectId;
+
+    @Column(name = "work_package_id", nullable = false)
     private Long workPackageId;
+
+    @Column(name = "cost_type_id", nullable = false)
     private Long costTypeId;
+
+    @Column(name = "units", nullable = false)
     private Double units;
-    private Date spentOn;
+
+    @Column(name = "spent_on", nullable = false)
+    private LocalDateTime spentOn;
+
+    @Column(name = "created_on", nullable = false)
     private Timestamp createdOn;
+
+    @Column(name = "updated_on", nullable = false)
     private Timestamp updatedOn;
+
+    @Lob
+    @Column(name = "comments", nullable = false)
     private String comments;
-    private Boolean blocked;
-    private Double overriddenCosts;
+
+    @Column(name = "blocked", nullable = false)
+    private Boolean blocked = false;
+
+    @Column(name = "overridden_costs", precision = 15, scale = 4)
+    private BigDecimal overriddenCosts;
+
+    @Column(name = "costs", precision = 15, scale = 4)
     private BigDecimal costs;
+
+    @Column(name = "rate_id")
     private Long rateId;
+
+    @Column(name = "tyear", nullable = false)
     private Integer tyear;
+
+    @Column(name = "tmonth", nullable = false)
     private Integer tmonth;
+
+    @Column(name = "tweek", nullable = false)
     private Integer tweek;
-    private Double recordedLiability;
+
+    @Column(name = "recorded_liability", precision = 131089)
+    private BigDecimal recordedLiability;
+
+    @Column(name = "plan_year")
     private Integer planYear;
 
+    @Column(name = "cost_object_id")
+    private Integer costObjectId;
 
-    @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
+    public Integer getCostObjectId() {
+        return costObjectId;
     }
 
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
+    public void setCostObjectId(Integer costObjectId) {
+        this.costObjectId = costObjectId;
     }
 
-
-    @Basic
-    @Column(name = "user_id")
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "work_package_id")
-    public Long getWorkPackageId() {
-        return workPackageId;
-    }
-
-    public void setWorkPackageId(Long workPackageId) {
-        this.workPackageId = workPackageId;
-    }
-
-    @Basic
-    @Column(name = "cost_type_id")
-    public Long getCostTypeId() {
-        return costTypeId;
-    }
-
-    public void setCostTypeId(Long costTypeId) {
-        this.costTypeId = costTypeId;
-    }
-
-    @Basic
-    @Column(name = "units")
-    public Double getUnits() {
-        return units;
-    }
-
-    public void setUnits(Double units) {
-        this.units = units;
-    }
-
-    @Basic
-    @Column(name = "spent_on")
-    public Date getSpentOn() {
-        return spentOn;
-    }
-
-    public void setSpentOn(Date spentOn) {
-        this.spentOn = spentOn;
-    }
-
-    @Basic
-    @Column(name = "created_on")
-    public Timestamp getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Timestamp createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    @Basic
-    @Column(name = "updated_on")
-    public Timestamp getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Timestamp updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    @Basic
-    @Column(name = "comments")
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    @Basic
-    @Column(name = "blocked")
-    public Boolean getBlocked() {
-        return blocked;
-    }
-
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
-    }
-
-    @Basic
-    @Column(name = "overridden_costs")
-    public Double getOverriddenCosts() {
-        return overriddenCosts;
-    }
-
-    public void setOverriddenCosts(Double overriddenCosts) {
-        this.overriddenCosts = overriddenCosts;
-    }
-
-    @Basic
-    @Column(name = "costs")
-    public BigDecimal getCosts() {
-        return costs;
-    }
-
-    public void setCosts(BigDecimal costs) {
-        this.costs = costs;
-    }
-
-    @Basic
-    @Column(name = "rate_id")
-    public Long getRateId() {
-        return rateId;
-    }
-
-    public void setRateId(Long rateId) {
-        this.rateId = rateId;
-    }
-
-    @Basic
-    @Column(name = "tyear")
-    public Integer getTyear() {
-        return tyear;
-    }
-
-    public void setTyear(Integer tyear) {
-        this.tyear = tyear;
-    }
-
-    @Basic
-    @Column(name = "tmonth")
-    public Integer getTmonth() {
-        return tmonth;
-    }
-
-    public void setTmonth(Integer tmonth) {
-        this.tmonth = tmonth;
-    }
-
-    @Basic
-    @Column(name = "tweek")
-    public Integer getTweek() {
-        return tweek;
-    }
-
-    public void setTweek(Integer tweek) {
-        this.tweek = tweek;
-    }
-
-    @Basic
-    @Column(name = "recorded_liability")
-    public Double getRecordedLiability() {
-        return recordedLiability;
-    }
-
-    public void setRecordedLiability(Double recordedLiability) {
-        this.recordedLiability = recordedLiability;
-    }
-
-    @Basic
-    @Column(name = "plan_year")
     public Integer getPlanYear() {
         return planYear;
     }
@@ -226,16 +94,147 @@ public class CostEntry {
         this.planYear = planYear;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CostEntry costEntry = (CostEntry) o;
-        return Objects.equals(id, costEntry.id) && Objects.equals(userId, costEntry.userId) && Objects.equals(projectId, costEntry.projectId) && Objects.equals(workPackageId, costEntry.workPackageId) && Objects.equals(costTypeId, costEntry.costTypeId) && Objects.equals(units, costEntry.units) && Objects.equals(spentOn, costEntry.spentOn) && Objects.equals(createdOn, costEntry.createdOn) && Objects.equals(updatedOn, costEntry.updatedOn) && Objects.equals(comments, costEntry.comments) && Objects.equals(blocked, costEntry.blocked) && Objects.equals(overriddenCosts, costEntry.overriddenCosts) && Objects.equals(costs, costEntry.costs) && Objects.equals(rateId, costEntry.rateId) && Objects.equals(tyear, costEntry.tyear) && Objects.equals(tmonth, costEntry.tmonth) && Objects.equals(tweek, costEntry.tweek) && Objects.equals(recordedLiability, costEntry.recordedLiability) && Objects.equals(planYear, costEntry.planYear);
+    public BigDecimal getRecordedLiability() {
+        return recordedLiability;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userId, projectId, workPackageId, costTypeId, units, spentOn, createdOn, updatedOn, comments, blocked, overriddenCosts, costs, rateId, tyear, tmonth, tweek, recordedLiability, planYear);
+    public void setRecordedLiability(BigDecimal recordedLiability) {
+        this.recordedLiability = recordedLiability;
+    }
+
+    public Integer getTweek() {
+        return tweek;
+    }
+
+    public void setTweek(Integer tweek) {
+        this.tweek = tweek;
+    }
+
+    public Integer getTmonth() {
+        return tmonth;
+    }
+
+    public void setTmonth(Integer tmonth) {
+        this.tmonth = tmonth;
+    }
+
+    public Integer getTyear() {
+        return tyear;
+    }
+
+    public void setTyear(Integer tyear) {
+        this.tyear = tyear;
+    }
+
+    public Long getRateId() {
+        return rateId;
+    }
+
+    public void setRateId(Long rateId) {
+        this.rateId = rateId;
+    }
+
+    public BigDecimal getCosts() {
+        return costs;
+    }
+
+    public void setCosts(BigDecimal costs) {
+        this.costs = costs;
+    }
+
+    public BigDecimal getOverriddenCosts() {
+        return overriddenCosts;
+    }
+
+    public void setOverriddenCosts(BigDecimal overriddenCosts) {
+        this.overriddenCosts = overriddenCosts;
+    }
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public Timestamp getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Timestamp updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public Timestamp getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Timestamp createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public LocalDateTime getSpentOn() {
+        return spentOn;
+    }
+
+    public void setSpentOn(LocalDateTime spentOn) {
+        this.spentOn = spentOn;
+    }
+
+    public Double getUnits() {
+        return units;
+    }
+
+    public void setUnits(Double units) {
+        this.units = units;
+    }
+
+    public Long getCostTypeId() {
+        return costTypeId;
+    }
+
+    public void setCostTypeId(Long costTypeId) {
+        this.costTypeId = costTypeId;
+    }
+
+    public Long getWorkPackageId() {
+        return workPackageId;
+    }
+
+    public void setWorkPackageId(Long workPackageId) {
+        this.workPackageId = workPackageId;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

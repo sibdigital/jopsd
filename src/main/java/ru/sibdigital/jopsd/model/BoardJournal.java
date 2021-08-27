@@ -1,24 +1,19 @@
 package ru.sibdigital.jopsd.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
-@Table(name = "boards", indexes = {
-        @Index(name = "index_boards_on_last_message_id", columnList = "last_message_id"),
-        @Index(name = "boards_project_id", columnList = "project_id")
+@Table(name = "board_journals", indexes = {
+        @Index(name = "index_board_journals_on_journal_id", columnList = "journal_id")
 })
 @Entity
-@Builder(toBuilder = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class Board {
+public class BoardJournal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
+
+    @Column(name = "journal_id", nullable = false)
+    private Long journalId;
 
     @Column(name = "project_id", nullable = false)
     private Long projectId;
@@ -41,7 +36,7 @@ public class Board {
     private Integer messagesCount;
 
     @Column(name = "last_message_id")
-    private Integer lastMessageId;
+    private Long lastMessageId;
 
     @Column(name = "is_default")
     private Boolean isDefault;
@@ -54,11 +49,11 @@ public class Board {
         this.isDefault = isDefault;
     }
 
-    public Integer getLastMessageId() {
+    public Long getLastMessageId() {
         return lastMessageId;
     }
 
-    public void setLastMessageId(Integer lastMessageId) {
+    public void setLastMessageId(Long lastMessageId) {
         this.lastMessageId = lastMessageId;
     }
 
@@ -110,11 +105,19 @@ public class Board {
         this.projectId = projectId;
     }
 
-    public Integer getId() {
+    public Long getJournalId() {
+        return journalId;
+    }
+
+    public void setJournalId(Long journalId) {
+        this.journalId = journalId;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

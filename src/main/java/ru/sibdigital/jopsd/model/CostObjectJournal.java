@@ -1,25 +1,19 @@
 package ru.sibdigital.jopsd.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@Table(name = "cost_objects", indexes = {
-        @Index(name = "index_cost_objects_on_project_id_and_updated_on", columnList = "project_id, updated_on")
-})
+@Table(name = "cost_object_journals")
 @Entity
-@Builder(toBuilder = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class CostObject {
+public class CostObjectJournal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "journal_id", nullable = false)
+    private Long journalId;
 
     @Column(name = "project_id", nullable = false)
     private Long projectId;
@@ -32,62 +26,14 @@ public class CostObject {
     private String subject;
 
     @Lob
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
-
-    @Lob
-    @Column(name = "type", nullable = false)
-    private String type;
 
     @Column(name = "fixed_date", nullable = false)
     private LocalDateTime fixedDate;
 
     @Column(name = "created_on")
     private Timestamp createdOn;
-
-    @Column(name = "updated_on")
-    private Timestamp updatedOn;
-
-    @Column(name = "target_id")
-    private Long targetId;
-
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @Column(name = "meta_id")
-    private Long metaId;
-
-    public Long getMetaId() {
-        return metaId;
-    }
-
-    public void setMetaId(Long metaId) {
-        this.metaId = metaId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
-
-    public Timestamp getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Timestamp updatedOn) {
-        this.updatedOn = updatedOn;
-    }
 
     public Timestamp getCreatedOn() {
         return createdOn;
@@ -103,14 +49,6 @@ public class CostObject {
 
     public void setFixedDate(LocalDateTime fixedDate) {
         this.fixedDate = fixedDate;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getDescription() {
@@ -143,6 +81,14 @@ public class CostObject {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public Long getJournalId() {
+        return journalId;
+    }
+
+    public void setJournalId(Long journalId) {
+        this.journalId = journalId;
     }
 
     public Long getId() {
