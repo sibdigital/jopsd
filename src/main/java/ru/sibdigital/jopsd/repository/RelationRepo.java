@@ -1,6 +1,7 @@
 package ru.sibdigital.jopsd.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +12,7 @@ import ru.sibdigital.jopsd.model.Relation;
 import java.util.List;
 
 @Repository
-public interface RelationRepo extends JpaRepository<Relation, Long> {
+public interface RelationRepo extends JpaRepository<Relation, Long>, JpaSpecificationExecutor<Relation> {
 
     @Modifying
     @Transactional
