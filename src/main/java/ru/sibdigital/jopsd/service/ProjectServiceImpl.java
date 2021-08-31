@@ -55,7 +55,7 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
     @Override
     public Board createDefaultBoard(Long projectId) {
         return Board.builder()
-                        .projectId(projectId)
+//                        .projectId(projectId)
                         .name("Основная дискуссия проекта")
                         .description("Основная дискуссия проекта")
                         .position(1)
