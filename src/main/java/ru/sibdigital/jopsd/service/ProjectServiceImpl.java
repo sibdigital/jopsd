@@ -2,10 +2,9 @@ package ru.sibdigital.jopsd.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.sibdigital.jopsd.model.*;
 import ru.sibdigital.jopsd.model.enums.ProjectStatuses;
+import ru.sibdigital.jopsd.model.opsd.*;
 
-import java.awt.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;

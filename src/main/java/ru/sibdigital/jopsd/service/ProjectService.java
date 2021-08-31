@@ -1,6 +1,6 @@
 package ru.sibdigital.jopsd.service;
 
-import ru.sibdigital.jopsd.model.*;
+import ru.sibdigital.jopsd.model.opsd.*;
 
 import java.util.List;
 

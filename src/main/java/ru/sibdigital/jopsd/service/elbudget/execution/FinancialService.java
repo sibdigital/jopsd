@@ -1,6 +1,6 @@
 package ru.sibdigital.jopsd.service.elbudget.execution;
 
-import ru.sibdigital.jopsd.model.CostObject;
+import ru.sibdigital.jopsd.model.opsd.CostObject;
 
 import java.io.InputStream;
 import java.util.Map;

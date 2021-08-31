@@ -3,10 +3,7 @@ package ru.sibdigital.jopsd.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.sibdigital.jopsd.model.WorkPackageTarget;
-import ru.sibdigital.jopsd.repository.*;
-import ru.sibdigital.jopsd.repository.RelationRepo;
-import ru.sibdigital.jopsd.repository.WorkPackageRepo;
+import ru.sibdigital.jopsd.repository.opsd.*;
 import ru.sibdigital.jopsd.service.elbudget.execution.*;
 
 import javax.xml.bind.JAXBContext;

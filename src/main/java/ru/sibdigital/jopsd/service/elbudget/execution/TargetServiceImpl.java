@@ -1,14 +1,13 @@
 package ru.sibdigital.jopsd.service.elbudget.execution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
-import ru.sibdigital.jopsd.model.Target;
-import ru.sibdigital.jopsd.model.TargetExecutionValue;
-import ru.sibdigital.jopsd.model.WorkPackage;
-import ru.sibdigital.jopsd.model.WorkPackageTarget;
+import ru.sibdigital.jopsd.model.opsd.Target;
+import ru.sibdigital.jopsd.model.opsd.TargetExecutionValue;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.WorkPackageTarget;
 import ru.sibdigital.jopsd.model.enums.TargetTypes;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 

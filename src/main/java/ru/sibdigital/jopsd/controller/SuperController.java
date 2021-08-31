@@ -2,13 +2,11 @@ package ru.sibdigital.jopsd.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import ru.sibdigital.jopsd.model.WorkPackage;
-import ru.sibdigital.jopsd.repository.CostObjectRepo;
-import ru.sibdigital.jopsd.repository.ProjectRepo;
-import ru.sibdigital.jopsd.repository.TargetRepo;
-import ru.sibdigital.jopsd.repository.WorkPackageRepo;
+import ru.sibdigital.jopsd.repository.opsd.CostObjectRepo;
+import ru.sibdigital.jopsd.repository.opsd.ProjectRepo;
+import ru.sibdigital.jopsd.repository.opsd.TargetRepo;
+import ru.sibdigital.jopsd.repository.opsd.WorkPackageRepo;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
 import ru.sibdigital.jopsd.service.elbudget.execution.FinancialService;
 import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;

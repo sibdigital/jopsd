@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
 @Data
 @Builder(toBuilder = true)

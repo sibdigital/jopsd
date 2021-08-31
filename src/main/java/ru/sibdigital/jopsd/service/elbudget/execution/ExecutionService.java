@@ -1,7 +1,6 @@
 package ru.sibdigital.jopsd.service.elbudget.execution;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
 import java.io.InputStream;
 import java.util.Map;

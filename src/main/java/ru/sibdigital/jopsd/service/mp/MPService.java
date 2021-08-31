@@ -1,7 +1,7 @@
 package ru.sibdigital.jopsd.service.mp;
 
 import net.sf.mpxj.MPXJException;
-import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
 import java.io.InputStream;
 import java.util.List;

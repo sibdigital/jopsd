@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
-import ru.sibdigital.jopsd.model.Target;
+import ru.sibdigital.jopsd.model.opsd.Target;
 
 @Data
 @Builder(toBuilder = true)

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.dto.TargetMatch;
-import ru.sibdigital.jopsd.model.CostObject;
-import ru.sibdigital.jopsd.model.Target;
-import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.CostObject;
+import ru.sibdigital.jopsd.model.opsd.Target;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
 import java.io.File;
 import java.io.FileInputStream;

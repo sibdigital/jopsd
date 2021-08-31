@@ -7,8 +7,8 @@ import net.sf.mpxj.Task;
 import net.sf.mpxj.reader.UniversalProjectReader;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.mp.MPWorkPackage;
-import ru.sibdigital.jopsd.model.Relation;
-import ru.sibdigital.jopsd.model.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.Relation;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.model.enums.Statuses;
 import ru.sibdigital.jopsd.model.enums.Types;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
@@ -137,8 +137,8 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
                 .typeId(Types.CHECK_POINT.getValue())
                 .subject(task.getName())
                 .description(task.getNotes())
-                .startDate(task.getStart())
-                .dueDate(task.getFinish())
+//                .startDate(task.getStart())
+//                .dueDate(task.getFinish())
                 .statusId(Statuses.NOT_STARTED.getValue())
                 .authorId(authorId)
                 .lockVersion(Long.valueOf(0)) // 0
