@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -12,6 +15,17 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "color_id")
+    private Color color;
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -27,9 +41,6 @@ public class Type {
 
     @Column(name = "is_default", nullable = false)
     private Boolean isDefault = false;
-
-    @Column(name = "color_id")
-    private Integer colorId;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -73,14 +84,6 @@ public class Type {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Integer getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Integer colorId) {
-        this.colorId = colorId;
     }
 
     public Boolean getIsDefault() {

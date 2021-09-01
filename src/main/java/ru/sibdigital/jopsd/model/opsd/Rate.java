@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +15,39 @@ public class Rate {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_type_id")
+    private CostType costType;
+    public CostType getCostType() {
+        return costType;
+    }
+    public void setCostType(CostType costType) {
+        this.costType = costType;
+    }
+
     @Column(name = "valid_from", nullable = false)
     private LocalDateTime validFrom;
 
@@ -20,39 +56,6 @@ public class Rate {
 
     @Column(name = "type", nullable = false)
     private String type;
-
-    @Column(name = "project_id")
-    private Long projectId;
-
-    @Column(name = "user_id")
-    private Long userId;
-
-    @Column(name = "cost_type_id")
-    private Long costTypeId;
-
-    public Long getCostTypeId() {
-        return costTypeId;
-    }
-
-    public void setCostTypeId(Long costTypeId) {
-        this.costTypeId = costTypeId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
 
     public String getType() {
         return type;

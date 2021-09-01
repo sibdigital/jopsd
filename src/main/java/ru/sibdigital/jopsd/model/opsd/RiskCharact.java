@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,8 +14,16 @@ public class RiskCharact {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "risk_id")
-    private Long riskId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "risk_id")
+    private Risk risk;
+    public Risk getRisk() {
+        return risk;
+    }
+    public void setRisk(Risk risk) {
+        this.risk = risk;
+    }
 
     @Column(name = "name")
     private String name;
@@ -78,14 +89,6 @@ public class RiskCharact {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getRiskId() {
-        return riskId;
-    }
-
-    public void setRiskId(Long riskId) {
-        this.riskId = riskId;
     }
 
     public Long getId() {

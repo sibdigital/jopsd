@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,8 +16,16 @@ public class UserPassword {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(name = "hashed_password", nullable = false, length = 128)
     private String hashedPassword;
@@ -69,14 +80,6 @@ public class UserPassword {
 
     public void setHashedPassword(String hashedPassword) {
         this.hashedPassword = hashedPassword;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getId() {

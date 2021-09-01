@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,14 +17,22 @@ public class Comment {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     @Column(name = "commented_type", nullable = false, length = 30)
     private String commentedType;
 
     @Column(name = "commented_id", nullable = false)
     private Long commentedId;
-
-    @Column(name = "author_id", nullable = false)
-    private Integer authorId;
 
     @Column(name = "comments")
     private String comments;
@@ -54,14 +65,6 @@ public class Comment {
 
     public void setComments(String comments) {
         this.comments = comments;
-    }
-
-    public Integer getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Integer authorId) {
-        this.authorId = authorId;
     }
 
     public Long getCommentedId() {

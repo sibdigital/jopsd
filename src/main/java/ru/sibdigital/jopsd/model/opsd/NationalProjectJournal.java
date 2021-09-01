@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,8 +16,27 @@ public class NationalProjectJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private NationalProject parent;
+    public NationalProject getParent() {
+        return parent;
+    }
+    public void setParent(NationalProject parent) {
+        this.parent = parent;
+    }
 
     @Column(name = "name")
     private String name;
@@ -27,9 +49,6 @@ public class NationalProjectJournal {
 
     @Column(name = "type")
     private String type;
-
-    @Column(name = "parent_id")
-    private Integer parentId;
 
     @Column(name = "curator")
     private String curator;
@@ -108,14 +127,6 @@ public class NationalProjectJournal {
         this.curator = curator;
     }
 
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
     public String getType() {
         return type;
     }
@@ -146,14 +157,6 @@ public class NationalProjectJournal {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

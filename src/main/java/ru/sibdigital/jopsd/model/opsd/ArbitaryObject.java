@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -15,6 +18,7 @@ public class ArbitaryObject {
     private String name;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "type_id")
     private Enumeration type;
     public Enumeration getType() {
@@ -25,6 +29,7 @@ public class ArbitaryObject {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_id")
     private Project project;
     public Project getProject() {

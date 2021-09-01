@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,11 +14,27 @@ public class ControlLevelRole {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "control_level_id")
-    private Long controlLevelId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "control_level_id")
+    private ControlLevel controlLevel;
+    public ControlLevel getControlLevel() {
+        return controlLevel;
+    }
+    public void setControlLevel(ControlLevel controlLevel) {
+        this.controlLevel = controlLevel;
+    }
 
-    @Column(name = "role_id")
-    private Long roleId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "role_id")
+    private Role role;
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -37,22 +56,6 @@ public class ControlLevelRole {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public Long getControlLevelId() {
-        return controlLevelId;
-    }
-
-    public void setControlLevelId(Long controlLevelId) {
-        this.controlLevelId = controlLevelId;
     }
 
     public Long getId() {

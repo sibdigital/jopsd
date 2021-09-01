@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,78 +27,78 @@ public class WorkPackageProblem {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long projectId;
-    private Long workPackageId;
-    private Long userCreatorId;
-    private Long riskId;
-    private Long userSourceId;
-    private Long organizationSourceId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "work_package_id")
+    private WorkPackage workPackage;
+    public WorkPackage getWorkPackage() {
+        return workPackage;
+    }
+    public void setWorkPackage(WorkPackage workPackage) {
+        this.workPackage = workPackage;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_creator_id")
+    private User userCreator;
+    public User getUserCreator() {
+        return userCreator;
+    }
+    public void setUserCreator(User userCreator) {
+        this.userCreator = userCreator;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "risk_id")
+    private Risk risk;
+    public Risk getRisk() {
+        return risk;
+    }
+    public void setRisk(Risk risk) {
+        this.risk = risk;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_source_id")
+    private User userSource;
+    public User getUserSource() {
+        return userSource;
+    }
+    public void setUserSource(User userSource) {
+        this.userSource = userSource;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "organization_source_id")
+    private Organization organizationSource;
+    public Organization getOrganizationSource() {
+        return organizationSource;
+    }
+    public void setOrganizationSource(Organization organizationSource) {
+        this.organizationSource = organizationSource;
+    }
+
     private String description;
     private String status;
     private String type;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private LocalDateTime solutionDate;
-
-    @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    @Basic
-    @Column(name = "work_package_id")
-    public Long getWorkPackageId() {
-        return workPackageId;
-    }
-
-    public void setWorkPackageId(Long workPackageId) {
-        this.workPackageId = workPackageId;
-    }
-
-    @Basic
-    @Column(name = "user_creator_id")
-    public Long getUserCreatorId() {
-        return userCreatorId;
-    }
-
-    public void setUserCreatorId(Long userCreatorId) {
-        this.userCreatorId = userCreatorId;
-    }
-
-    @Basic
-    @Column(name = "risk_id")
-    public Long getRiskId() {
-        return riskId;
-    }
-
-    public void setRiskId(Long riskId) {
-        this.riskId = riskId;
-    }
-
-    @Basic
-    @Column(name = "user_source_id")
-    public Long getUserSourceId() {
-        return userSourceId;
-    }
-
-    public void setUserSourceId(Long userSourceId) {
-        this.userSourceId = userSourceId;
-    }
-
-    @Basic
-    @Column(name = "organization_source_id")
-    public Long getOrganizationSourceId() {
-        return organizationSourceId;
-    }
-
-    public void setOrganizationSourceId(Long organizationSourceId) {
-        this.organizationSourceId = organizationSourceId;
-    }
 
     @Basic
     @Column(name = "description")
@@ -156,18 +158,5 @@ public class WorkPackageProblem {
 
     public void setSolutionDate(LocalDateTime solutionDate) {
         this.solutionDate = solutionDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkPackageProblem that = (WorkPackageProblem) o;
-        return Objects.equals(id, that.id) && Objects.equals(projectId, that.projectId) && Objects.equals(workPackageId, that.workPackageId) && Objects.equals(userCreatorId, that.userCreatorId) && Objects.equals(riskId, that.riskId) && Objects.equals(userSourceId, that.userSourceId) && Objects.equals(organizationSourceId, that.organizationSourceId) && Objects.equals(description, that.description) && Objects.equals(status, that.status) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(solutionDate, that.solutionDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, projectId, workPackageId, userCreatorId, riskId, userSourceId, organizationSourceId, description, status, type, createdAt, updatedAt, solutionDate);
     }
 }

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -15,11 +18,27 @@ public class WikiContent {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "page_id", nullable = false)
-    private Long pageId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "page_id", nullable = false)
+    private WikiPage page;
+    public WikiPage getPage() {
+        return page;
+    }
+    public void setPage(WikiPage page) {
+        this.page = page;
+    }
 
-    @Column(name = "author_id")
-    private Long authorId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     @Column(name = "text")
     private String text;
@@ -52,22 +71,6 @@ public class WikiContent {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    public Long getPageId() {
-        return pageId;
-    }
-
-    public void setPageId(Long pageId) {
-        this.pageId = pageId;
     }
 
     public Long getId() {

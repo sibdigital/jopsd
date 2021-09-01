@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,6 +13,50 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "auth_source_id")
+    private AuthSource authSource;
+    public AuthSource getAuthSource() {
+        return authSource;
+    }
+    public void setAuthSource(AuthSource authSource) {
+        this.authSource = authSource;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+    public Organization getOrganization() {
+        return organization;
+    }
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "position_id")
+    private Position position;
+    public Position getPosition() {
+        return position;
+    }
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "direct_manager_id")
+    private User directManager;
+    public User getDirectManager() {
+        return directManager;
+    }
+    public void setDirectManager(User directManager) {
+        this.directManager = directManager;
+    }
 
     @Column(name = "login", nullable = false, length = 256)
     private String login;
@@ -34,9 +81,6 @@ public class User {
 
     @Column(name = "language", length = 5)
     private String language;
-
-    @Column(name = "auth_source_id")
-    private Long authSourceId;
 
     @Column(name = "created_on")
     private Timestamp createdOn;
@@ -89,15 +133,6 @@ public class User {
     @Column(name = "cabinet")
     private String cabinet;
 
-    @Column(name = "organization_id")
-    private Long organizationId;
-
-    @Column(name = "position_id")
-    private Long positionId;
-
-    @Column(name = "direct_manager_id")
-    private Long directManagerId;
-
     @Column(name = "last_ip")
     private String lastIp;
 
@@ -107,30 +142,6 @@ public class User {
 
     public void setLastIp(String lastIp) {
         this.lastIp = lastIp;
-    }
-
-    public Long getDirectManagerId() {
-        return directManagerId;
-    }
-
-    public void setDirectManagerId(Long directManagerId) {
-        this.directManagerId = directManagerId;
-    }
-
-    public Long getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(Long positionId) {
-        this.positionId = positionId;
-    }
-
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
     }
 
     public String getCabinet() {
@@ -267,14 +278,6 @@ public class User {
 
     public void setCreatedOn(Timestamp createdOn) {
         this.createdOn = createdOn;
-    }
-
-    public Long getAuthSourceId() {
-        return authSourceId;
-    }
-
-    public void setAuthSourceId(Long authSourceId) {
-        this.authSourceId = authSourceId;
     }
 
     public String getLanguage() {

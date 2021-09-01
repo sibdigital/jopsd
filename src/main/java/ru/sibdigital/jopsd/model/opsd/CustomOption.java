@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,8 +14,16 @@ public class CustomOption {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "custom_field_id")
-    private Long customFieldId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "custom_field_id")
+    private CustomField customField;
+    public CustomField getCustomField() {
+        return customField;
+    }
+    public void setCustomField(CustomField customField) {
+        this.customField = customField;
+    }
 
     @Column(name = "\"position\"")
     private Integer position;
@@ -67,14 +78,6 @@ public class CustomOption {
 
     public void setPosition(Integer position) {
         this.position = position;
-    }
-
-    public Long getCustomFieldId() {
-        return customFieldId;
-    }
-
-    public void setCustomFieldId(Long customFieldId) {
-        this.customFieldId = customFieldId;
     }
 
     public Long getId() {

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,14 +16,41 @@ public class Meeting {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "work_package_id")
+    private WorkPackage workPackage;
+    public WorkPackage getWorkPackage() {
+        return workPackage;
+    }
+    public void setWorkPackage(WorkPackage workPackage) {
+        this.workPackage = workPackage;
+    }
+
     @Column(name = "title")
     private String title;
-
-    @Column(name = "author_id")
-    private Long authorId;
-
-    @Column(name = "project_id")
-    private Long projectId;
 
     @Column(name = "location")
     private String location;
@@ -36,9 +66,6 @@ public class Meeting {
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
-
-    @Column(name = "work_package_id")
-    private Long workPackageId;
 
     @Column(name = "chairman_id")
     private Integer chairmanId;
@@ -84,14 +111,6 @@ public class Meeting {
         this.chairmanId = chairmanId;
     }
 
-    public Long getWorkPackageId() {
-        return workPackageId;
-    }
-
-    public void setWorkPackageId(Long workPackageId) {
-        this.workPackageId = workPackageId;
-    }
-
     public Timestamp getUpdatedAt() {
         return updatedAt;
     }
@@ -130,22 +149,6 @@ public class Meeting {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
     }
 
     public String getTitle() {

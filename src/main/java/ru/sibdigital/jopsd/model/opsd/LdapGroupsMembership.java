@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,11 +17,27 @@ public class LdapGroupsMembership {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    @Column(name = "group_id")
-    private Long groupId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "group_id")
+    private User group;
+    public User getGroup() {
+        return group;
+    }
+    public void setGroup(User group) {
+        this.group = group;
+    }
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -40,22 +59,6 @@ public class LdapGroupsMembership {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getId() {

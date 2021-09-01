@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "arbitary_object_journals", indexes = {
@@ -13,6 +16,7 @@ public class ArbitaryObjectJournal {
     private Long id;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "journal_id")
     private Journal journal;
     public Journal getJournal() {
@@ -23,6 +27,7 @@ public class ArbitaryObjectJournal {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "type_id")
     private Enumeration type;
     public Enumeration getType() {
@@ -33,6 +38,7 @@ public class ArbitaryObjectJournal {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_id")
     private Project project;
     public Project getProject() {

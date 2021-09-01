@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,8 +16,16 @@ public class Repository {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id", nullable = false)
-    private Integer projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
     @Column(name = "url", nullable = false)
     private String url;
@@ -124,14 +135,6 @@ public class Repository {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
     }
 
     public Long getId() {

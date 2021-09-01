@@ -91,9 +91,9 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
                     BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
 
                     workPackageTarget= WorkPackageTarget.builder()
-                            .projectId(workPackage.getProjectId())
-                            .workPackageId(workPackage.getId())
-                            .targetId(target.getId())
+//                            .projectId(workPackage.getProjectId())
+//                            .workPackageId(workPackage.getId())
+//                            .targetId(target.getId())
                             .year(year) // TODO изменить на Integer в master
                             .quarter(quarter) // TODO изменить на Integer в master
                             .month(month) // TODO изменить на Integer в master
@@ -140,9 +140,9 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
     private Target createTarget(TargetMatch targetMatch, WorkPackage workPackage) {
         return Target.builder()
                     .name(targetMatch.getNewTargetName())
-                    .typeId(TargetTypes.PURPOSE.getValue())
-                    .parentId(Long.valueOf(0))
-                    .projectId(workPackage.getProjectId())
+//                    .typeId(TargetTypes.PURPOSE.getValue())
+//                    .parentId(Long.valueOf(0))
+//                    .projectId(workPackage.getProjectId())
                     .createdAt(Timestamp.from(Instant.now()))
                     .updatedAt(Timestamp.from(Instant.now()))
                     .metaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId())

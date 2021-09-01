@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "addresses")
@@ -11,6 +14,7 @@ public class Address {
     private Long id;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "raion_id")
     private Raion raion;
     public Raion getRaion() {
@@ -21,6 +25,7 @@ public class Address {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_id")
     private Project project;
     public Project getProject() {

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,6 +13,17 @@ public class NationalProject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private NationalProject parent;
+    public NationalProject getParent() {
+        return parent;
+    }
+    public void setParent(NationalProject parent) {
+        this.parent = parent;
+    }
 
     @Column(name = "name")
     private String name;
@@ -22,9 +36,6 @@ public class NationalProject {
 
     @Column(name = "type")
     private String type;
-
-    @Column(name = "parent_id")
-    private Integer parentId;
 
     @Column(name = "curator")
     private String curator;
@@ -101,14 +112,6 @@ public class NationalProject {
 
     public void setCurator(String curator) {
         this.curator = curator;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     public String getType() {

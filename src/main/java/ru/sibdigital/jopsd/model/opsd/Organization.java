@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -7,12 +10,20 @@ import java.sql.Timestamp;
 @Entity
 public class Organization {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private Organization parent;
+    public Organization getParent() {
+        return parent;
+    }
+    public void setParent(Organization parent) {
+        this.parent = parent;
+    }
 
     @Column(name = "name")
     private String name;
@@ -221,14 +232,6 @@ public class Organization {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public Long getId() {

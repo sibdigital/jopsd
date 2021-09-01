@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "webhooks_projects", indexes = {
@@ -14,10 +17,12 @@ public class WebhooksProject {
     private Long id;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_id")
     private Project project;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "webhooks_webhook_id")
     private WebhooksWebhook webhooksWebhook;
 

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -12,6 +15,28 @@ public class KeyPerformanceIndicator {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "method_id")
+    private Enumeration method;
+    public Enumeration getMethod() {
+        return method;
+    }
+    public void setMethod(Enumeration method) {
+        this.method = method;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "object_id")
+    private Enumeration object;
+    public Enumeration getObject() {
+        return object;
+    }
+    public void setObject(Enumeration object) {
+        this.object = object;
+    }
+
     @Column(name = "name")
     private String name;
 
@@ -23,12 +48,6 @@ public class KeyPerformanceIndicator {
 
     @Column(name = "calc_method")
     private String calcMethod;
-
-    @Column(name = "method_id")
-    private Long methodId;
-
-    @Column(name = "object_id")
-    private Long objectId;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -50,22 +69,6 @@ public class KeyPerformanceIndicator {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(Long objectId) {
-        this.objectId = objectId;
-    }
-
-    public Long getMethodId() {
-        return methodId;
-    }
-
-    public void setMethodId(Long methodId) {
-        this.methodId = methodId;
     }
 
     public String getCalcMethod() {

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "communication_meeting_members")
@@ -10,14 +13,38 @@ public class CommunicationMeetingMember {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "stakeholder_id")
-    private Long stakeholderId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "stakeholder_id")
+    private Stakeholder stakeholder;
+    public Stakeholder getStakeholder() {
+        return stakeholder;
+    }
+    public void setStakeholder(Stakeholder stakeholder) {
+        this.stakeholder = stakeholder;
+    }
 
-    @Column(name = "communication_meeting_id")
-    private Long communicationMeetingId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "communication_meeting_id")
+    private CommunicationMeeting communicationMeeting;
+    public CommunicationMeeting getCommunicationMeeting() {
+        return communicationMeeting;
+    }
+    public void setCommunicationMeeting(CommunicationMeeting communicationMeeting) {
+        this.communicationMeeting = communicationMeeting;
+    }
 
     @Column(name = "stakeholder_type")
     private String stakeholderType;
@@ -28,30 +55,6 @@ public class CommunicationMeetingMember {
 
     public void setStakeholderType(String stakeholderType) {
         this.stakeholderType = stakeholderType;
-    }
-
-    public Long getCommunicationMeetingId() {
-        return communicationMeetingId;
-    }
-
-    public void setCommunicationMeetingId(Long communicationMeetingId) {
-        this.communicationMeetingId = communicationMeetingId;
-    }
-
-    public Long getStakeholderId() {
-        return stakeholderId;
-    }
-
-    public void setStakeholderId(Long stakeholderId) {
-        this.stakeholderId = stakeholderId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getId() {

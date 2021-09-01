@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "message_journals", indexes = {
@@ -12,14 +15,71 @@ public class MessageJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "board_id", nullable = false)
-    private Long boardId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "board_id")
+    private Board board;
+    public Board getBoard() {
+        return board;
+    }
+    public void setBoard(Board board) {
+        this.board = board;
+    }
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private Message parent;
+    public Message getParent() {
+        return parent;
+    }
+    public void setParent(Message parent) {
+        this.parent = parent;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "document_id")
+    private Document document;
+    public Document getDocument() {
+        return document;
+    }
+    public void setDocument(Document document) {
+        this.document = document;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "last_reply_id")
+    private Message lastReply;
+    public Message getLastReply() {
+        return lastReply;
+    }
+    public void setLastReply(Message lastReply) {
+        this.lastReply = lastReply;
+    }
 
     @Column(name = "subject", nullable = false)
     private String subject;
@@ -27,31 +87,14 @@ public class MessageJournal {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "author_id")
-    private Long authorId;
-
     @Column(name = "replies_count", nullable = false)
     private Integer repliesCount;
-
-    @Column(name = "last_reply_id")
-    private Long lastReplyId;
 
     @Column(name = "locked")
     private Boolean locked;
 
     @Column(name = "sticky")
     private Integer sticky;
-
-    @Column(name = "document_id")
-    private Integer documentId;
-
-    public Integer getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(Integer documentId) {
-        this.documentId = documentId;
-    }
 
     public Integer getSticky() {
         return sticky;
@@ -69,28 +112,12 @@ public class MessageJournal {
         this.locked = locked;
     }
 
-    public Long getLastReplyId() {
-        return lastReplyId;
-    }
-
-    public void setLastReplyId(Long lastReplyId) {
-        this.lastReplyId = lastReplyId;
-    }
-
     public Integer getRepliesCount() {
         return repliesCount;
     }
 
     public void setRepliesCount(Integer repliesCount) {
         this.repliesCount = repliesCount;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
     }
 
     public String getContent() {
@@ -107,30 +134,6 @@ public class MessageJournal {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getBoardId() {
-        return boardId;
-    }
-
-    public void setBoardId(Long boardId) {
-        this.boardId = boardId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

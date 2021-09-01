@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,14 +16,38 @@ public class MemberJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
     @Column(name = "created_on")
     private Timestamp createdOn;
@@ -42,30 +69,6 @@ public class MemberJournal {
 
     public void setCreatedOn(Timestamp createdOn) {
         this.createdOn = createdOn;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

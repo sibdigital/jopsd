@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,8 +22,27 @@ public class Changeset {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "repository_id", nullable = false)
-    private Long repositoryId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "repository_id")
+    private Repository repository;
+    public Repository getRepository() {
+        return repository;
+    }
+    public void setRepository(Repository repository) {
+        this.repository = repository;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(name = "revision", nullable = false)
     private String revision;
@@ -39,17 +61,6 @@ public class Changeset {
 
     @Column(name = "scmid")
     private String scmid;
-
-    @Column(name = "user_id")
-    private Long userId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public String getScmid() {
         return scmid;
@@ -97,14 +108,6 @@ public class Changeset {
 
     public void setRevision(String revision) {
         this.revision = revision;
-    }
-
-    public Long getRepositoryId() {
-        return repositoryId;
-    }
-
-    public void setRepositoryId(Long repositoryId) {
-        this.repositoryId = repositoryId;
     }
 
     public Long getId() {

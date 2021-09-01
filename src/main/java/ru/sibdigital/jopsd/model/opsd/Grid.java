@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,6 +16,17 @@ public class Grid {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Column(name = "row_count", nullable = false)
     private Integer rowCount;
 
@@ -21,9 +35,6 @@ public class Grid {
 
     @Column(name = "type")
     private String type;
-
-    @Column(name = "user_id")
-    private Long userId;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -45,14 +56,6 @@ public class Grid {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getType() {

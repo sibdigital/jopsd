@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -12,8 +15,16 @@ public class Stage {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
@@ -79,14 +90,6 @@ public class Stage {
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getId() {

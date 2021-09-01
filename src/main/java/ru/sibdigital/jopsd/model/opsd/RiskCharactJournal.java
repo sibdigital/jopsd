@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "risk_charact_journals", indexes = {
@@ -12,11 +15,27 @@ public class RiskCharactJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "risk_id")
-    private Long riskId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "risk_id")
+    private Risk risk;
+    public Risk getRisk() {
+        return risk;
+    }
+    public void setRisk(Risk risk) {
+        this.risk = risk;
+    }
 
     @Column(name = "name")
     private String name;
@@ -60,22 +79,6 @@ public class RiskCharactJournal {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getRiskId() {
-        return riskId;
-    }
-
-    public void setRiskId(Long riskId) {
-        this.riskId = riskId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

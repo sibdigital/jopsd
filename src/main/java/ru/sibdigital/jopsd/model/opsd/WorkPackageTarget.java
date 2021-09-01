@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,9 +26,39 @@ public class WorkPackageTarget {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long projectId;
-    private Long workPackageId;
-    private Long targetId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "work_package_id")
+    private WorkPackage workPackage;
+    public WorkPackage getWorkPackage() {
+        return workPackage;
+    }
+    public void setWorkPackage(WorkPackage workPackage) {
+        this.workPackage = workPackage;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "target_id")
+    private Target target;
+    public Target getTarget() {
+        return target;
+    }
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+
     private Integer year;
     private Integer quarter;
     private Integer month;
@@ -35,36 +67,6 @@ public class WorkPackageTarget {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private BigDecimal planValue;
-
-    @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    @Basic
-    @Column(name = "work_package_id")
-    public Long getWorkPackageId() {
-        return workPackageId;
-    }
-
-    public void setWorkPackageId(Long workPackageId) {
-        this.workPackageId = workPackageId;
-    }
-
-    @Basic
-    @Column(name = "target_id")
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
 
     @Basic
     @Column(name = "year")
@@ -144,18 +146,5 @@ public class WorkPackageTarget {
 
     public void setPlanValue(BigDecimal planValue) {
         this.planValue = planValue;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkPackageTarget that = (WorkPackageTarget) o;
-        return Objects.equals(id, that.id) && Objects.equals(projectId, that.projectId) && Objects.equals(workPackageId, that.workPackageId) && Objects.equals(targetId, that.targetId) && Objects.equals(year, that.year) && Objects.equals(quarter, that.quarter) && Objects.equals(month, that.month) && Objects.equals(value, that.value) && Objects.equals(type, that.type) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(planValue, that.planValue);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, projectId, workPackageId, targetId, year, quarter, month, value, type, createdAt, updatedAt, planValue);
     }
 }

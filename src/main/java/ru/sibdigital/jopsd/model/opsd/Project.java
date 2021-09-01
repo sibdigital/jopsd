@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -46,6 +48,7 @@ public class Project {
     private Long metaId;
 
     @OneToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "address_id")
     private Address address;
     public Address getAddress() {
@@ -56,6 +59,7 @@ public class Project {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "parent_id")
     private Project parent;
     public Project getParent() {
@@ -66,6 +70,7 @@ public class Project {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_approve_status_id")
     private Enumeration projectApproveStatus;
     public Enumeration getProjectApproveStatus() {
@@ -76,6 +81,7 @@ public class Project {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_status_id")
     private Enumeration projectStatus;
     public Enumeration getProjectStatus() {
@@ -86,6 +92,7 @@ public class Project {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "national_project_id")
     private NationalProject nationalProject;
     public NationalProject getNationalProject() {
@@ -96,6 +103,7 @@ public class Project {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "federal_project_id")
     private NationalProject federalProject;
     public NationalProject getFederalProject() {

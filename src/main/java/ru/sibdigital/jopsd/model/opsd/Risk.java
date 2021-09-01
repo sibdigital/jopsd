@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -23,30 +25,80 @@ public class Risk {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "possibility_id")
+    private Enumeration possibility;
+    public Enumeration getPossibility() {
+        return possibility;
+    }
+    public void setPossibility(Enumeration possibility) {
+        this.possibility = possibility;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "importance_id")
+    private Enumeration importance;
+    public Enumeration getImportance() {
+        return importance;
+    }
+    public void setImportance(Enumeration importance) {
+        this.importance = importance;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "color_id")
+    private Color color;
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "owner_id")
+    private User owner;
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_section_id")
+    private Enumeration projectSection;
+    public Enumeration getProjectSection() {
+        return projectSection;
+    }
+    public void setProjectSection(Enumeration projectSection) {
+        this.projectSection = projectSection;
+    }
+
     private String name;
     private String description;
-    private Long possibilityId;
-    private Long importanceId;
     private String type;
-    private Long colorId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Boolean isApprove;
-    private Long ownerId;
     private Boolean isPossibility;
     private String solution;
-    private Long projectSectionId;
-
-    @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
 
     @Basic
     @Column(name = "name")
@@ -69,26 +121,6 @@ public class Risk {
     }
 
     @Basic
-    @Column(name = "possibility_id")
-    public Long getPossibilityId() {
-        return possibilityId;
-    }
-
-    public void setPossibilityId(Long possibilityId) {
-        this.possibilityId = possibilityId;
-    }
-
-    @Basic
-    @Column(name = "importance_id")
-    public Long getImportanceId() {
-        return importanceId;
-    }
-
-    public void setImportanceId(Long importanceId) {
-        this.importanceId = importanceId;
-    }
-
-    @Basic
     @Column(name = "type")
     public String getType() {
         return type;
@@ -96,16 +128,6 @@ public class Risk {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    @Basic
-    @Column(name = "color_id")
-    public Long getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Long colorId) {
-        this.colorId = colorId;
     }
 
     @Basic
@@ -139,22 +161,11 @@ public class Risk {
     }
 
     @Basic
-    @Column(name = "owner_id")
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    @Basic
     @Column(name = "is_possibility")
-    public Boolean getPossibility() {
+    public Boolean getIsPossibility() {
         return isPossibility;
     }
-
-    public void setPossibility(Boolean possibility) {
+    public void setIsPossibility(Boolean possibility) {
         isPossibility = possibility;
     }
 
@@ -168,26 +179,4 @@ public class Risk {
         this.solution = solution;
     }
 
-    @Basic
-    @Column(name = "project_section_id")
-    public Long getProjectSectionId() {
-        return projectSectionId;
-    }
-
-    public void setProjectSectionId(Long projectSectionId) {
-        this.projectSectionId = projectSectionId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Risk risk = (Risk) o;
-        return Objects.equals(id, risk.id) && Objects.equals(projectId, risk.projectId) && Objects.equals(name, risk.name) && Objects.equals(description, risk.description) && Objects.equals(possibilityId, risk.possibilityId) && Objects.equals(importanceId, risk.importanceId) && Objects.equals(type, risk.type) && Objects.equals(colorId, risk.colorId) && Objects.equals(createdAt, risk.createdAt) && Objects.equals(updatedAt, risk.updatedAt) && Objects.equals(isApprove, risk.isApprove) && Objects.equals(ownerId, risk.ownerId) && Objects.equals(isPossibility, risk.isPossibility) && Objects.equals(solution, risk.solution) && Objects.equals(projectSectionId, risk.projectSectionId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, projectId, name, description, possibilityId, importanceId, type, colorId, createdAt, updatedAt, isApprove, ownerId, isPossibility, solution, projectSectionId);
-    }
 }

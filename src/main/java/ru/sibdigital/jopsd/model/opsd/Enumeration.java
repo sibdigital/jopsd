@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,6 +17,39 @@ public class Enumeration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private Enumeration parent;
+    public Enumeration getParent() {
+        return parent;
+    }
+    public void setParent(Enumeration parent) {
+        this.parent = parent;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "color_id")
+    private Color color;
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -30,28 +66,11 @@ public class Enumeration {
     @Column(name = "active", nullable = false)
     private Boolean active = false;
 
-    @Column(name = "project_id")
-    private Long projectId;
-
-    @Column(name = "parent_id")
-    private Long parentId;
-
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
-
-    @Column(name = "color_id")
-    private Long colorId;
-
-    public Long getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Long colorId) {
-        this.colorId = colorId;
-    }
 
     public Timestamp getUpdatedAt() {
         return updatedAt;
@@ -67,22 +86,6 @@ public class Enumeration {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Boolean getActive() {

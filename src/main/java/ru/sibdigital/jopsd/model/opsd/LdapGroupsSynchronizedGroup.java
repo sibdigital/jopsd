@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -17,11 +20,27 @@ public class LdapGroupsSynchronizedGroup {
     @Column(name = "entry")
     private String entry;
 
-    @Column(name = "group_id")
-    private Long groupId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "group_id")
+    private User group;
+    public User getGroup() {
+        return group;
+    }
+    public void setGroup(User group) {
+        this.group = group;
+    }
 
-    @Column(name = "auth_source_id")
-    private Long authSourceId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "auth_source_id")
+    private AuthSource authSource;
+    public AuthSource getAuthSource() {
+        return authSource;
+    }
+    public void setAuthSource(AuthSource authSource) {
+        this.authSource = authSource;
+    }
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -43,22 +62,6 @@ public class LdapGroupsSynchronizedGroup {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getAuthSourceId() {
-        return authSourceId;
-    }
-
-    public void setAuthSourceId(Long authSourceId) {
-        this.authSourceId = authSourceId;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
     }
 
     public String getEntry() {

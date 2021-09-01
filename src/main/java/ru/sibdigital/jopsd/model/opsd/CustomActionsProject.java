@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "custom_actions_projects", indexes = {
@@ -13,26 +16,26 @@ public class CustomActionsProject {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id")
-    private Long projectId;
-
-    @Column(name = "custom_action_id")
-    private Long customActionId;
-
-    public Long getCustomActionId() {
-        return customActionId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
     }
 
-    public void setCustomActionId(Long customActionId) {
-        this.customActionId = customActionId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "custom_action_id")
+    private CustomAction customAction;
+    public CustomAction getCustomAction() {
+        return customAction;
     }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
+    public void setCustomAction(CustomAction customAction) {
+        this.customAction = customAction;
     }
 
     public Long getId() {

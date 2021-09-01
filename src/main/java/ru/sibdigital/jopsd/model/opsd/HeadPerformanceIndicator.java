@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "head_performance_indicators")
@@ -10,11 +13,19 @@ public class HeadPerformanceIndicator {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "measure_unit_id")
+    private MeasureUnit measureUnit;
+    public MeasureUnit getMeasureUnit() {
+        return measureUnit;
+    }
+    public void setMeasureUnit(MeasureUnit measureUnit) {
+        this.measureUnit = measureUnit;
+    }
+
     @Column(name = "name")
     private String name;
-
-    @Column(name = "measure_unit_id")
-    private Long measureUnitId;
 
     @Column(name = "sort_code")
     private Integer sortCode;
@@ -36,14 +47,6 @@ public class HeadPerformanceIndicator {
 
     public void setSortCode(Integer sortCode) {
         this.sortCode = sortCode;
-    }
-
-    public Long getMeasureUnitId() {
-        return measureUnitId;
-    }
-
-    public void setMeasureUnitId(Long measureUnitId) {
-        this.measureUnitId = measureUnitId;
     }
 
     public String getName() {

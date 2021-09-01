@@ -96,8 +96,8 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
             while (mpParentWorkPackage != null) {
                 WorkPackage parentWp = mpParentWorkPackage.getWorkPackage();
                 Relation relation = Relation.builder()
-                                    .fromId(parentWp.getId())
-                                    .toId(wpId)
+//                                    .fromId(parentWp.getId())
+//                                    .toId(wpId)
                                     .hierarchy(hierarchy)
                                     .relates(0)
                                     .duplicates(0)
@@ -132,15 +132,15 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
 
         WorkPackage wp = WorkPackage.builder()
                 .id(id)
-                .projectId(projectId)
+//                .projectId(projectId)
                 .outerId(Long.valueOf(task.getID()))
-                .typeId(Types.CHECK_POINT.getValue())
+//                .typeId(Types.CHECK_POINT.getValue())
                 .subject(task.getName())
                 .description(task.getNotes())
 //                .startDate(task.getStart())
 //                .dueDate(task.getFinish())
-                .statusId(Statuses.NOT_STARTED.getValue())
-                .authorId(authorId)
+//                .statusId(Statuses.NOT_STARTED.getValue())
+//                .authorId(authorId)
                 .lockVersion(Long.valueOf(0)) // 0
                 .doneRatio(overallPercentComplete)
                 .build();

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,14 +14,49 @@ public class DocumentJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "category_id", nullable = false)
-    private Long categoryId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(name = "title", nullable = false, length = 60)
     private String title;
@@ -29,9 +67,6 @@ public class DocumentJournal {
     @Column(name = "created_on")
     private Timestamp createdOn;
 
-    @Column(name = "user_id")
-    private Long userId;
-
     @Column(name = "updated_on")
     private Timestamp updatedOn;
 
@@ -41,14 +76,6 @@ public class DocumentJournal {
 
     public void setUpdatedOn(Timestamp updatedOn) {
         this.updatedOn = updatedOn;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Timestamp getCreatedOn() {
@@ -73,30 +100,6 @@ public class DocumentJournal {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

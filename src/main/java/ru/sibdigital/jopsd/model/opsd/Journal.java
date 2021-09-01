@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -19,14 +22,34 @@ public class Journal {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     @Column(name = "journable_type")
     private String journableType;
 
     @Column(name = "journable_id")
     private Long journableId;
-
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
 
     @Column(name = "notes")
     private String notes;
@@ -39,9 +62,6 @@ public class Journal {
 
     @Column(name = "activity_type")
     private String activityType;
-
-    @Column(name = "project_id")
-    private Integer projectId;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
@@ -63,14 +83,6 @@ public class Journal {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
     }
 
     public String getActivityType() {
@@ -103,14 +115,6 @@ public class Journal {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getJournableId() {

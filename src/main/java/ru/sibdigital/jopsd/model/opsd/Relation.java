@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -22,8 +24,28 @@ public class Relation {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long fromId;
-    private Long toId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "from_id")
+    private WorkPackage from;
+    public WorkPackage getFrom() {
+        return from;
+    }
+    public void setFrom(WorkPackage from) {
+        this.from = from;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "to_id")
+    private WorkPackage to;
+    public WorkPackage getTo() {
+        return to;
+    }
+    public void setTo(WorkPackage to) {
+        this.to = to;
+    }
+
     private Integer delay;
     private String description;
     private Integer hierarchy;
@@ -36,26 +58,6 @@ public class Relation {
     private Integer includes;
     private Integer requires;
     private Integer count;
-
-    @Basic
-    @Column(name = "from_id")
-    public Long getFromId() {
-        return fromId;
-    }
-
-    public void setFromId(Long fromId) {
-        this.fromId = fromId;
-    }
-
-    @Basic
-    @Column(name = "to_id")
-    public Long getToId() {
-        return toId;
-    }
-
-    public void setToId(Long toId) {
-        this.toId = toId;
-    }
 
     @Basic
     @Column(name = "delay")
@@ -177,16 +179,4 @@ public class Relation {
         this.count = count;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Relation relations = (Relation) o;
-        return Objects.equals(id, relations.id) && Objects.equals(fromId, relations.fromId) && Objects.equals(toId, relations.toId) && Objects.equals(delay, relations.delay) && Objects.equals(description, relations.description) && Objects.equals(hierarchy, relations.hierarchy) && Objects.equals(relates, relations.relates) && Objects.equals(duplicates, relations.duplicates) && Objects.equals(blocks, relations.blocks) && Objects.equals(follows, relations.follows) && Objects.equals(commonstart, relations.commonstart) && Objects.equals(commonfinish, relations.commonfinish) && Objects.equals(includes, relations.includes) && Objects.equals(requires, relations.requires) && Objects.equals(count, relations.count);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, fromId, toId, delay, description, hierarchy, relates, duplicates, blocks, follows, commonstart, commonfinish, includes, requires, count);
-    }
 }

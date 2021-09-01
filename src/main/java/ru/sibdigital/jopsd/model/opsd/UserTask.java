@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,14 +14,60 @@ public class UserTask {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "user_creator_id")
-    private Long userCreatorId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_creator_id")
+    private User userCreator;
+    public User getUserCreator() {
+        return userCreator;
+    }
+    public void setUserCreator(User userCreator) {
+        this.userCreator = userCreator;
+    }
 
-    @Column(name = "assigned_to_id")
-    private Long assignedToId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "assigned_to_id")
+    private User assignedTo;
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "related_task_id")
+    private UserTask relatedTask;
+    public UserTask getRelatedTask() {
+        return relatedTask;
+    }
+    public void setRelatedTask(UserTask relatedTask) {
+        this.relatedTask = relatedTask;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "period_id")
+    private Enumeration period;
+    public Enumeration getPeriod() {
+        return period;
+    }
+    public void setPeriod(Enumeration period) {
+        this.period = period;
+    }
 
     @Column(name = "object_id")
     private Long objectId;
@@ -38,25 +87,11 @@ public class UserTask {
     @Column(name = "completed")
     private Boolean completed;
 
-    @Column(name = "related_task_id")
-    private Long relatedTaskId;
-
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
-
-    @Column(name = "period_id")
-    private Integer periodId;
-
-    public Integer getPeriodId() {
-        return periodId;
-    }
-
-    public void setPeriodId(Integer periodId) {
-        this.periodId = periodId;
-    }
 
     public Timestamp getUpdatedAt() {
         return updatedAt;
@@ -72,14 +107,6 @@ public class UserTask {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getRelatedTaskId() {
-        return relatedTaskId;
-    }
-
-    public void setRelatedTaskId(Long relatedTaskId) {
-        this.relatedTaskId = relatedTaskId;
     }
 
     public Boolean getCompleted() {
@@ -128,30 +155,6 @@ public class UserTask {
 
     public void setObjectId(Long objectId) {
         this.objectId = objectId;
-    }
-
-    public Long getAssignedToId() {
-        return assignedToId;
-    }
-
-    public void setAssignedToId(Long assignedToId) {
-        this.assignedToId = assignedToId;
-    }
-
-    public Long getUserCreatorId() {
-        return userCreatorId;
-    }
-
-    public void setUserCreatorId(Long userCreatorId) {
-        this.userCreatorId = userCreatorId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getId() {

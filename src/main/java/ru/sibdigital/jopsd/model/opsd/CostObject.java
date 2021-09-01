@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -21,11 +23,49 @@ public class CostObject {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "author_id", nullable = false)
-    private Long authorId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "target_id")
+    private Target target;
+    public Target getTarget() {
+        return target;
+    }
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private CostObject parent;
+    public CostObject getParent() {
+        return parent;
+    }
+    public void setParent(CostObject parent) {
+        this.parent = parent;
+    }
 
     @Column(name = "subject", nullable = false)
     private String subject;
@@ -45,12 +85,6 @@ public class CostObject {
     @Column(name = "updated_on")
     private Timestamp updatedOn;
 
-    @Column(name = "target_id")
-    private Long targetId;
-
-    @Column(name = "parent_id")
-    private Long parentId;
-
     @Column(name = "meta_id")
     private Long metaId;
 
@@ -60,22 +94,6 @@ public class CostObject {
 
     public void setMetaId(Long metaId) {
         this.metaId = metaId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
     }
 
     public Timestamp getUpdatedOn() {
@@ -124,22 +142,6 @@ public class CostObject {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getId() {

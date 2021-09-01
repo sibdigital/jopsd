@@ -14,7 +14,7 @@ public interface ProjectRegisteryProjection {
     Boolean getPublic();
     NationalProject getFederalProject();
     Enumeration getProjectStatus();
-    Enumeration setProjectApproveStatus();
+    Enumeration getProjectApproveStatus();
 
 //    @Value("#{@projectRepo.getFilesize(target.id)}")
 //    Double getFilesize();

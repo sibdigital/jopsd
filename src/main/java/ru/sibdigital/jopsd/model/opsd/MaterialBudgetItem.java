@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -23,24 +25,34 @@ public class MaterialBudgetItem {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long costObjectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_object_id")
+    private CostObject costObject;
+    public CostObject getCostObject() {
+        return costObject;
+    }
+    public void setCostObject(CostObject costObject) {
+        this.costObject = costObject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_type_id")
+    private CostType costType;
+    public CostType getCostType() {
+        return costType;
+    }
+    public void setCostType(CostType costType) {
+        this.costType = costType;
+    }
+
     private Double units;
-    private Long costTypeId;
     private String comments;
     private BigDecimal budget;
     private BigDecimal passportUnits;
     private BigDecimal consolidateUnits;
     private Integer planYear;
-
-    @Basic
-    @Column(name = "cost_object_id")
-    public Long getCostObjectId() {
-        return costObjectId;
-    }
-
-    public void setCostObjectId(Long costObjectId) {
-        this.costObjectId = costObjectId;
-    }
 
     @Basic
     @Column(name = "units")
@@ -50,16 +62,6 @@ public class MaterialBudgetItem {
 
     public void setUnits(Double units) {
         this.units = units;
-    }
-
-    @Basic
-    @Column(name = "cost_type_id")
-    public Long getCostTypeId() {
-        return costTypeId;
-    }
-
-    public void setCostTypeId(Long costTypeId) {
-        this.costTypeId = costTypeId;
     }
 
     @Basic
@@ -112,17 +114,4 @@ public class MaterialBudgetItem {
         this.planYear = planYear;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MaterialBudgetItem that = (MaterialBudgetItem) o;
-        return Objects.equals(id, that.id) && Objects.equals(costObjectId, that.costObjectId) && Objects.equals(units, that.units) && Objects.equals(costTypeId, that.costTypeId) && Objects.equals(comments, that.comments) && Objects.equals(budget, that.budget) && Objects.equals(passportUnits, that.passportUnits) && Objects.equals(consolidateUnits, that.consolidateUnits) && Objects.equals(planYear, that.planYear);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, costObjectId, units, costTypeId, comments, budget, passportUnits, consolidateUnits, planYear);
-    }
 }

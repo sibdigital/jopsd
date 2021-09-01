@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "customizable_journals", indexes = {
@@ -13,11 +16,27 @@ public class CustomizableJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "custom_field_id", nullable = false)
-    private Integer customFieldId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "custom_field_id")
+    private CustomField customField;
+    public CustomField getCustomField() {
+        return customField;
+    }
+    public void setCustomField(CustomField customField) {
+        this.customField = customField;
+    }
 
     @Column(name = "value")
     private String value;
@@ -28,22 +47,6 @@ public class CustomizableJournal {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public Integer getCustomFieldId() {
-        return customFieldId;
-    }
-
-    public void setCustomFieldId(Integer customFieldId) {
-        this.customFieldId = customFieldId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

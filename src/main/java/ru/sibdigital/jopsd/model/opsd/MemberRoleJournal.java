@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "member_role_journals", indexes = {
@@ -12,14 +15,38 @@ public class MemberRoleJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "member_id", nullable = false)
-    private Long memberId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "member_id")
+    private Member member;
+    public Member getMember() {
+        return member;
+    }
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
-    @Column(name = "role_id", nullable = false)
-    private Long roleId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Column(name = "inherited_from")
     private Integer inheritedFrom;
@@ -30,30 +57,6 @@ public class MemberRoleJournal {
 
     public void setInheritedFrom(Integer inheritedFrom) {
         this.inheritedFrom = inheritedFrom;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

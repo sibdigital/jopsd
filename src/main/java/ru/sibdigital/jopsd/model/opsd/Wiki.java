@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -23,22 +25,21 @@ public class Wiki {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     private String startPage;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-
-
-    @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
 
     @Basic
     @Column(name = "start_page")
@@ -80,16 +81,4 @@ public class Wiki {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Wiki wiki = (Wiki) o;
-        return Objects.equals(id, wiki.id) && Objects.equals(projectId, wiki.projectId) && Objects.equals(startPage, wiki.startPage) && Objects.equals(status, wiki.status) && Objects.equals(createdAt, wiki.createdAt) && Objects.equals(updatedAt, wiki.updatedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, projectId, startPage, status, createdAt, updatedAt);
-    }
 }
