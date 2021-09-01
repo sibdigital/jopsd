@@ -7,8 +7,7 @@ import net.sf.mpxj.Task;
 import net.sf.mpxj.reader.UniversalProjectReader;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.mp.MPWorkPackage;
-import ru.sibdigital.jopsd.model.opsd.Relation;
-import ru.sibdigital.jopsd.model.opsd.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.model.enums.Statuses;
 import ru.sibdigital.jopsd.model.enums.Types;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
@@ -96,8 +95,8 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
             while (mpParentWorkPackage != null) {
                 WorkPackage parentWp = mpParentWorkPackage.getWorkPackage();
                 Relation relation = Relation.builder()
-//                                    .fromId(parentWp.getId())
-//                                    .toId(wpId)
+                                    .from(parentWp)
+                                    .to(wp)
                                     .hierarchy(hierarchy)
                                     .relates(0)
                                     .duplicates(0)
@@ -130,17 +129,22 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
         Long projectId = (Long) params.get("projectId");
         Long authorId = (Long) params.get("authorId");
 
+        Project project = projectRepo.findById(projectId).orElse(null);
+        Type type = typeRepository.findById(Types.CHECK_POINT.getValue()).orElse(null);
+        Status status = statusRepository.findById(Statuses.NOT_STARTED.getValue()).orElse(null);
+        User user = userRepository.findById(authorId).orElse(null);
+
         WorkPackage wp = WorkPackage.builder()
                 .id(id)
-//                .projectId(projectId)
+                .project(project)
                 .outerId(Long.valueOf(task.getID()))
-//                .typeId(Types.CHECK_POINT.getValue())
+                .type(type)
                 .subject(task.getName())
                 .description(task.getNotes())
-//                .startDate(task.getStart())
-//                .dueDate(task.getFinish())
-//                .statusId(Statuses.NOT_STARTED.getValue())
-//                .authorId(authorId)
+                .startDate(convertToLocalDateTimeViaInstant(task.getStart()))
+                .dueDate(convertToLocalDateTimeViaInstant(task.getFinish()))
+                .status(status)
+                .author(user)
                 .lockVersion(Long.valueOf(0)) // 0
                 .doneRatio(overallPercentComplete)
                 .build();
