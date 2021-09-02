@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,8 +14,16 @@ public class CriticalWay {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "wp_id")
-    private Integer wpId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "wp_id")
+    private WorkPackage workPackage;
+    public WorkPackage getWorkPackage() {
+        return workPackage;
+    }
+    public void setWorkPackage(WorkPackage workPackage) {
+        this.workPackage = workPackage;
+    }
 
     @Column(name = "on_crit_way")
     private Boolean onCritWay;
@@ -45,14 +56,6 @@ public class CriticalWay {
 
     public void setOnCritWay(Boolean onCritWay) {
         this.onCritWay = onCritWay;
-    }
-
-    public Integer getWpId() {
-        return wpId;
-    }
-
-    public void setWpId(Integer wpId) {
-        this.wpId = wpId;
     }
 
     public Long getId() {

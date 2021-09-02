@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,14 +14,30 @@ public class MeetingContent {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "meeting_id")
+    private Meeting meeting;
+    public Meeting getMeeting() {
+        return meeting;
+    }
+    public void setMeeting(Meeting meeting) {
+        this.meeting = meeting;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
     @Column(name = "type")
     private String type;
-
-    @Column(name = "meeting_id")
-    private Long meetingId;
-
-    @Column(name = "author_id")
-    private Integer authorId;
 
     @Column(name = "text")
     private String text;
@@ -73,22 +92,6 @@ public class MeetingContent {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Integer getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Integer authorId) {
-        this.authorId = authorId;
-    }
-
-    public Long getMeetingId() {
-        return meetingId;
-    }
-
-    public void setMeetingId(Long meetingId) {
-        this.meetingId = meetingId;
     }
 
     public String getType() {

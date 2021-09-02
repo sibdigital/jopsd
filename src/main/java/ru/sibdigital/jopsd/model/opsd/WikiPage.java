@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -16,8 +19,27 @@ public class WikiPage {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "wiki_id", nullable = false)
-    private Long wikiId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "wiki_id", nullable = false)
+    private Wiki wiki;
+    public Wiki getWiki() {
+        return wiki;
+    }
+    public void setWiki(Wiki wiki) {
+        this.wiki = wiki;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private WikiPage parent;
+    public WikiPage getParent() {
+        return parent;
+    }
+    public void setParent(WikiPage parent) {
+        this.parent = parent;
+    }
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -27,9 +49,6 @@ public class WikiPage {
 
     @Column(name = "protected", nullable = false)
     private Boolean _protected = false;
-
-    @Column(name = "parent_id")
-    private Long parentId;
 
     @Column(name = "slug", nullable = false)
     private String slug;
@@ -51,14 +70,6 @@ public class WikiPage {
 
     public void setSlug(String slug) {
         this.slug = slug;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public Boolean get_protected() {
@@ -83,14 +94,6 @@ public class WikiPage {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Long getWikiId() {
-        return wikiId;
-    }
-
-    public void setWikiId(Long wikiId) {
-        this.wikiId = wikiId;
     }
 
     public Long getId() {

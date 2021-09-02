@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "workflows", indexes = {
@@ -15,17 +18,49 @@ public class Workflow {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "type_id", nullable = false)
-    private Long typeId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "type_id", nullable = false)
+    private Type type;
+    public Type getType() {
+        return type;
+    }
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-    @Column(name = "old_status_id", nullable = false)
-    private Long oldStatusId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "old_status_id", nullable = false)
+    private Status oldStatus;
+    public Status getOldStatus() {
+        return oldStatus;
+    }
+    public void setOldStatus(Status oldStatus) {
+        this.oldStatus = oldStatus;
+    }
 
-    @Column(name = "new_status_id", nullable = false)
-    private Long newStatusId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "new_status_id", nullable = false)
+    private Status newStatus;
+    public Status getNewStatus() {
+        return newStatus;
+    }
+    public void setNewStatus(Status newStatus) {
+        this.newStatus = newStatus;
+    }
 
-    @Column(name = "role_id", nullable = false)
-    private Long roleId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     @Column(name = "assignee", nullable = false)
     private Boolean assignee = false;
@@ -47,38 +82,6 @@ public class Workflow {
 
     public void setAssignee(Boolean assignee) {
         this.assignee = assignee;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public Long getNewStatusId() {
-        return newStatusId;
-    }
-
-    public void setNewStatusId(Long newStatusId) {
-        this.newStatusId = newStatusId;
-    }
-
-    public Long getOldStatusId() {
-        return oldStatusId;
-    }
-
-    public void setOldStatusId(Long oldStatusId) {
-        this.oldStatusId = oldStatusId;
-    }
-
-    public Long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
     }
 
     public Long getId() {

@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,66 +27,217 @@ public class WorkPackage {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long typeId;
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "type_id", nullable = false)
+    private Type type;
+    public Type getType() {
+        return type;
+    }
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "status_id")
+    private Status status;
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "assigned_to_id")
+    private User assignedTo;
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "priority_id")
+    private Enumeration priority;
+    public Enumeration getPriority() {
+        return priority;
+    }
+    public void setPriority(Enumeration priority) {
+        this.priority = priority;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "fixed_version_id")
+    private VersionModel fixedVersion;
+    public VersionModel getFixedVersion() {
+        return fixedVersion;
+    }
+    public void setFixedVersion(VersionModel fixedVersion) {
+        this.fixedVersion = fixedVersion;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "responsible_id")
+    private User responsible;
+    public User getResponsible() {
+        return responsible;
+    }
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_object_id")
+    private CostObject costObject;
+    public CostObject getCostObject() {
+        return costObject;
+    }
+    public void setCostObject(CostObject costObject) {
+        this.costObject = costObject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+    public Contract getContract() {
+        return contract;
+    }
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+    public Organization getOrganization() {
+        return organization;
+    }
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "arbitary_object_id")
+    private ArbitaryObject arbitaryObject;
+    public ArbitaryObject getArbitaryObject() {
+        return arbitaryObject;
+    }
+    public void setArbitaryObject(ArbitaryObject arbitaryObject) {
+        this.arbitaryObject = arbitaryObject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "raion_id")
+    private Raion raion;
+    public Raion getRaion() {
+        return raion;
+    }
+    public void setRaion(Raion raion) {
+        this.raion = raion;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "required_doc_type_id")
+    private Enumeration requiredDocType;
+    public Enumeration getRequiredDocType() {
+        return requiredDocType;
+    }
+    public void setRequiredDocType(Enumeration requiredDocType) {
+        this.requiredDocType = requiredDocType;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "period_id")
+    private Enumeration period;
+    public Enumeration getPeriod() {
+        return period;
+    }
+    public void setPeriod(Enumeration period) {
+        this.period = period;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "control_level_id")
+    private ControlLevel controlLevel;
+    public ControlLevel getControlLevel() {
+        return controlLevel;
+    }
+    public void setControlLevel(ControlLevel controlLevel) {
+        this.controlLevel = controlLevel;
+    }
+
     private String subject;
     private String description;
     private LocalDateTime dueDate;
-    private Long categoryId;
-    private Long statusId;
-    private Long assignedToId;
-    private Long priorityId;
-    private Long fixedVersionId;
-    private Long authorId;
     private Long lockVersion;
     private Long doneRatio;
     private Double estimatedHours;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private LocalDateTime startDate;
-    private Long responsibleId;
-    private Long costObjectId;
     private Integer position;
     private Integer storyPoints;
     private Double remainingHours;
     private String planType;
-    private Long contractId;
     private Boolean resultAgreed;
-    private Long organizationId;
     private String sedHref;
-    private Long arbitaryObjectId;
     private String planNumPp;
-    private Long raionId;
-    private Long requiredDocTypeId;
     private Timestamp factDueDate;
     private Timestamp firstDueDate;
     private Timestamp lastDueDate;
     private Timestamp firstStartDate;
     private Timestamp lastStartDate;
-    private Long periodId;
-    private Long controlLevelId;
     private Long outerId;
     private Long metaId;
 
-    @Basic
-    @Column(name = "type_id")
-    public Long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
-    }
-
-    @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
 
     @Basic
     @Column(name = "subject")
@@ -114,66 +267,6 @@ public class WorkPackage {
 
     public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
-    }
-
-    @Basic
-    @Column(name = "category_id")
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    @Basic
-    @Column(name = "status_id")
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    @Basic
-    @Column(name = "assigned_to_id")
-    public Long getAssignedToId() {
-        return assignedToId;
-    }
-
-    public void setAssignedToId(Long assignedToId) {
-        this.assignedToId = assignedToId;
-    }
-
-    @Basic
-    @Column(name = "priority_id")
-    public Long getPriorityId() {
-        return priorityId;
-    }
-
-    public void setPriorityId(Long priorityId) {
-        this.priorityId = priorityId;
-    }
-
-    @Basic
-    @Column(name = "fixed_version_id")
-    public Long getFixedVersionId() {
-        return fixedVersionId;
-    }
-
-    public void setFixedVersionId(Long fixedVersionId) {
-        this.fixedVersionId = fixedVersionId;
-    }
-
-    @Basic
-    @Column(name = "author_id")
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
     }
 
     @Basic
@@ -237,26 +330,6 @@ public class WorkPackage {
     }
 
     @Basic
-    @Column(name = "responsible_id")
-    public Long getResponsibleId() {
-        return responsibleId;
-    }
-
-    public void setResponsibleId(Long responsibleId) {
-        this.responsibleId = responsibleId;
-    }
-
-    @Basic
-    @Column(name = "cost_object_id")
-    public Long getCostObjectId() {
-        return costObjectId;
-    }
-
-    public void setCostObjectId(Long costObjectId) {
-        this.costObjectId = costObjectId;
-    }
-
-    @Basic
     @Column(name = "position")
     public Integer getPosition() {
         return position;
@@ -297,16 +370,6 @@ public class WorkPackage {
     }
 
     @Basic
-    @Column(name = "contract_id")
-    public Long getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
-    }
-
-    @Basic
     @Column(name = "result_agreed")
     public Boolean getResultAgreed() {
         return resultAgreed;
@@ -314,16 +377,6 @@ public class WorkPackage {
 
     public void setResultAgreed(Boolean resultAgreed) {
         this.resultAgreed = resultAgreed;
-    }
-
-    @Basic
-    @Column(name = "organization_id")
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
     }
 
     @Basic
@@ -337,16 +390,6 @@ public class WorkPackage {
     }
 
     @Basic
-    @Column(name = "arbitary_object_id")
-    public Long getArbitaryObjectId() {
-        return arbitaryObjectId;
-    }
-
-    public void setArbitaryObjectId(Long arbitaryObjectId) {
-        this.arbitaryObjectId = arbitaryObjectId;
-    }
-
-    @Basic
     @Column(name = "plan_num_pp")
     public String getPlanNumPp() {
         return planNumPp;
@@ -354,26 +397,6 @@ public class WorkPackage {
 
     public void setPlanNumPp(String planNumPp) {
         this.planNumPp = planNumPp;
-    }
-
-    @Basic
-    @Column(name = "raion_id")
-    public Long getRaionId() {
-        return raionId;
-    }
-
-    public void setRaionId(Long raionId) {
-        this.raionId = raionId;
-    }
-
-    @Basic
-    @Column(name = "required_doc_type_id")
-    public Long getRequiredDocTypeId() {
-        return requiredDocTypeId;
-    }
-
-    public void setRequiredDocTypeId(Long requiredDocTypeId) {
-        this.requiredDocTypeId = requiredDocTypeId;
     }
 
     @Basic
@@ -427,26 +450,6 @@ public class WorkPackage {
     }
 
     @Basic
-    @Column(name = "period_id")
-    public Long getPeriodId() {
-        return periodId;
-    }
-
-    public void setPeriodId(Long periodId) {
-        this.periodId = periodId;
-    }
-
-    @Basic
-    @Column(name = "control_level_id")
-    public Long getControlLevelId() {
-        return controlLevelId;
-    }
-
-    public void setControlLevelId(Long controlLevelId) {
-        this.controlLevelId = controlLevelId;
-    }
-
-    @Basic
     @Column(name = "outer_id")
     public Long getOuterId() {
         return outerId;
@@ -464,18 +467,5 @@ public class WorkPackage {
 
     public void setMetaId(Long metaId) {
         this.metaId = metaId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WorkPackage that = (WorkPackage) o;
-        return Objects.equals(id, that.id) && Objects.equals(typeId, that.typeId) && Objects.equals(projectId, that.projectId) && Objects.equals(subject, that.subject) && Objects.equals(description, that.description) && Objects.equals(dueDate, that.dueDate) && Objects.equals(categoryId, that.categoryId) && Objects.equals(statusId, that.statusId) && Objects.equals(assignedToId, that.assignedToId) && Objects.equals(priorityId, that.priorityId) && Objects.equals(fixedVersionId, that.fixedVersionId) && Objects.equals(authorId, that.authorId) && Objects.equals(lockVersion, that.lockVersion) && Objects.equals(doneRatio, that.doneRatio) && Objects.equals(estimatedHours, that.estimatedHours) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(startDate, that.startDate) && Objects.equals(responsibleId, that.responsibleId) && Objects.equals(costObjectId, that.costObjectId) && Objects.equals(position, that.position) && Objects.equals(storyPoints, that.storyPoints) && Objects.equals(remainingHours, that.remainingHours) && Objects.equals(planType, that.planType) && Objects.equals(contractId, that.contractId) && Objects.equals(resultAgreed, that.resultAgreed) && Objects.equals(organizationId, that.organizationId) && Objects.equals(sedHref, that.sedHref) && Objects.equals(arbitaryObjectId, that.arbitaryObjectId) && Objects.equals(planNumPp, that.planNumPp) && Objects.equals(raionId, that.raionId) && Objects.equals(requiredDocTypeId, that.requiredDocTypeId) && Objects.equals(factDueDate, that.factDueDate) && Objects.equals(firstDueDate, that.firstDueDate) && Objects.equals(lastDueDate, that.lastDueDate) && Objects.equals(firstStartDate, that.firstStartDate) && Objects.equals(lastStartDate, that.lastStartDate) && Objects.equals(periodId, that.periodId) && Objects.equals(controlLevelId, that.controlLevelId) && Objects.equals(outerId, that.outerId) && Objects.equals(metaId, that.metaId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, typeId, projectId, subject, description, dueDate, categoryId, statusId, assignedToId, priorityId, fixedVersionId, authorId, lockVersion, doneRatio, estimatedHours, createdAt, updatedAt, startDate, responsibleId, costObjectId, position, storyPoints, remainingHours, planType, contractId, resultAgreed, organizationId, sedHref, arbitaryObjectId, planNumPp, raionId, requiredDocTypeId, factDueDate, firstDueDate, lastDueDate, firstStartDate, lastStartDate, periodId, controlLevelId, outerId, metaId);
     }
 }

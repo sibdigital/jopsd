@@ -45,7 +45,7 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
         Set<String> defaultProjectsModulesNames = getDefaultProjectsModulesName();
         defaultProjectsModulesNames.forEach(ctr -> {
             list.add(EnabledModule.builder()
-                                    .projectId(projectId)
+//                                    .projectId(projectId)
                                     .name(ctr)
                                     .build());
         });
@@ -68,7 +68,7 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
     @Override
     public Wiki createDefaultWiki(Long projectId) {
         return Wiki.builder()
-                    .projectId(projectId)
+//                    .projectId(projectId)
                     .startPage("Wiki")
                     .status(1)
                     .createdAt(Timestamp.from(Instant.now()))

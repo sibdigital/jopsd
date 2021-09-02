@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -11,14 +14,30 @@ public class LaborBudgetItem {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "cost_object_id", nullable = false)
-    private Long costObjectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_object_id")
+    private CostObject costObject;
+    public CostObject getCostObject() {
+        return costObject;
+    }
+    public void setCostObject(CostObject costObject) {
+        this.costObject = costObject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(name = "hours", nullable = false)
     private Double hours;
-
-    @Column(name = "user_id")
-    private Long userId;
 
     @Column(name = "comments", nullable = false)
     private String comments;
@@ -42,28 +61,12 @@ public class LaborBudgetItem {
         this.comments = comments;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public Double getHours() {
         return hours;
     }
 
     public void setHours(Double hours) {
         this.hours = hours;
-    }
-
-    public Long getCostObjectId() {
-        return costObjectId;
-    }
-
-    public void setCostObjectId(Long costObjectId) {
-        this.costObjectId = costObjectId;
     }
 
     public Long getId() {

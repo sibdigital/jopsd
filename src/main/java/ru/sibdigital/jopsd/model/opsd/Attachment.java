@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -18,6 +21,7 @@ public class Attachment {
     private Long id;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "author_id")
     private User author;
     public User getAuthor() {
@@ -28,6 +32,7 @@ public class Attachment {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "attach_type_id")
     private Enumeration attachType;
     public Enumeration getAttachType() {
@@ -38,6 +43,7 @@ public class Attachment {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "user_locked_id")
     private User userLocked;
     public User getUserLocked() {

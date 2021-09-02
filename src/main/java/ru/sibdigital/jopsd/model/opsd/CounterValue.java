@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,14 +14,38 @@ public class CounterValue {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "custom_value_id")
-    private Long customValueId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "custom_value_id")
+    private CustomValue customValue;
+    public CustomValue getCustomValue() {
+        return customValue;
+    }
+    public void setCustomValue(CustomValue customValue) {
+        this.customValue = customValue;
+    }
 
-    @Column(name = "custom_field_id")
-    private Long customFieldId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "custom_field_id")
+    private CustomField customField;
+    public CustomField getCustomField() {
+        return customField;
+    }
+    public void setCustomField(CustomField customField) {
+        this.customField = customField;
+    }
 
-    @Column(name = "counter_setting_id")
-    private Long counterSettingId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "counter_setting_id")
+    private CounterSetting counterSetting;
+    public CounterSetting getCounterSetting() {
+        return counterSetting;
+    }
+    public void setCounterSetting(CounterSetting counterSetting) {
+        this.counterSetting = counterSetting;
+    }
 
     @Column(name = "value")
     private Integer value;
@@ -62,30 +89,6 @@ public class CounterValue {
 
     public void setValue(Integer value) {
         this.value = value;
-    }
-
-    public Long getCounterSettingId() {
-        return counterSettingId;
-    }
-
-    public void setCounterSettingId(Long counterSettingId) {
-        this.counterSettingId = counterSettingId;
-    }
-
-    public Long getCustomFieldId() {
-        return customFieldId;
-    }
-
-    public void setCustomFieldId(Long customFieldId) {
-        this.customFieldId = customFieldId;
-    }
-
-    public Long getCustomValueId() {
-        return customValueId;
-    }
-
-    public void setCustomValueId(Long customValueId) {
-        this.customValueId = customValueId;
     }
 
     public Long getId() {

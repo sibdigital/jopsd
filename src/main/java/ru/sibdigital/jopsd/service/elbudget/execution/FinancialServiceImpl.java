@@ -226,8 +226,8 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         Long resultMetaId = (Long) params.get("resultMetaId");
 
         CostObject costObject = CostObject.builder()
-                                .projectId(workPackage.getProjectId())
-                                .authorId(authorId)
+//                                .projectId(workPackage.getProjectId())
+//                                .authorId(authorId)
                                 .subject(workPackage.getSubject())
                                 .description("Загружен из Эл. Бюджета")
                                 .type("VariableCostObject")
@@ -240,7 +240,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
 
         costObjectRepo.save(costObject);
 
-        workPackage.setCostObjectId(costObject.getId());
+//        workPackage.setCostObjectId(costObject.getId());
         workPackageRepo.save(workPackage);
 
         return costObject;
@@ -249,9 +249,9 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
     private MaterialBudgetItem createMaterialBudgetItem(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource,
                                                         CostTypes costType, CostObject costObject) {
         return MaterialBudgetItem.builder()
-                .costObjectId(costObject.getId())
+//                .costObjectId(costObject.getId())
                 .units(1.0)
-                .costTypeId(costType.getValue())
+//                .costTypeId(costType.getValue())
                 .comments("Загружен из Эл. Бюджета")
                 .budget(financialSource.getCBR())
                 .passportUnits(financialSource.getCBR()) // не выгружается из ЭлБюджета
@@ -273,10 +273,10 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         Integer week = calendar.get(Calendar.WEEK_OF_YEAR);
 
         return CostEntry.builder()
-                .userId(authorId)
-                .projectId(workPackage.getProjectId())
-                .workPackageId(workPackage.getId())
-                .costTypeId(costType.getValue())
+//                .userId(authorId)
+//                .projectId(workPackage.getProjectId())
+//                .workPackageId(workPackage.getId())
+//                .costTypeId(costType.getValue())
                 .units(financialSource.getCashExecution().doubleValue())
                 .costs(financialSource.getCashExecution())
                 .recordedLiability(financialSource.getBudgetCommitments())
@@ -293,12 +293,12 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
     }
 
     private CostObject findCostObjectByWorkPackage(WorkPackage workPackage) {
-        Long costObjectId = workPackage.getCostObjectId();
-        if (costObjectId != null) {
-            return costObjectRepo.findById(costObjectId).orElse(null);
-        } else {
+//        Long costObjectId = workPackage.getCostObjectId();
+//        if (costObjectId != null) {
+//            return costObjectRepo.findById(costObjectId).orElse(null);
+//        } else {
             return null;
-        }
+//        }
     }
 
     private List<MaterialBudgetItem> findMaterialBudgetItemsByCostObjectAndCostType(CostObject costObject, CostTypes costType) {

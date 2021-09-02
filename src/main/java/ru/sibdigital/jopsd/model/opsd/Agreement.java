@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -13,6 +16,7 @@ public class Agreement {
     private Long id;
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_id")
     private Project project;
     public Project getProject() {
@@ -23,6 +27,7 @@ public class Agreement {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "national_project_id")
     private NationalProject nationalProject;
     public NationalProject getNationalProject() {
@@ -33,6 +38,7 @@ public class Agreement {
     }
 
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "federal_project_id")
     private NationalProject federalProject;
     public NationalProject getFederalProject() {

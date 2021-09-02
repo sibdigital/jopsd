@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,23 +17,55 @@ public class TargetCalcProcedure {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "target_id")
-    private Long targetId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "target_id")
+    private Target target;
+    public Target getTarget() {
+        return target;
+    }
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "base_target_id")
+    private Target baseTarget;
+    public Target getBaseTarget() {
+        return baseTarget;
+    }
+    public void setBaseTarget(Target baseTarget) {
+        this.baseTarget = baseTarget;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Column(name = "description")
     private String description;
 
-    @Column(name = "base_target_id")
-    private Long baseTargetId;
-
     @Column(name = "data_source")
     private String dataSource;
-
-    @Column(name = "user_id")
-    private Integer userId;
 
     @Column(name = "period")
     private String period;
@@ -87,14 +122,6 @@ public class TargetCalcProcedure {
         this.period = period;
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
     public String getDataSource() {
         return dataSource;
     }
@@ -103,36 +130,12 @@ public class TargetCalcProcedure {
         this.dataSource = dataSource;
     }
 
-    public Long getBaseTargetId() {
-        return baseTargetId;
-    }
-
-    public void setBaseTargetId(Long baseTargetId) {
-        this.baseTargetId = baseTargetId;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public String getName() {

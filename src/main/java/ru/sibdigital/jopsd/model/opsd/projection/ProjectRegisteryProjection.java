@@ -18,13 +18,9 @@ public interface ProjectRegisteryProjection {
     String getIdentifier();
     String getDescription();
 
-//    @Value("#{@projectRepo.getFilesize(target.id)}")
-//    Double getFilesize();
-
 //    @Value("#{@projectRepo.findRequiredDiskSpace(target.id)}")
 //    Double requiredDiskSpace();
 
-//    @Value("#{@projectRepo.findNationalProject(target.id)}")
     NationalProject getNationalProject();
 
     @Value("#{@projectRepo.findDoneRatio(target.id)}")

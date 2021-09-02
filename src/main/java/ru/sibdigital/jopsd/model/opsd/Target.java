@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,19 +27,69 @@ public class Target {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long statusId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "status_id")
+    private Enumeration status;
+    public Enumeration getStatus() {
+        return status;
+    }
+    public void setStatus(Enumeration status) {
+        this.status = status;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "type_id")
+    private Enumeration targetType;
+    public Enumeration getTargetType() {
+        return targetType;
+    }
+    public void setTargetType(Enumeration targetType) {
+        this.targetType = targetType;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "measure_unit_id")
+    private MeasureUnit measureUnit;
+    public MeasureUnit getMeasureUnit() {
+        return measureUnit;
+    }
+    public void setMeasureUnit(MeasureUnit measureUnit) {
+        this.measureUnit = measureUnit;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private Target parent;
+    public Target getParent() {
+        return parent;
+    }
+    public void setParent(Target parent) {
+        this.parent = parent;
+    }
+
     private String name;
-    private Long typeId;
     private String unit;
     private Double basicValue;
     private Double planValue;
     private String comment;
-    private Long projectId;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Boolean isApprove;
-    private Long parentId;
-    private Long measureUnitId;
     private Boolean isAdditional;
     private String type;
     private LocalDateTime basicDate;
@@ -50,16 +102,6 @@ public class Target {
     private Long metaId;
 
     @Basic
-    @Column(name = "status_id")
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    @Basic
     @Column(name = "name")
     public String getName() {
         return name;
@@ -67,16 +109,6 @@ public class Target {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "type_id")
-    public Long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
     }
 
     @Basic
@@ -120,16 +152,6 @@ public class Target {
     }
 
     @Basic
-    @Column(name = "project_id")
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    @Basic
     @Column(name = "created_at")
     public Timestamp getCreatedAt() {
         return createdAt;
@@ -157,26 +179,6 @@ public class Target {
 
     public void setApprove(Boolean approve) {
         isApprove = approve;
-    }
-
-    @Basic
-    @Column(name = "parent_id")
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    @Basic
-    @Column(name = "measure_unit_id")
-    public Long getMeasureUnitId() {
-        return measureUnitId;
-    }
-
-    public void setMeasureUnitId(Long measureUnitId) {
-        this.measureUnitId = measureUnitId;
     }
 
     @Basic
@@ -277,18 +279,5 @@ public class Target {
 
     public void setMetaId(Long metaId) {
         this.metaId = metaId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Target target = (Target) o;
-        return Objects.equals(id, target.id) && Objects.equals(statusId, target.statusId) && Objects.equals(name, target.name) && Objects.equals(typeId, target.typeId) && Objects.equals(unit, target.unit) && Objects.equals(basicValue, target.basicValue) && Objects.equals(planValue, target.planValue) && Objects.equals(comment, target.comment) && Objects.equals(projectId, target.projectId) && Objects.equals(createdAt, target.createdAt) && Objects.equals(updatedAt, target.updatedAt) && Objects.equals(isApprove, target.isApprove) && Objects.equals(parentId, target.parentId) && Objects.equals(measureUnitId, target.measureUnitId) && Objects.equals(isAdditional, target.isAdditional) && Objects.equals(type, target.type) && Objects.equals(basicDate, target.basicDate) && Objects.equals(planDate, target.planDate) && Objects.equals(nationalProjectGoal, target.nationalProjectGoal) && Objects.equals(nationalProjectResult, target.nationalProjectResult) && Objects.equals(nationalProjectCharact, target.nationalProjectCharact) && Objects.equals(resultDueDate, target.resultDueDate) && Objects.equals(resultAssigned, target.resultAssigned) && Objects.equals(metaId, target.metaId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, statusId, name, typeId, unit, basicValue, planValue, comment, projectId, createdAt, updatedAt, isApprove, parentId, measureUnitId, isAdditional, type, basicDate, planDate, nationalProjectGoal, nationalProjectResult, nationalProjectCharact, resultDueDate, resultAssigned, metaId);
     }
 }

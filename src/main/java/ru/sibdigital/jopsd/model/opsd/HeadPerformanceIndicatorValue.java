@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -11,8 +14,16 @@ public class HeadPerformanceIndicatorValue {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "head_performance_indicator_id")
-    private Long headPerformanceIndicatorId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "head_performance_indicator_id")
+    private HeadPerformanceIndicator headPerformanceIndicator;
+    public HeadPerformanceIndicator getHeadPerformanceIndicator() {
+        return headPerformanceIndicator;
+    }
+    public void setHeadPerformanceIndicator(HeadPerformanceIndicator headPerformanceIndicator) {
+        this.headPerformanceIndicator = headPerformanceIndicator;
+    }
 
     @Column(name = "type")
     private String type;
@@ -78,14 +89,6 @@ public class HeadPerformanceIndicatorValue {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Long getHeadPerformanceIndicatorId() {
-        return headPerformanceIndicatorId;
-    }
-
-    public void setHeadPerformanceIndicatorId(Long headPerformanceIndicatorId) {
-        this.headPerformanceIndicatorId = headPerformanceIndicatorId;
     }
 
     public Long getId() {

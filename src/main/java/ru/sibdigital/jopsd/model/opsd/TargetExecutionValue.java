@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -24,22 +26,22 @@ public class TargetExecutionValue {
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
 
-    private Long targetId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "target_id")
+    private Target target;
+    public Target getTarget() {
+        return target;
+    }
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+
     private Integer year;
     private Integer quarter;
     private BigDecimal value;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-
-    @Basic
-    @Column(name = "target_id")
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
-    }
 
     @Basic
     @Column(name = "year")
@@ -89,18 +91,5 @@ public class TargetExecutionValue {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TargetExecutionValue that = (TargetExecutionValue) o;
-        return Objects.equals(id, that.id) && Objects.equals(targetId, that.targetId) && Objects.equals(year, that.year) && Objects.equals(quarter, that.quarter) && Objects.equals(value, that.value) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, targetId, year, quarter, value, createdAt, updatedAt);
     }
 }

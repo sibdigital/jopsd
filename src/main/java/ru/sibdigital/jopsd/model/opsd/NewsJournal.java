@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "news_journals", indexes = {
@@ -12,11 +15,38 @@ public class NewsJournal {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     @Column(name = "title", nullable = false, length = 60)
     private String title;
@@ -27,9 +57,6 @@ public class NewsJournal {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "author_id", nullable = false)
-    private Long authorId;
-
     @Column(name = "comments_count", nullable = false)
     private Integer commentsCount;
 
@@ -39,14 +66,6 @@ public class NewsJournal {
 
     public void setCommentsCount(Integer commentsCount) {
         this.commentsCount = commentsCount;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
     }
 
     public String getDescription() {
@@ -71,22 +90,6 @@ public class NewsJournal {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Integer getId() {

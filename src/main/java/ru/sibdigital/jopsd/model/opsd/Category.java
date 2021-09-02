@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,14 +17,30 @@ public class Category {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "assigned_to_id")
+    private User assignedTo;
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
 
     @Column(name = "name", nullable = false, length = 256)
     private String name;
-
-    @Column(name = "assigned_to_id")
-    private Integer assignedToId;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -45,28 +64,12 @@ public class Category {
         this.createdAt = createdAt;
     }
 
-    public Integer getAssignedToId() {
-        return assignedToId;
-    }
-
-    public void setAssignedToId(Integer assignedToId) {
-        this.assignedToId = assignedToId;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public Long getId() {

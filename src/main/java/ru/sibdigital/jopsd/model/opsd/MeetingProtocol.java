@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -12,11 +15,27 @@ public class MeetingProtocol {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "meeting_contents_id")
-    private Long meetingContentsId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "meeting_contents_id")
+    private MeetingContent meetingContent;
+    public MeetingContent getMeetingContent() {
+        return meetingContent;
+    }
+    public void setMeetingContent(MeetingContent meetingContent) {
+        this.meetingContent = meetingContent;
+    }
 
-    @Column(name = "assigned_to_id")
-    private Long assignedToId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "assigned_to_id")
+    private User assignedTo;
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
 
     @Column(name = "text")
     private String text;
@@ -82,22 +101,6 @@ public class MeetingProtocol {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Long getAssignedToId() {
-        return assignedToId;
-    }
-
-    public void setAssignedToId(Long assignedToId) {
-        this.assignedToId = assignedToId;
-    }
-
-    public Long getMeetingContentsId() {
-        return meetingContentsId;
-    }
-
-    public void setMeetingContentsId(Long meetingContentsId) {
-        this.meetingContentsId = meetingContentsId;
     }
 
     public Long getId() {

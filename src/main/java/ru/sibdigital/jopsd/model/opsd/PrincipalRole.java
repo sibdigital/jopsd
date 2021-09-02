@@ -1,6 +1,10 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
+import java.security.Principal;
 import java.sql.Timestamp;
 
 @Table(name = "principal_roles", indexes = {
@@ -14,11 +18,27 @@ public class PrincipalRole {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "role_id", nullable = false)
-    private Long roleId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "role_id")
+    private Role role;
+    public Role getRole() {
+        return role;
+    }
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-    @Column(name = "principal_id", nullable = false)
-    private Long principalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "principal_id", nullable = false)
+    private User principal;
+    public User getPrincipal() {
+        return principal;
+    }
+    public void setPrincipal(User principal) {
+        this.principal = principal;
+    }
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -40,22 +60,6 @@ public class PrincipalRole {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getPrincipalId() {
-        return principalId;
-    }
-
-    public void setPrincipalId(Long principalId) {
-        this.principalId = principalId;
-    }
-
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
     }
 
     public Long getId() {

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "changes", indexes = {
@@ -12,8 +15,16 @@ public class Change {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "changeset_id", nullable = false)
-    private Long changesetId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "changeset_id")
+    private Changeset changeset;
+    public Changeset getChangeset() {
+        return changeset;
+    }
+    public void setChangeset(Changeset changeset) {
+        this.changeset = changeset;
+    }
 
     @Column(name = "action", nullable = false, length = 1)
     private String action;
@@ -79,14 +90,6 @@ public class Change {
 
     public void setAction(String action) {
         this.action = action;
-    }
-
-    public Long getChangesetId() {
-        return changesetId;
-    }
-
-    public void setChangesetId(Long changesetId) {
-        this.changesetId = changesetId;
     }
 
     public Long getId() {

@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,11 +17,27 @@ public class CommunicationRequirement {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "stakeholder_id")
-    private Integer stakeholderId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "stakeholder_id")
+    private Stakeholder stakeholder;
+    public Stakeholder getStakeholder() {
+        return stakeholder;
+    }
+    public void setStakeholder(Stakeholder stakeholder) {
+        this.stakeholder = stakeholder;
+    }
 
     @Column(name = "period")
     private String period;
@@ -73,22 +92,6 @@ public class CommunicationRequirement {
 
     public void setPeriod(String period) {
         this.period = period;
-    }
-
-    public Integer getStakeholderId() {
-        return stakeholderId;
-    }
-
-    public void setStakeholderId(Integer stakeholderId) {
-        this.stakeholderId = stakeholderId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public String getName() {

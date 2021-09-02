@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -15,6 +18,17 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "color_id")
+    private Color color;
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -37,9 +51,6 @@ public class Status {
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedAt;
 
-    @Column(name = "color_id")
-    private Integer colorId;
-
     @Column(name = "is_readonly")
     private Boolean isReadonly;
 
@@ -60,14 +71,6 @@ public class Status {
 
     public void setIsReadonly(Boolean isReadonly) {
         this.isReadonly = isReadonly;
-    }
-
-    public Integer getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Integer colorId) {
-        this.colorId = colorId;
     }
 
     public Timestamp getUpdatedAt() {

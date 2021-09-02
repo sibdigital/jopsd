@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -11,14 +14,22 @@ public class ControlLevel {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "color_id")
+    private Color color;
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     @Column(name = "code")
     private String code;
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "color_id")
-    private Integer colorId;
 
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
@@ -40,14 +51,6 @@ public class ControlLevel {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Integer getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Integer colorId) {
-        this.colorId = colorId;
     }
 
     public String getName() {

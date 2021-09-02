@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -14,11 +17,27 @@ public class ProjectAssociation {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "project_a_id")
-    private Long projectAId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_a_id")
+    private Project projectA;
+    public Project getProjectA() {
+        return projectA;
+    }
+    public void setProjectA(Project projectA) {
+        this.projectA = projectA;
+    }
 
-    @Column(name = "project_b_id")
-    private Integer projectBId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_b_id")
+    private Project projectB;
+    public Project getProjectB() {
+        return projectB;
+    }
+    public void setProjectB(Project projectB) {
+        this.projectB = projectB;
+    }
 
     @Column(name = "description")
     private String description;
@@ -51,22 +70,6 @@ public class ProjectAssociation {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getProjectBId() {
-        return projectBId;
-    }
-
-    public void setProjectBId(Integer projectBId) {
-        this.projectBId = projectBId;
-    }
-
-    public Long getProjectAId() {
-        return projectAId;
-    }
-
-    public void setProjectAId(Long projectAId) {
-        this.projectAId = projectAId;
     }
 
     public Long getId() {

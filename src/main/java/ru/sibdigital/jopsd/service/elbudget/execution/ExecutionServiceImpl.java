@@ -70,11 +70,11 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
         Long resultMetaId = getResultMetaIdInInputStream(inputStream);
 
         WorkPackage workPackage = WorkPackage.builder()
-                                    .typeId(Types.EVENT.getValue())
-                                    .projectId(projectId)
+//                                    .typeId(Types.EVENT.getValue())
+//                                    .projectId(projectId)
                                     .subject(workPackageName)
-                                    .statusId(Statuses.IN_WORK.getValue())
-                                    .authorId(authorId)
+//                                    .statusId(Statuses.IN_WORK.getValue())
+//                                    .authorId(authorId)
                                     .lockVersion(Long.valueOf(0))
                                     .doneRatio(Long.valueOf(0))
                                     .createdAt(Timestamp.from(Instant.now()))

@@ -3,6 +3,8 @@ package ru.sibdigital.jopsd.model.opsd;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,17 +22,71 @@ public class CostEntry {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-    @Column(name = "work_package_id", nullable = false)
-    private Long workPackageId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "work_package_id")
+    private WorkPackage workPackage;
+    public WorkPackage getWorkPackage() {
+        return workPackage;
+    }
+    public void setWorkPackage(WorkPackage workPackage) {
+        this.workPackage = workPackage;
+    }
 
-    @Column(name = "cost_type_id", nullable = false)
-    private Long costTypeId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_type_id")
+    private CostType costType;
+    public CostType getCostType() {
+        return costType;
+    }
+    public void setCostType(CostType costType) {
+        this.costType = costType;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "rate_id")
+    private Rate rate;
+    public Rate getRate() {
+        return rate;
+    }
+    public void setRate(Rate rate) {
+        this.rate = rate;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_object_id")
+    private CostObject costObject;
+    public CostObject getCostObject() {
+        return costObject;
+    }
+    public void setCostObject(CostObject costObject) {
+        this.costObject = costObject;
+    }
 
     @Column(name = "units", nullable = false)
     private Double units;
@@ -56,9 +112,6 @@ public class CostEntry {
     @Column(name = "costs", precision = 15, scale = 4)
     private BigDecimal costs;
 
-    @Column(name = "rate_id")
-    private Long rateId;
-
     @Column(name = "tyear", nullable = false)
     private Integer tyear;
 
@@ -73,17 +126,6 @@ public class CostEntry {
 
     @Column(name = "plan_year")
     private Integer planYear;
-
-    @Column(name = "cost_object_id")
-    private Integer costObjectId;
-
-    public Integer getCostObjectId() {
-        return costObjectId;
-    }
-
-    public void setCostObjectId(Integer costObjectId) {
-        this.costObjectId = costObjectId;
-    }
 
     public Integer getPlanYear() {
         return planYear;
@@ -123,14 +165,6 @@ public class CostEntry {
 
     public void setTyear(Integer tyear) {
         this.tyear = tyear;
-    }
-
-    public Long getRateId() {
-        return rateId;
-    }
-
-    public void setRateId(Long rateId) {
-        this.rateId = rateId;
     }
 
     public BigDecimal getCosts() {
@@ -195,38 +229,6 @@ public class CostEntry {
 
     public void setUnits(Double units) {
         this.units = units;
-    }
-
-    public Long getCostTypeId() {
-        return costTypeId;
-    }
-
-    public void setCostTypeId(Long costTypeId) {
-        this.costTypeId = costTypeId;
-    }
-
-    public Long getWorkPackageId() {
-        return workPackageId;
-    }
-
-    public void setWorkPackageId(Long workPackageId) {
-        this.workPackageId = workPackageId;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getId() {

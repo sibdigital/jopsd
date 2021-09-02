@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -12,8 +15,16 @@ public class KeyPerformanceIndicatorCase {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "key_performance_indicator_id")
-    private Long keyPerformanceIndicatorId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "key_performance_indicator_id")
+    private KeyPerformanceIndicator keyPerformanceIndicator;
+    public KeyPerformanceIndicator getKeyPerformanceIndicator() {
+        return keyPerformanceIndicator;
+    }
+    public void setKeyPerformanceIndicator(KeyPerformanceIndicator keyPerformanceIndicator) {
+        this.keyPerformanceIndicator = keyPerformanceIndicator;
+    }
 
     @Column(name = "role_id")
     private Integer roleId;
@@ -101,14 +112,6 @@ public class KeyPerformanceIndicatorCase {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
-    }
-
-    public Long getKeyPerformanceIndicatorId() {
-        return keyPerformanceIndicatorId;
-    }
-
-    public void setKeyPerformanceIndicatorId(Long keyPerformanceIndicatorId) {
-        this.keyPerformanceIndicatorId = keyPerformanceIndicatorId;
     }
 
     public Long getId() {

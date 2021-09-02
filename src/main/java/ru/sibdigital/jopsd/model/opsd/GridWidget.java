@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "grid_widgets", indexes = {
@@ -11,6 +14,17 @@ public class GridWidget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "grid_id")
+    private Grid grid;
+    public Grid getGrid() {
+        return grid;
+    }
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
 
     @Column(name = "start_row", nullable = false)
     private Integer startRow;
@@ -29,17 +43,6 @@ public class GridWidget {
 
     @Column(name = "options")
     private String options;
-
-    @Column(name = "grid_id")
-    private Long gridId;
-
-    public Long getGridId() {
-        return gridId;
-    }
-
-    public void setGridId(Long gridId) {
-        this.gridId = gridId;
-    }
 
     public String getOptions() {
         return options;

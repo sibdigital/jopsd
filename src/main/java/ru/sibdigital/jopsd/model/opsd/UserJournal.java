@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,8 +16,60 @@ public class UserJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "auth_source_id")
+    private AuthSource authSource;
+    public AuthSource getAuthSource() {
+        return authSource;
+    }
+    public void setAuthSource(AuthSource authSource) {
+        this.authSource = authSource;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+    public Organization getOrganization() {
+        return organization;
+    }
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "position_id")
+    private Position position;
+    public Position getPosition() {
+        return position;
+    }
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "direct_manager_id")
+    private User directManager;
+    public User getDirectManager() {
+        return directManager;
+    }
+    public void setDirectManager(User directManager) {
+        this.directManager = directManager;
+    }
 
     @Column(name = "login", nullable = false, length = 256)
     private String login;
@@ -39,9 +94,6 @@ public class UserJournal {
 
     @Column(name = "language", length = 5)
     private String language;
-
-    @Column(name = "auth_source_id")
-    private Long authSourceId;
 
     @Column(name = "created_on")
     private Timestamp createdOn;
@@ -73,12 +125,6 @@ public class UserJournal {
     @Column(name = "consented_at")
     private Timestamp consentedAt;
 
-    @Column(name = "organization_id")
-    private Integer organizationId;
-
-    @Column(name = "position_id")
-    private Integer positionId;
-
     @Column(name = "patronymic", length = 30)
     private String patronymic;
 
@@ -99,17 +145,6 @@ public class UserJournal {
 
     @Column(name = "cabinet", length = 6)
     private String cabinet;
-
-    @Column(name = "direct_manager_id")
-    private Long directManagerId;
-
-    public Long getDirectManagerId() {
-        return directManagerId;
-    }
-
-    public void setDirectManagerId(Long directManagerId) {
-        this.directManagerId = directManagerId;
-    }
 
     public String getCabinet() {
         return cabinet;
@@ -165,22 +200,6 @@ public class UserJournal {
 
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
-    }
-
-    public Integer getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(Integer positionId) {
-        this.positionId = positionId;
-    }
-
-    public Integer getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Integer organizationId) {
-        this.organizationId = organizationId;
     }
 
     public Timestamp getConsentedAt() {
@@ -263,14 +282,6 @@ public class UserJournal {
         this.createdOn = createdOn;
     }
 
-    public Long getAuthSourceId() {
-        return authSourceId;
-    }
-
-    public void setAuthSourceId(Long authSourceId) {
-        this.authSourceId = authSourceId;
-    }
-
     public String getLanguage() {
         return language;
     }
@@ -333,14 +344,6 @@ public class UserJournal {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

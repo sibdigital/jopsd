@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -15,14 +18,225 @@ public class WorkPackageJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "type_id", nullable = false)
-    private Long typeId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "type_id", nullable = false)
+    private Type type;
+    public Type getType() {
+        return type;
+    }
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-    @Column(name = "project_id", nullable = false)
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "category_id")
+    private Category category;
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "status_id")
+    private Status status;
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "assigned_to_id")
+    private User assignedTo;
+    public User getAssignedTo() {
+        return assignedTo;
+    }
+    public void setAssignedTo(User assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "priority_id")
+    private Enumeration priority;
+    public Enumeration getPriority() {
+        return priority;
+    }
+    public void setPriority(Enumeration priority) {
+        this.priority = priority;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "fixed_version_id")
+    private VersionModel fixedVersion;
+    public VersionModel getFixedVersion() {
+        return fixedVersion;
+    }
+    public void setFixedVersion(VersionModel fixedVersion) {
+        this.fixedVersion = fixedVersion;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "author_id")
+    private User author;
+    public User getAuthor() {
+        return author;
+    }
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private WorkPackage parent;
+    public WorkPackage getParent() {
+        return parent;
+    }
+    public void setParent(WorkPackage parent) {
+        this.parent = parent;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "responsible_id")
+    private User responsible;
+    public User getResponsible() {
+        return responsible;
+    }
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "cost_object_id")
+    private CostObject costObject;
+    public CostObject getCostObject() {
+        return costObject;
+    }
+    public void setCostObject(CostObject costObject) {
+        this.costObject = costObject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "organization_id")
+    private Organization organization;
+    public Organization getOrganization() {
+        return organization;
+    }
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
+    public Contract getContract() {
+        return contract;
+    }
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "target_id")
+    private Target target;
+    public Target getTarget() {
+        return target;
+    }
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "arbitary_object_id")
+    private ArbitaryObject arbitaryObject;
+    public ArbitaryObject getArbitaryObject() {
+        return arbitaryObject;
+    }
+    public void setArbitaryObject(ArbitaryObject arbitaryObject) {
+        this.arbitaryObject = arbitaryObject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "required_doc_type_id")
+    private Enumeration requiredDocType;
+    public Enumeration getRequiredDocType() {
+        return requiredDocType;
+    }
+    public void setRequiredDocType(Enumeration requiredDocType) {
+        this.requiredDocType = requiredDocType;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "control_level_id")
+    private ControlLevel controlLevel;
+    public ControlLevel getControlLevel() {
+        return controlLevel;
+    }
+    public void setControlLevel(ControlLevel controlLevel) {
+        this.controlLevel = controlLevel;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "raion_id")
+    private Raion raion;
+    public Raion getRaion() {
+        return raion;
+    }
+    public void setRaion(Raion raion) {
+        this.raion = raion;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "work_package_id")
+    private WorkPackage workPackage;
+    public WorkPackage getWorkPackage() {
+        return workPackage;
+    }
+    public void setWorkPackage(WorkPackage workPackage) {
+        this.workPackage = workPackage;
+    }
 
     @Column(name = "subject", nullable = false)
     private String subject;
@@ -33,24 +247,6 @@ public class WorkPackageJournal {
     @Column(name = "due_date")
     private LocalDateTime dueDate;
 
-    @Column(name = "category_id")
-    private Long categoryId;
-
-    @Column(name = "status_id", nullable = false)
-    private Long statusId;
-
-    @Column(name = "assigned_to_id")
-    private Long assignedToId;
-
-    @Column(name = "priority_id", nullable = false)
-    private Integer priorityId;
-
-    @Column(name = "fixed_version_id")
-    private Long fixedVersionId;
-
-    @Column(name = "author_id", nullable = false)
-    private Long authorId;
-
     @Column(name = "done_ratio", nullable = false)
     private Integer doneRatio;
 
@@ -60,50 +256,20 @@ public class WorkPackageJournal {
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
-    @Column(name = "parent_id")
-    private Long parentId;
-
-    @Column(name = "responsible_id")
-    private Long responsibleId;
-
-    @Column(name = "cost_object_id")
-    private Long costObjectId;
-
     @Column(name = "story_points")
     private Integer storyPoints;
 
     @Column(name = "remaining_hours")
     private Double remainingHours;
 
-    @Column(name = "contract_id")
-    private Long contractId;
-
     @Column(name = "result_agreed")
     private Boolean resultAgreed;
-
-    @Column(name = "organization_id")
-    private Long organizationId;
 
     @Column(name = "sed_href")
     private String sedHref;
 
-    @Column(name = "target_id")
-    private Long targetId;
-
-    @Column(name = "arbitary_object_id")
-    private Long arbitaryObjectId;
-
     @Column(name = "plan_num_pp", length = 10)
     private String planNumPp;
-
-    @Column(name = "required_doc_type_id")
-    private Long requiredDocTypeId;
-
-    @Column(name = "raion_id")
-    private Long raionId;
-
-    @Column(name = "work_package_id")
-    private Long workPackageId;
 
     @Column(name = "updated_at")
     private Timestamp updatedAt;
@@ -122,17 +288,6 @@ public class WorkPackageJournal {
 
     @Column(name = "last_start_date")
     private LocalDateTime lastStartDate;
-
-    @Column(name = "control_level_id")
-    private Integer controlLevelId;
-
-    public Integer getControlLevelId() {
-        return controlLevelId;
-    }
-
-    public void setControlLevelId(Integer controlLevelId) {
-        this.controlLevelId = controlLevelId;
-    }
 
     public LocalDateTime getLastStartDate() {
         return lastStartDate;
@@ -182,52 +337,12 @@ public class WorkPackageJournal {
         this.updatedAt = updatedAt;
     }
 
-    public Long getWorkPackageId() {
-        return workPackageId;
-    }
-
-    public void setWorkPackageId(Long workPackageId) {
-        this.workPackageId = workPackageId;
-    }
-
-    public Long getRaionId() {
-        return raionId;
-    }
-
-    public void setRaionId(Long raionId) {
-        this.raionId = raionId;
-    }
-
-    public Long getRequiredDocTypeId() {
-        return requiredDocTypeId;
-    }
-
-    public void setRequiredDocTypeId(Long requiredDocTypeId) {
-        this.requiredDocTypeId = requiredDocTypeId;
-    }
-
     public String getPlanNumPp() {
         return planNumPp;
     }
 
     public void setPlanNumPp(String planNumPp) {
         this.planNumPp = planNumPp;
-    }
-
-    public Long getArbitaryObjectId() {
-        return arbitaryObjectId;
-    }
-
-    public void setArbitaryObjectId(Long arbitaryObjectId) {
-        this.arbitaryObjectId = arbitaryObjectId;
-    }
-
-    public Long getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(Long targetId) {
-        this.targetId = targetId;
     }
 
     public String getSedHref() {
@@ -238,28 +353,12 @@ public class WorkPackageJournal {
         this.sedHref = sedHref;
     }
 
-    public Long getOrganizationId() {
-        return organizationId;
-    }
-
-    public void setOrganizationId(Long organizationId) {
-        this.organizationId = organizationId;
-    }
-
     public Boolean getResultAgreed() {
         return resultAgreed;
     }
 
     public void setResultAgreed(Boolean resultAgreed) {
         this.resultAgreed = resultAgreed;
-    }
-
-    public Long getContractId() {
-        return contractId;
-    }
-
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
     }
 
     public Double getRemainingHours() {
@@ -276,30 +375,6 @@ public class WorkPackageJournal {
 
     public void setStoryPoints(Integer storyPoints) {
         this.storyPoints = storyPoints;
-    }
-
-    public Long getCostObjectId() {
-        return costObjectId;
-    }
-
-    public void setCostObjectId(Long costObjectId) {
-        this.costObjectId = costObjectId;
-    }
-
-    public Long getResponsibleId() {
-        return responsibleId;
-    }
-
-    public void setResponsibleId(Long responsibleId) {
-        this.responsibleId = responsibleId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public LocalDateTime getStartDate() {
@@ -326,54 +401,6 @@ public class WorkPackageJournal {
         this.doneRatio = doneRatio;
     }
 
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
-    public Long getFixedVersionId() {
-        return fixedVersionId;
-    }
-
-    public void setFixedVersionId(Long fixedVersionId) {
-        this.fixedVersionId = fixedVersionId;
-    }
-
-    public Integer getPriorityId() {
-        return priorityId;
-    }
-
-    public void setPriorityId(Integer priorityId) {
-        this.priorityId = priorityId;
-    }
-
-    public Long getAssignedToId() {
-        return assignedToId;
-    }
-
-    public void setAssignedToId(Long assignedToId) {
-        this.assignedToId = assignedToId;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public LocalDateTime getDueDate() {
         return dueDate;
     }
@@ -396,30 +423,6 @@ public class WorkPackageJournal {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

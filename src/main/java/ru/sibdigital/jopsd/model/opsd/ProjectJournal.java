@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -16,8 +19,93 @@ public class ProjectJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "responsible_id")
+    private User responsible;
+    public User getResponsible() {
+        return responsible;
+    }
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "work_packages_responsible_id")
+    private User workPackagesResponsible;
+    public User getWorkPackagesResponsible() {
+        return workPackagesResponsible;
+    }
+    public void setWorkPackagesResponsible(User workPackagesResponsible) {
+        this.workPackagesResponsible = workPackagesResponsible;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_approve_status_id")
+    private Enumeration projectApproveStatus;
+    public Enumeration getProjectApproveStatus() {
+        return projectApproveStatus;
+    }
+    public void setProjectApproveStatus(Enumeration projectApproveStatus) {
+        this.projectApproveStatus = projectApproveStatus;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_status_id")
+    private Enumeration projectStatus;
+    public Enumeration getProjectStatus() {
+        return projectStatus;
+    }
+    public void setProjectStatus(Enumeration projectStatus) {
+        this.projectStatus = projectStatus;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private Project parent;
+    public Project getParent() {
+        return parent;
+    }
+    public void setParent(Project parent) {
+        this.parent = parent;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "national_project_id")
+    private NationalProject nationalProject;
+    public NationalProject getNationalProject() {
+        return nationalProject;
+    }
+    public void setNationalProject(NationalProject nationalProject) {
+        this.nationalProject = nationalProject;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "federal_project_id")
+    private NationalProject federalProject;
+    public NationalProject getFederalProject() {
+        return federalProject;
+    }
+    public void setFederalProject(NationalProject federalProject) {
+        this.federalProject = federalProject;
+    }
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -27,9 +115,6 @@ public class ProjectJournal {
 
     @Column(name = "is_public", nullable = false)
     private Boolean isPublic = false;
-
-    @Column(name = "parent_id")
-    private Long parentId;
 
     @Column(name = "created_on")
     private Timestamp createdOn;
@@ -49,32 +134,11 @@ public class ProjectJournal {
     @Column(name = "rgt")
     private Integer rgt;
 
-    @Column(name = "project_type_id")
-    private Long projectTypeId;
-
-    @Column(name = "responsible_id")
-    private Long responsibleId;
-
-    @Column(name = "work_packages_responsible_id")
-    private Long workPackagesResponsibleId;
-
-    @Column(name = "project_approve_status_id")
-    private Long projectApproveStatusId;
-
-    @Column(name = "project_status_id")
-    private Long projectStatusId;
-
     @Column(name = "start_date")
     private Timestamp startDate;
 
     @Column(name = "due_date")
     private Timestamp dueDate;
-
-    @Column(name = "national_project_id")
-    private Long nationalProjectId;
-
-    @Column(name = "federal_project_id")
-    private Long federalProjectId;
 
     @Column(name = "national_project_target")
     private String nationalProjectTarget;
@@ -84,6 +148,17 @@ public class ProjectJournal {
 
     @Column(name = "mission_of_head")
     private String missionOfHead;
+
+    @Column(name = "project_type_id")
+    private Long projectTypeId;
+
+    public Long getProjectTypeId() {
+        return projectTypeId;
+    }
+
+    public void setProjectTypeId(Long projectTypeId) {
+        this.projectTypeId = projectTypeId;
+    }
 
     public String getMissionOfHead() {
         return missionOfHead;
@@ -109,22 +184,6 @@ public class ProjectJournal {
         this.nationalProjectTarget = nationalProjectTarget;
     }
 
-    public Long getFederalProjectId() {
-        return federalProjectId;
-    }
-
-    public void setFederalProjectId(Long federalProjectId) {
-        this.federalProjectId = federalProjectId;
-    }
-
-    public Long getNationalProjectId() {
-        return nationalProjectId;
-    }
-
-    public void setNationalProjectId(Long nationalProjectId) {
-        this.nationalProjectId = nationalProjectId;
-    }
-
     public Timestamp getDueDate() {
         return dueDate;
     }
@@ -139,46 +198,6 @@ public class ProjectJournal {
 
     public void setStartDate(Timestamp startDate) {
         this.startDate = startDate;
-    }
-
-    public Long getProjectStatusId() {
-        return projectStatusId;
-    }
-
-    public void setProjectStatusId(Long projectStatusId) {
-        this.projectStatusId = projectStatusId;
-    }
-
-    public Long getProjectApproveStatusId() {
-        return projectApproveStatusId;
-    }
-
-    public void setProjectApproveStatusId(Long projectApproveStatusId) {
-        this.projectApproveStatusId = projectApproveStatusId;
-    }
-
-    public Long getWorkPackagesResponsibleId() {
-        return workPackagesResponsibleId;
-    }
-
-    public void setWorkPackagesResponsibleId(Long workPackagesResponsibleId) {
-        this.workPackagesResponsibleId = workPackagesResponsibleId;
-    }
-
-    public Long getResponsibleId() {
-        return responsibleId;
-    }
-
-    public void setResponsibleId(Long responsibleId) {
-        this.responsibleId = responsibleId;
-    }
-
-    public Long getProjectTypeId() {
-        return projectTypeId;
-    }
-
-    public void setProjectTypeId(Long projectTypeId) {
-        this.projectTypeId = projectTypeId;
     }
 
     public Integer getRgt() {
@@ -229,14 +248,6 @@ public class ProjectJournal {
         this.createdOn = createdOn;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
     public Boolean getIsPublic() {
         return isPublic;
     }
@@ -259,14 +270,6 @@ public class ProjectJournal {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

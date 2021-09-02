@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "risk_journals", indexes = {
@@ -12,11 +15,82 @@ public class RiskJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
+    }
 
-    @Column(name = "project_id")
-    private Long projectId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_id")
+    private Project project;
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "possibility_id")
+    private Enumeration possibility;
+    public Enumeration getPossibility() {
+        return possibility;
+    }
+    public void setPossibility(Enumeration possibility) {
+        this.possibility = possibility;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "importance_id")
+    private Enumeration importance;
+    public Enumeration getImportance() {
+        return importance;
+    }
+    public void setImportance(Enumeration importance) {
+        this.importance = importance;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "color_id")
+    private Color color;
+    public Color getColor() {
+        return color;
+    }
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "owner_id")
+    private User owner;
+    public User getOwner() {
+        return owner;
+    }
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "project_section_id")
+    private Enumeration projectSection;
+    public Enumeration getProjectSection() {
+        return projectSection;
+    }
+    public void setProjectSection(Enumeration projectSection) {
+        this.projectSection = projectSection;
+    }
 
     @Column(name = "name")
     private String name;
@@ -24,20 +98,8 @@ public class RiskJournal {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "possibility_id")
-    private Long possibilityId;
-
-    @Column(name = "importance_id")
-    private Long importanceId;
-
     @Column(name = "type")
     private String type;
-
-    @Column(name = "color_id")
-    private Long colorId;
-
-    @Column(name = "owner_id")
-    private Long ownerId;
 
     @Column(name = "is_possibility")
     private Boolean isPossibility;
@@ -47,17 +109,6 @@ public class RiskJournal {
 
     @Column(name = "solution")
     private String solution;
-
-    @Column(name = "project_section_id")
-    private Integer projectSectionId;
-
-    public Integer getProjectSectionId() {
-        return projectSectionId;
-    }
-
-    public void setProjectSectionId(Integer projectSectionId) {
-        this.projectSectionId = projectSectionId;
-    }
 
     public String getSolution() {
         return solution;
@@ -83,44 +134,12 @@ public class RiskJournal {
         this.isPossibility = isPossibility;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    public Long getColorId() {
-        return colorId;
-    }
-
-    public void setColorId(Long colorId) {
-        this.colorId = colorId;
-    }
-
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Long getImportanceId() {
-        return importanceId;
-    }
-
-    public void setImportanceId(Long importanceId) {
-        this.importanceId = importanceId;
-    }
-
-    public Long getPossibilityId() {
-        return possibilityId;
-    }
-
-    public void setPossibilityId(Long possibilityId) {
-        this.possibilityId = possibilityId;
     }
 
     public String getDescription() {
@@ -137,22 +156,6 @@ public class RiskJournal {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
     }
 
     public Long getId() {

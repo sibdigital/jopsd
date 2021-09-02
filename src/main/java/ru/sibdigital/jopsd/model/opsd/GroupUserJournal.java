@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 
 @Table(name = "group_user_journals", indexes = {
@@ -12,37 +15,37 @@ public class GroupUserJournal {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "journal_id", nullable = false)
-    private Long journalId;
-
-    @Column(name = "group_id", nullable = false)
-    private Long groupId;
-
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
-
-    public Long getUserId() {
-        return userId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "journal_id")
+    private Journal journal;
+    public Journal getJournal() {
+        return journal;
+    }
+    public void setJournal(Journal journal) {
+        this.journal = journal;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "group_id")
+    private User group;
+    public User getGroup() {
+        return group;
+    }
+    public void setGroup(User group) {
+        this.group = group;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id")
+    private User user;
+    public User getUser() {
+        return user;
     }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public Long getJournalId() {
-        return journalId;
-    }
-
-    public void setJournalId(Long journalId) {
-        this.journalId = journalId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {
