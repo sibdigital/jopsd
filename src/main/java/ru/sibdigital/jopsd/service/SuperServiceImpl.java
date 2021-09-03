@@ -92,6 +92,9 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected UserRepository userRepository;
 
+    @Autowired
+    protected CostTypeRepository costTypeRepository;
+
     protected void logError(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();

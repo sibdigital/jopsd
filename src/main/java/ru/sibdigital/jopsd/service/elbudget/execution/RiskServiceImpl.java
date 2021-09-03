@@ -3,6 +3,7 @@ package ru.sibdigital.jopsd.service.elbudget.execution;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
+import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.model.opsd.WorkPackageProblem;
 import ru.sibdigital.jopsd.model.enums.WorkPackageProblemStatuses;
@@ -56,12 +57,12 @@ public class RiskServiceImpl extends SuperServiceImpl implements RiskService {
         Long workPackageId = (Long) params.get("workPackageId");
         Long authorId = (Long) params.get("authorId");
         WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
-//        Long projectId = (workPackage == null) ? null : workPackage.getProjectId();
+        User author = userRepository.findById(authorId).orElse(null);
 
         WorkPackageProblem workPackageProblem = WorkPackageProblem.builder()
-//                .projectId(projectId)
-//                .workPackageId(workPackageId)
-//                .userCreatorId(authorId)
+                .project(workPackage.getProject())
+                .workPackage(workPackage)
+                .userCreator(author)
                 .description(risk.getName() + "\n" + risk.getReason())
                 .status(WorkPackageProblemStatuses.CREATED.getValue())
                 .type(WorkPackageProblemTypes.RISK.getValue())

@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
+import java.util.List;
+
 @Repository
 public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project> {
 

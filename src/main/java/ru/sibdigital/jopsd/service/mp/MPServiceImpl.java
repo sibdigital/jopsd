@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MPServiceImpl extends SuperServiceImpl implements MPService {
 
+    final class MpInfoStucture {
+
+    }
+
     @Override
     public List<WorkPackage> importFile(InputStream inputStream, Map<String, Object> params) throws MPXJException {
         List<WorkPackage> wps = processMPFile(inputStream, params);
@@ -88,7 +92,6 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
 
         for (MPWorkPackage mpWorkPackage : mpWorkPackages) {
             WorkPackage wp = mpWorkPackage.getWorkPackage();
-            Long wpId = wp.getId();
 
             MPWorkPackage mpParentWorkPackage = mpWorkPackage;
             Integer hierarchy = 0;
