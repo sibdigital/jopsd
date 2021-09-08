@@ -19,7 +19,7 @@
             <tr>
                 <td>
                     <a th:text="${work_package.subject}"
-                    th:href="@{{ref_portal}projects/{project_id}/work_packages/{work_package_id}(ref_portal=${ref_portal},project_id=${work_package.projectId},
+                    th:href="@{{ref_portal}projects/{project_id}/work_packages/{work_package_id}(ref_portal=${ref_portal},project_id=${work_package.getProject().getId()},
                                                             work_package_id=${work_package.id})}">
                     </a>
                 </td>

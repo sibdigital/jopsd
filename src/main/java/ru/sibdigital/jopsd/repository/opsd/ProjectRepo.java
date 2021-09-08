@@ -1,11 +1,12 @@
 package ru.sibdigital.jopsd.repository.opsd;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import ru.sibdigital.jopsd.model.opsd.NationalProject;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
 import java.util.List;
@@ -19,9 +20,6 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
                     "ORDER BY lft DESC\n" +
                     "LIMIT 1;", nativeQuery = true)
     Project findProjectWithMaxLft();
-
-//    @Query(value = "")
-//    Double findRequiredDiskSpace(@Param("id") Long projectId);
 
     @Query(value = "select coalesce ((with rels as (\n" +
             "    select from_id, to_id\n" +
@@ -57,4 +55,6 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
     Double findDoneRatio(@Param("projectId") Long projectId);
 
     List<Project> findByName(String name);
+
+    Page<Project> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

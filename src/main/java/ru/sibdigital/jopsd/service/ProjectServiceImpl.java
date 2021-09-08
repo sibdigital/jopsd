@@ -40,12 +40,12 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
     }
 
     @Override
-    public List<EnabledModule> createDefaultEnabledModules(Long projectId) {
+    public List<EnabledModule> createDefaultEnabledModules(Project project) {
         List<EnabledModule> list = new ArrayList<>();
         Set<String> defaultProjectsModulesNames = getDefaultProjectsModulesName();
         defaultProjectsModulesNames.forEach(ctr -> {
             list.add(EnabledModule.builder()
-//                                    .projectId(projectId)
+                                    .project(project)
                                     .name(ctr)
                                     .build());
         });
@@ -53,9 +53,9 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
     }
 
     @Override
-    public Board createDefaultBoard(Long projectId) {
+    public Board createDefaultBoard(Project project) {
         return Board.builder()
-//                        .projectId(projectId)
+                        .project(project)
                         .name("Основная дискуссия проекта")
                         .description("Основная дискуссия проекта")
                         .position(1)
@@ -66,9 +66,9 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
     }
 
     @Override
-    public Wiki createDefaultWiki(Long projectId) {
+    public Wiki createDefaultWiki(Project project) {
         return Wiki.builder()
-//                    .projectId(projectId)
+                    .project(project)
                     .startPage("Wiki")
                     .status(1)
                     .createdAt(Timestamp.from(Instant.now()))
@@ -78,11 +78,11 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
 
 
     @Override
-    public List<ProjectType> createDefaultProjectTypes(Long projectId) {
+    public List<ProjectType> createDefaultProjectTypes(Project project) {
         List<ProjectType> list = new ArrayList<>();
-        list.add(ProjectType.builder().projectId(projectId).typeId(Long.valueOf(1)).build());
-        list.add(ProjectType.builder().projectId(projectId).typeId(Long.valueOf(2)).build());
-        list.add(ProjectType.builder().projectId(projectId).typeId(Long.valueOf(3)).build());
+        list.add(ProjectType.builder().projectId(project.getId()).typeId(Long.valueOf(1)).build());
+        list.add(ProjectType.builder().projectId(project.getId()).typeId(Long.valueOf(2)).build());
+        list.add(ProjectType.builder().projectId(project.getId()).typeId(Long.valueOf(3)).build());
         return list;
     }
 

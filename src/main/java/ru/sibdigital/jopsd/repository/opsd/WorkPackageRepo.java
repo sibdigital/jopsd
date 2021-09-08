@@ -1,5 +1,7 @@
 package ru.sibdigital.jopsd.repository.opsd;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +21,9 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
 
     List<WorkPackage> findAllByCostObjectId(Long costObjectId);
 
-    List<WorkPackage> findAllByProjectId(Long projectId);
+//    List<WorkPackage> findAllByProjectId(Long projectId);
+    Page<WorkPackage> findAllByProject_Id(Long projectId, Pageable pageable);
+    Page<WorkPackage> findByProject_IdAndSubjectContainingIgnoreCase(Long projectId, String subject, Pageable pageable);
 
     Optional<WorkPackage> findWorkPackageByMetaId(Long metaId);
 }

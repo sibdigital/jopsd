@@ -9,6 +9,9 @@ import ru.sibdigital.jopsd.service.elbudget.execution.*;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Service
 @Slf4j
@@ -80,6 +83,18 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected ProjectService projectService;
 
+    @Autowired
+    protected TypeRepository typeRepository;
+
+    @Autowired
+    protected StatusRepository statusRepository;
+
+    @Autowired
+    protected UserRepository userRepository;
+
+    @Autowired
+    protected CostTypeRepository costTypeRepository;
+
     protected void logError(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();
@@ -113,5 +128,11 @@ public class SuperServiceImpl implements SuperService {
         }  else {
             return null;
         }
+    }
+
+    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 }

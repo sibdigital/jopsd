@@ -4,11 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
-import ru.sibdigital.jopsd.model.opsd.Target;
-import ru.sibdigital.jopsd.model.opsd.TargetExecutionValue;
-import ru.sibdigital.jopsd.model.opsd.WorkPackage;
-import ru.sibdigital.jopsd.model.opsd.WorkPackageTarget;
+import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.model.enums.TargetTypes;
+import ru.sibdigital.jopsd.model.opsd.Enumeration;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.io.InputStream;
@@ -91,13 +89,13 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
                     BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
 
                     workPackageTarget= WorkPackageTarget.builder()
-//                            .projectId(workPackage.getProjectId())
-//                            .workPackageId(workPackage.getId())
-//                            .targetId(target.getId())
-                            .year(year) // TODO изменить на Integer в master
-                            .quarter(quarter) // TODO изменить на Integer в master
-                            .month(month) // TODO изменить на Integer в master
-                            .value(monthlyExecution.getFactPrognos()) // TODO В master изменить тип value на BigDecimal
+                            .project(workPackage.getProject())
+                            .workPackage(workPackage)
+                            .target(target)
+                            .year(year)
+                            .quarter(quarter)
+                            .month(month)
+                            .value(monthlyExecution.getFactPrognos())
                             .createdAt(new Timestamp(System.currentTimeMillis()))
                             .updatedAt(new Timestamp(System.currentTimeMillis()))
                             .planValue(planValue)
@@ -138,11 +136,12 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
     }
 
     private Target createTarget(TargetMatch targetMatch, WorkPackage workPackage) {
+        Enumeration type = enumerationRepo.findById(TargetTypes.PURPOSE.getValue()).orElse(null);
         return Target.builder()
                     .name(targetMatch.getNewTargetName())
-//                    .typeId(TargetTypes.PURPOSE.getValue())
-//                    .parentId(Long.valueOf(0))
-//                    .projectId(workPackage.getProjectId())
+                    .targetType(type)
+                    .parent(Target.builder().id(Long.valueOf(0)).build())
+                    .project(workPackage.getProject())
                     .createdAt(Timestamp.from(Instant.now()))
                     .updatedAt(Timestamp.from(Instant.now()))
                     .metaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId())

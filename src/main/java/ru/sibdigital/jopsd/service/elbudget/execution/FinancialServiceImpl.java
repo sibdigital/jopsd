@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
 import ru.sibdigital.jopsd.model.enums.CostTypes;
-import ru.sibdigital.jopsd.model.opsd.CostEntry;
-import ru.sibdigital.jopsd.model.opsd.CostObject;
-import ru.sibdigital.jopsd.model.opsd.MaterialBudgetItem;
-import ru.sibdigital.jopsd.model.opsd.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.io.InputStream;
@@ -26,7 +23,10 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         CostObject costObject = null;
 
         Long workPackageId = (Long) params.get("workPackageId");
+        Long authorId = (Long) params.get("authorId");
+
         WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
+        User author = userRepository.findById(authorId).orElse(null);
 
         Resultsexecution resultsExecution = executionParseService.unmarshalInputStream(inputStream);
         Resultsexecution.RegProject.Results.Result result = executionParseService.getResult(resultsExecution);
@@ -34,7 +34,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
             costObject = costObjectRepo.findCostObjectByMetaId(result.getResultMetaId()).orElse(null);
             if (costObject == null) {
                 params.put("resultMetaId", result.getResultMetaId());
-                costObject = createCostObjectByWorkPackageAndResultMetaId(workPackage, params);
+                costObject = createCostObjectByWorkPackageAndResultMetaId(workPackage, author, params);
             }
 
             List<MaterialBudgetItem> newMaterialBudgetItemList = new ArrayList<>();
@@ -43,7 +43,8 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                 Map<String, CostTypes> mapCostTypes = getMapCostTypes();
                 List<String> codes = new ArrayList<>(mapCostTypes.keySet());
                 for (String code : codes) {
-                    CostTypes costType = mapCostTypes.get(code);
+                    Long costTypeId = mapCostTypes.get(code).getValue();
+                    CostType costType = costTypeRepository.findById(costTypeId).orElse(null);
 
                     List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources =
                             getFinancialSourcesByCode(financialSourceList, code);
@@ -64,84 +65,15 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         return costObject;
     }
 
-//    public void saveFinances(Resultsexecution.RegProject regProject, WorkPackage workPackage, Map<String, Object> params) {
-//        CostObject costObject = getCostObjectByWorkPackage(workPackage, params);
-//
-//        List<MaterialBudgetItem> materialBudgetItemList = new ArrayList<>();
-//        List<CostEntry> costEntryList = new ArrayList<>();
-//
-//        List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = executionParseService.getFinancialSourceList(regProject);
-//        if (financialSourceList != null) {
-//            Map<String, CostTypes> mapCostTypes = getMapCostTypes();
-//            List<String> codes = new ArrayList<>(mapCostTypes.keySet());
-//            for (String code : codes) {
-//                CostTypes costType = mapCostTypes.get(code);
-//
-//                List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources =
-//                        getFinancialSourcesByCode(financialSourceList, code);
-//
-//                List<MaterialBudgetItem> materialBudgetItems = parseMaterialBudgetItems(financialSources, costType, costObject);
-//                materialBudgetItemList.addAll(materialBudgetItems);
-//
-//                List<CostEntry> costEntries = parseCostEntries(financialSources, workPackage, costType, costObject, params);
-//                costEntryList.addAll(costEntries);
-//            }
-//        }
-//
-//        if (!materialBudgetItemList.isEmpty()) {
-//            materialBudgetItemRepo.saveAll(materialBudgetItemList);
-//        }
-//
-//        if (!costEntryList.isEmpty()) {
-//            costEntryRepo.saveAll(costEntryList);
-//        }
-//    }
-
     private List<MaterialBudgetItem> parseMaterialBudgetItems(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources,
-                                          CostTypes costType, CostObject costObject) {
+                                          CostType costType, CostObject costObject) {
         List<MaterialBudgetItem> newMaterialBudgetItems = new ArrayList<>();
 
-//        BigDecimal financialSourcesCBRSum = getFinancialSourceCBRSum(financialSources);
-//
-//        List<MaterialBudgetItem> budgetItemsInDB = findMaterialBudgetItemsByCostObjectAndCostType(costObject, costType);
-//        BigDecimal budgetItemsInDBConsolidateUnitsSum = getMaterialBudgetItemConsolidateUnitsSum(budgetItemsInDB);
-
-//        if (financialSourcesCBRSum.compareTo(budgetItemsInDBConsolidateUnitsSum) != 0) {
-//            if (budgetItemsInDBConsolidateUnitsSum.compareTo(BigDecimal.ZERO) == 0) {
-                for (Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource : financialSources) {
-                    newMaterialBudgetItems.add(createMaterialBudgetItem(financialSource, costType, costObject));
-                }
-//            }
-//
-////            else {
-////                // TODO Если в ИСУПе уже введены суммы бюджета, и они не равны суммам из Эл.Бюджета
-////            }
-//        }
-
-        return newMaterialBudgetItems;
-    }
-
-    private List<CostEntry> parseCostEntries(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources,
-                                             WorkPackage workPackage, CostTypes costType, CostObject costObject, Map<String, Object> params) {
-        List<CostEntry> newCostEntries = new ArrayList<>();
-
-        BigDecimal financialCashExecution = getFinancialSourceCashExecutionSum(financialSources);
-
-        List<CostEntry> costEntriesInDB = findCostEntriesByCostObjectAndCostTypes(costObject, costType);
-        BigDecimal costEntriesInDBSum = getCostEntriesCostsSum(costEntriesInDB);
-
-        if (financialCashExecution.compareTo(costEntriesInDBSum) != 0) {
-            if (costEntriesInDBSum.compareTo(BigDecimal.ZERO) == 0) {
-                for (Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource : financialSources) {
-                    newCostEntries.add(createCostEntry(financialSource, workPackage, costType, params));
-                }
-            }
-//            else {
-//                // TODO Если в ИСУПе уже введены суммы исполнения, и они не равны суммам из Эл.Бюджета
-//            }
+        for (Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource : financialSources) {
+            newMaterialBudgetItems.add(createMaterialBudgetItem(financialSource, costType, costObject));
         }
 
-        return newCostEntries;
+        return newMaterialBudgetItems;
     }
 
     private List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> getFinancialSourcesByCode(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList, String code) {
@@ -149,18 +81,6 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                 financialSourceList.stream()
                         .filter(ctr -> ctr.getRegProjFinValue().equals(code))
                         .collect(Collectors.toList());
-    }
-
-    private BigDecimal getFinancialSourceCBRSum(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources) {
-        BigDecimal sum = BigDecimal.ZERO;
-
-        if (financialSources != null) {
-            sum = financialSources.stream()
-                    .map(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource::getCBR)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        }
-
-        return sum;
     }
 
     private BigDecimal getFinancialSourceCashExecutionSum(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources) {
@@ -175,17 +95,7 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         return sum;
     }
 
-    private BigDecimal getMaterialBudgetItemConsolidateUnitsSum(List<MaterialBudgetItem> materialBudgetItems) {
-        BigDecimal sum = BigDecimal.ZERO;
 
-        if (materialBudgetItems != null) {
-            sum = materialBudgetItems.stream()
-                    .map(MaterialBudgetItem::getConsolidateUnits)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-        }
-
-        return sum;
-    }
 
     private BigDecimal getCostEntriesCostsSum(List<CostEntry> costEntries) {
         BigDecimal sum = BigDecimal.ZERO;
@@ -212,22 +122,12 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         return mapCode;
     }
 
-//    private CostObject getCostObjectByWorkPackage(WorkPackage workPackage, Map<String, Object> params) {
-//        CostObject costObject = findCostObjectByWorkPackage(workPackage);
-//        if (costObject == null) {
-//            costObject = createCostObjectByWorkPackage(workPackage, params);
-//        }
-//
-//        return costObject;
-//    }
-
-    private CostObject createCostObjectByWorkPackageAndResultMetaId(WorkPackage workPackage, Map<String, Object> params) {
-        Long authorId = (Long) params.get("authorId");
+    private CostObject createCostObjectByWorkPackageAndResultMetaId(WorkPackage workPackage, User author, Map<String, Object> params) {
         Long resultMetaId = (Long) params.get("resultMetaId");
 
         CostObject costObject = CostObject.builder()
-//                                .projectId(workPackage.getProjectId())
-//                                .authorId(authorId)
+                                .project(workPackage.getProject())
+                                .author(author)
                                 .subject(workPackage.getSubject())
                                 .description("Загружен из Эл. Бюджета")
                                 .type("VariableCostObject")
@@ -235,23 +135,23 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                                 .createdOn(new Timestamp(System.currentTimeMillis()))
                                 .updatedOn(new Timestamp(System.currentTimeMillis()))
                                 .metaId(resultMetaId)
-//                                .targetId(targetId)
+//                                .targetId(targetId) // Пока не заполняем
                                 .build();
 
         costObjectRepo.save(costObject);
 
-//        workPackage.setCostObjectId(costObject.getId());
+        workPackage.setCostObject(costObject);
         workPackageRepo.save(workPackage);
 
         return costObject;
     }
 
     private MaterialBudgetItem createMaterialBudgetItem(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource,
-                                                        CostTypes costType, CostObject costObject) {
+                                                        CostType costType, CostObject costObject) {
         return MaterialBudgetItem.builder()
-//                .costObjectId(costObject.getId())
+                .costObject(costObject)
                 .units(1.0)
-//                .costTypeId(costType.getValue())
+                .costType(costType)
                 .comments("Загружен из Эл. Бюджета")
                 .budget(financialSource.getCBR())
                 .passportUnits(financialSource.getCBR()) // не выгружается из ЭлБюджета
@@ -272,11 +172,14 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         Integer month = calendar.get(Calendar.MONTH) + 1;
         Integer week = calendar.get(Calendar.WEEK_OF_YEAR);
 
+        User author = userRepository.findById(authorId).orElse(null);
+        CostType costTypeObject = costTypeRepository.findById(costType.getValue()).orElse(null);
+
         return CostEntry.builder()
-//                .userId(authorId)
-//                .projectId(workPackage.getProjectId())
-//                .workPackageId(workPackage.getId())
-//                .costTypeId(costType.getValue())
+                .user(author)
+                .project(workPackage.getProject())
+                .workPackage(workPackage)
+                .costType(costTypeObject)
                 .units(financialSource.getCashExecution().doubleValue())
                 .costs(financialSource.getCashExecution())
                 .recordedLiability(financialSource.getBudgetCommitments())
@@ -292,19 +195,6 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
 
     }
 
-    private CostObject findCostObjectByWorkPackage(WorkPackage workPackage) {
-//        Long costObjectId = workPackage.getCostObjectId();
-//        if (costObjectId != null) {
-//            return costObjectRepo.findById(costObjectId).orElse(null);
-//        } else {
-            return null;
-//        }
-    }
-
-    private List<MaterialBudgetItem> findMaterialBudgetItemsByCostObjectAndCostType(CostObject costObject, CostTypes costType) {
-        return materialBudgetItemRepo.findAllByCostObjectIdAndCostTypeId(costObject.getId(), costType.getValue()).orElse(null);
-    }
-
     private List<CostEntry> findCostEntriesByCostObjectAndCostTypes(CostObject costObject, CostTypes costType) {
         List<WorkPackage> workPackagesWithCostObject = workPackageRepo.findAllByCostObjectId(costObject.getId());
         List<Long> workPackageIds = workPackagesWithCostObject.stream()
@@ -312,5 +202,63 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
                                     .collect(Collectors.toList());
         return costEntryRepo.findAllByWorkPackageIdsAndCostTypeId(workPackageIds, costType.getValue());
     }
+
+    //---------------- НЕ ИСПОЛЬЗУЕМЫЕ ФУНКЦИИ
+
+    private List<CostEntry> parseCostEntries(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources,
+                                             WorkPackage workPackage, CostTypes costType, CostObject costObject, Map<String, Object> params) {
+        List<CostEntry> newCostEntries = new ArrayList<>();
+
+        BigDecimal financialCashExecution = getFinancialSourceCashExecutionSum(financialSources);
+
+        List<CostEntry> costEntriesInDB = findCostEntriesByCostObjectAndCostTypes(costObject, costType);
+        BigDecimal costEntriesInDBSum = getCostEntriesCostsSum(costEntriesInDB);
+
+        if (financialCashExecution.compareTo(costEntriesInDBSum) != 0) {
+            if (costEntriesInDBSum.compareTo(BigDecimal.ZERO) == 0) {
+                for (Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource : financialSources) {
+                    newCostEntries.add(createCostEntry(financialSource, workPackage, costType, params));
+                }
+            }
+//            else {
+//                // TODO Если в ИСУПе уже введены суммы исполнения, и они не равны суммам из Эл.Бюджета
+//            }
+        }
+
+        return newCostEntries;
+    }
+
+    private BigDecimal getMaterialBudgetItemConsolidateUnitsSum(List<MaterialBudgetItem> materialBudgetItems) {
+        BigDecimal sum = BigDecimal.ZERO;
+
+        if (materialBudgetItems != null) {
+            sum = materialBudgetItems.stream()
+                    .map(MaterialBudgetItem::getConsolidateUnits)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+
+        return sum;
+    }
+
+    private BigDecimal getFinancialSourceCBRSum(List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources) {
+        BigDecimal sum = BigDecimal.ZERO;
+
+        if (financialSources != null) {
+            sum = financialSources.stream()
+                    .map(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource::getCBR)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+
+        return sum;
+    }
+
+    private CostObject findCostObjectByWorkPackage(WorkPackage workPackage) {
+        return workPackage.getCostObject();
+    }
+
+    private List<MaterialBudgetItem> findMaterialBudgetItemsByCostObjectAndCostType(CostObject costObject, CostTypes costType) {
+        return materialBudgetItemRepo.findAllByCostObjectIdAndCostTypeId(costObject.getId(), costType.getValue()).orElse(null);
+    }
+
 
 }

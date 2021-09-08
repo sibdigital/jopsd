@@ -10,6 +10,7 @@ import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.model.opsd.CostObject;
 import ru.sibdigital.jopsd.model.opsd.Target;
+import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
 import java.io.File;
@@ -99,7 +100,7 @@ public class ImportExecutionController extends SuperController {
             if (workPackage == null) {
                 return ResponseEntity.ok()
                         .body("{\"status\": \"server\"," +
-                                "\"cause\":\"Файл успешно обработан\"," +
+                                "\"cause\":\"Мероприятие не найдено. Выберите вручную или создайте\"," +
                                 "\"sname\": \"null\"}");
             } else {
                 return workPackage;
@@ -232,19 +233,19 @@ public class ImportExecutionController extends SuperController {
 //        return projects;
 //    }
 
-    @GetMapping("/work_package_list")
-    public @ResponseBody
-    List<WorkPackage> getWorkPackages(@RequestParam("projectId") Long projectId){ //TODO В service перенести
-        List<WorkPackage> workPackages = workPackageRepo.findAllByProjectId(projectId);
-        workPackages.sort(Comparator.comparing(WorkPackage::getSubject));
-        return workPackages;
-    }
+//    @GetMapping("/work_package_list")
+//    public @ResponseBody
+//    List<WorkPackage> getWorkPackages(@RequestParam("projectId") Long projectId){ //TODO В service перенести
+//        List<WorkPackage> workPackages = workPackageRepo.findAllByProjectId(projectId);
+//        workPackages.sort(Comparator.comparing(WorkPackage::getSubject));
+//        return workPackages;
+//    }
 
-    @GetMapping("/target_list")
-    public @ResponseBody
-    List<Target> getTargets(@RequestParam("projectId") Long projectId){ //TODO В service перенести
-        List<Target> targets = targetRepo.findAllByProjectId(projectId);
-        targets.sort(Comparator.comparing(Target::getName));
-        return targets;
-    }
+//    @GetMapping("/target_list")
+//    public @ResponseBody
+//    List<Target> getTargets(@RequestParam("projectId") Long projectId){ //TODO В service перенести
+//        List<Target> targets = targetRepo.findAllByProjectId(projectId);
+//        targets.sort(Comparator.comparing(Target::getName));
+//        return targets;
+//    }
 }

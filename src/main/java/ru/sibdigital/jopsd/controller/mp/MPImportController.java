@@ -38,8 +38,8 @@ public class MPImportController extends SuperController {
     @PostMapping("/import/mpp")
     public RedirectView importMpp(@RequestParam("file") MultipartFile multipartFile,
                                             @RequestParam("projectId") Long projectId,
+//                                            @RequestParam("authorId") Long authorId,
                                             RedirectAttributes redirectAttributes
-//                                            @RequestParam("authorId") Long authorId
     ) {
         try {
             InputStream inputStream = multipartFile.getInputStream();
