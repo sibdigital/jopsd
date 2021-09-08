@@ -1,5 +1,7 @@
 package ru.sibdigital.jopsd.repository.opsd;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,6 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
 
 //    @Query(nativeQuery = true, value = "SELECT SUM(repo.required_storage_bytes) FROM repositories repo WHERE repo.project_id = :id")
 //    Double getFilesize(@Param("id") Long projectId);
+
+    Page<Project> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

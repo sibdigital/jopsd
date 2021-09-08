@@ -241,11 +241,11 @@ public class ImportExecutionController extends SuperController {
 //        return workPackages;
 //    }
 
-    @GetMapping("/target_list")
-    public @ResponseBody
-    List<Target> getTargets(@RequestParam("projectId") Long projectId){ //TODO В service перенести
-        List<Target> targets = targetRepo.findAllByProjectId(projectId);
-        targets.sort(Comparator.comparing(Target::getName));
-        return targets;
-    }
+//    @GetMapping("/target_list")
+//    public @ResponseBody
+//    List<Target> getTargets(@RequestParam("projectId") Long projectId){ //TODO В service перенести
+//        List<Target> targets = targetRepo.findAllByProjectId(projectId);
+//        targets.sort(Comparator.comparing(Target::getName));
+//        return targets;
+//    }
 }
