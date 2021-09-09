@@ -213,39 +213,10 @@ public class ImportExecutionController extends SuperController {
         }
     }
 
-
-    @GetMapping("/import/execution1")
-    public String getTest() {
-        return "";
-    }
-
     @GetMapping("/cost_objects_all")
     public @ResponseBody
     List<CostObject> getCostObject(){
         return costObjectRepo.findAll();
     }
 
-//    @GetMapping("/project_list")
-//    public @ResponseBody
-//    List<Project> getProjects(){
-//        List<Project> projects = projectService.getProjects();
-//        projects.sort(Comparator.comparing(Project::getName));
-//        return projects;
-//    }
-
-//    @GetMapping("/work_package_list")
-//    public @ResponseBody
-//    List<WorkPackage> getWorkPackages(@RequestParam("projectId") Long projectId){ //TODO В service перенести
-//        List<WorkPackage> workPackages = workPackageRepo.findAllByProjectId(projectId);
-//        workPackages.sort(Comparator.comparing(WorkPackage::getSubject));
-//        return workPackages;
-//    }
-
-//    @GetMapping("/target_list")
-//    public @ResponseBody
-//    List<Target> getTargets(@RequestParam("projectId") Long projectId){ //TODO В service перенести
-//        List<Target> targets = targetRepo.findAllByProjectId(projectId);
-//        targets.sort(Comparator.comparing(Target::getName));
-//        return targets;
-//    }
 }
