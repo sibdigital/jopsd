@@ -7,4 +7,6 @@ import ru.sibdigital.jopsd.model.opsd.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+
+    User findUserByLogin(String login);
 }
