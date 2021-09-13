@@ -10,12 +10,12 @@ import java.util.Collections;
 
 public class CustomUserDetails implements UserDetails {
 
-    private String login;
+    private User user;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(User user) {
         CustomUserDetails c = new CustomUserDetails();
-        c.login = user.getLogin();
+        c.user = user;
         if (user.getAdmin()) {
             c.grantedAuthorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
@@ -55,5 +55,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

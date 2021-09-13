@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.sibdigital.jopsd.config.user.details.CustomUserDetails;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.model.opsd.Project;
+import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.service.ProjectService;
 
@@ -34,14 +37,17 @@ public class MPImportController extends SuperController {
     @PostMapping("/import/mpp")
     public @ResponseBody Object importMpp(@RequestParam("file") MultipartFile multipartFile,
                              @RequestParam("projectId") Long projectId,
-                             @RequestParam("authorId") Long authorId
+                             HttpSession session
     ) {
         try {
+            CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = currentUser.getUser();
+
             InputStream inputStream = multipartFile.getInputStream();
 
             Map<String, Object> params = new HashMap<>();
             params.put("projectId", projectId);
-            params.put("authorId", authorId);
+            params.put("authorId", user.getId());
 
             List<WorkPackage> workPackages = MPService.importFile(inputStream, params);
             return workPackages;
