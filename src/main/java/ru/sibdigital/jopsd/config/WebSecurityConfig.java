@@ -44,8 +44,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/libs/**", "/css/**", "/js/**").permitAll() //, "/templates/outer/**"
+                .antMatchers("/libs/**", "/css/**", "/js/**").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .anyRequest().authenticated()
+
+                .and()
+                .formLogin()
+                .loginPage("/login")
+
                 .and()
                 .addFilterBefore(sessionFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(corsFilter, ChannelProcessingFilter.class);
