@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Controller
 public class MainController extends SuperController {
-    @GetMapping({"", "/upload/el_budget"})
+    @GetMapping({"", "/upload/el_budget", "/upload/mpp"})
     public String admin(Model model) {
         return "index";
     }
