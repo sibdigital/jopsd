@@ -4,9 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.sibdigital.jopsd.repository.opsd.CostObjectRepo;
-import ru.sibdigital.jopsd.repository.opsd.ProjectRepo;
-import ru.sibdigital.jopsd.repository.opsd.TargetRepo;
-import ru.sibdigital.jopsd.repository.opsd.WorkPackageRepo;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
 import ru.sibdigital.jopsd.service.elbudget.execution.FinancialService;
 import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
@@ -31,15 +28,6 @@ public class SuperController {
 
     @Autowired
     protected CostObjectRepo costObjectRepo;
-
-    @Autowired
-    protected WorkPackageRepo workPackageRepo; //TODO убрать, когда в service обернуто все будет
-
-    @Autowired
-    protected ProjectRepo projectRepo; //TODO убрать, когда в service обернуто все будет
-
-    @Autowired
-    protected TargetRepo targetRepo; //TODO убрать, когда в service обернуто все будет
 
     @Autowired
     protected FinancialService financialService;
