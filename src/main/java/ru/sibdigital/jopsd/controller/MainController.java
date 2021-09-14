@@ -18,7 +18,7 @@ public class MainController extends SuperController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public void method(HttpServletResponse httpServletResponse) {
         // если юзер разлогинился в исуп, то он сам дальше редирекнет внутри на /login, поэтому только на url исупа редирект идет
-        httpServletResponse.setHeader("Location", applicationConstants.getRefWorkingPortal());
+        httpServletResponse.setHeader("Location", settingService.getOpsdHref());
         httpServletResponse.setStatus(302);
     }
 
