@@ -46,8 +46,8 @@ public class ImportExecutionController extends SuperController {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+                            "\"cause\":\"" + e.getMessage() + "\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
         }
     }
 
@@ -67,8 +67,8 @@ public class ImportExecutionController extends SuperController {
             if (workPackage == null) {
                 return ResponseEntity.ok()
                         .body("{\"status\": \"server\"," +
-                                "\"cause\":\"Ошибка сохранения\"," +
-                                "\"sname\": \"" + workPackageName + "\"}");
+                                "\"cause\":\"\" + e.getMessage() + \"\"," +
+                                "\"sname\": \"Ошибка сохранения\"}");
             } else {
                 return workPackage;
             }
@@ -77,8 +77,8 @@ public class ImportExecutionController extends SuperController {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+                            "\"cause\":\\" + e.getMessage() + "\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
         }
     }
 
@@ -104,16 +104,16 @@ public class ImportExecutionController extends SuperController {
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("{\"status\": \"server\"," +
-                                "\"cause\":\"Ошибка сохранения\"," +
-                                "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+                                "\"cause\":\"costObject is null\"," +
+                                "\"sname\": \"Ошибка сохранения\"}");
             }
         }
         catch (Exception e) {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+                            "\"cause\":\"" + e.getMessage() + "\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
         }
     }
 
@@ -130,8 +130,8 @@ public class ImportExecutionController extends SuperController {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + multipartFile.getOriginalFilename() + "\"}");
+                            "\"cause\":\""+ e.getMessage() + "\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
         }
     }
 
@@ -153,8 +153,8 @@ public class ImportExecutionController extends SuperController {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \" work-package-id:" + workPackageId + "\"}");
+                            "\"cause\":\"" + e.getMessage() + "\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
         }
     }
 

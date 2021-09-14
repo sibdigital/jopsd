@@ -56,8 +56,8 @@ public class MPImportController extends SuperController {
             logError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \" project-id:" + projectId + "\"}");
+                            "\"cause\":\"" + e.getMessage() +"\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
         }
     }
 
