@@ -51,6 +51,35 @@ public class ImportExecutionController extends SuperController {
         }
     }
 
+    @PostMapping(value = "/import/execution/put_metaid_to_work_package")
+    public @ResponseBody Object putMetaidToWorkPackage(@RequestParam("file") MultipartFile multipartFile,
+                                                  @RequestParam("workPackageId") Long workPackageId,
+                                                  HttpSession session) {
+        try {
+            CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = currentUser.getUser();
+
+            InputStream inputStream = multipartFile.getInputStream();
+            WorkPackage workPackage = executionService.putMetaIdToWorkPackage(inputStream, workPackageId);
+
+            if (workPackage == null) {
+                return ResponseEntity.ok()
+                        .body("{\"status\": \"server\"," +
+                                "\"cause\":\"\"Не найден по id workPackage\"\"," +
+                                "\"sname\": \"Ошибка сохранения\"}");
+            } else {
+                return workPackage;
+            }
+        }
+        catch (Exception e) {
+            logError(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"status\": \"server\"," +
+                            "\"cause\":\\" + e.getMessage() + "\"," +
+                            "\"sname\": \"Ошибка сохранения\"}");
+        }
+    }
+
     @PostMapping(value = "/import/execution/create_work_package")
     public @ResponseBody Object createWorkPackage(@RequestParam("file") MultipartFile multipartFile,
                                                   @RequestParam("workPackageName") String workPackageName,
@@ -67,7 +96,7 @@ public class ImportExecutionController extends SuperController {
             if (workPackage == null) {
                 return ResponseEntity.ok()
                         .body("{\"status\": \"server\"," +
-                                "\"cause\":\"\" + e.getMessage() + \"\"," +
+                                "\"cause\":\"\"null\"\"," +
                                 "\"sname\": \"Ошибка сохранения\"}");
             } else {
                 return workPackage;

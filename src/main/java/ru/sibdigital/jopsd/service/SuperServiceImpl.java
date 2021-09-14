@@ -84,6 +84,9 @@ public class SuperServiceImpl implements SuperService {
     protected ProjectService projectService;
 
     @Autowired
+    protected WorkPackageService workPackageService;
+
+    @Autowired
     protected TypeRepository typeRepository;
 
     @Autowired
