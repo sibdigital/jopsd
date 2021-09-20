@@ -1,4 +1,4 @@
-create function get_cost_object_list_for_wp(id_work_package integer, id_project integer) returns SETOF cost_objects
+create or replace function get_cost_object_list_for_wp(id_work_package integer, id_project integer) returns SETOF cost_objects
     language plpgsql
 as
 $$
