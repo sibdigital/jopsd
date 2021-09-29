@@ -12,20 +12,23 @@ import java.sql.Timestamp;
 public interface ProjectRegisteryProjection {
     String getName();
     Boolean getPublic();
+
     NationalProject getFederalProject();
+    NationalProject getNationalProject();
+
     Enumeration getProjectStatus();
     Enumeration getProjectApproveStatus();
+    Integer getStatus();
+
     String getIdentifier();
+
     String getDescription();
-
-//    @Value("#{@projectRepo.findRequiredDiskSpace(target.id)}")
-//    Double requiredDiskSpace();
-
-    NationalProject getNationalProject();
 
     @Value("#{@projectRepo.findDoneRatio(target.id)}")
     Double getDoneRatio();
 
     Timestamp getStartDate();
     Timestamp getDueDate();
+    Timestamp getUpdatedOn();
+    Timestamp getCreatedOn();
 }
