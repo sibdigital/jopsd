@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
 import java.util.List;
@@ -67,4 +67,56 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
     @Override
     @RestResource(exported = false)
     void delete(Project project);
+
+    @RestResource(path = "nameStartsWith", rel = "nameStartsWith")
+    Page findByNameStartsWith(@Param("name") String name, Pageable p);
+
+    List<Project> findByIdentifier(String identifier);
+
+    @Query(nativeQuery = true,
+            value = "select * from projects\n" +
+                    " where\n" +
+                    "    ((cast(:identifier as character varying) is not null and identifier like concat('%', :identifier, '%')) or (cast(:identifier as character varying) is null))\n" +
+                    "  AND ((cast(cast(:start_date_left as character varying) as timestamp) is null or cast(cast(:start_date_right as character varying) as timestamp) is null) or ((cast(cast(:start_date_left as character varying) as timestamp) is not null and cast(cast(:start_date_right as character varying) as timestamp) is not null and start_date between to_timestamp(:start_date_left, 'YYYY-MM-DD') and to_timestamp(:start_date_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:due_date_left as character varying) as timestamp) is null or cast(cast(:due_date_right as character varying) as timestamp) is null) or ((cast(cast(:due_date_left as character varying) as timestamp) is not null and cast(cast(:due_date_right as character varying) as timestamp) is not null and due_date between to_timestamp(:due_date_left, 'YYYY-MM-DD') and to_timestamp(:due_date_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:created_on_left as character varying) as timestamp) is null or cast(cast(:created_on_right as character varying) as timestamp) is null) or ((cast(cast(:created_on_left as character varying) as timestamp) is not null and cast(cast(:created_on_right as character varying) as timestamp) is not null and created_on between to_timestamp(:created_on_left, 'YYYY-MM-DD') and to_timestamp(:created_on_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:national_project_id as character varying) as INTEGER) is null) or (cast(cast(:national_project_id as character varying) as INTEGER) is not null and national_project_id=cast(cast(:national_project_id as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:updated_on_left as character varying) as timestamp) is null or cast(cast(:updated_on_right as character varying) as timestamp) is null) or ((cast(cast(:updated_on_left as character varying) as timestamp) is not null and cast(cast(:updated_on_right as character varying) as timestamp) is not null and updated_on between to_timestamp(:updated_on_left, 'YYYY-MM-DD') and to_timestamp(:updated_on_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:project_status_id as character varying) as INTEGER) is null) or (cast(cast(:project_status_id as character varying) as INTEGER) is not null and project_status_id=cast(cast(:project_status_id as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:federal_project_id as CHARACTER varying) as INTEGER) is null) or (cast(cast(:federal_project_id as CHARACTER varying) as INTEGER) is not null and federal_project_id=cast(cast(:federal_project_id as CHARACTER varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:project_approve_status_id as character varying) as INTEGER) is null) or (cast(cast(:project_approve_status_id as character varying) as INTEGER) is not null and project_approve_status_id=cast(cast(:project_approve_status_id as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:status as character varying) as INTEGER) is null) or (cast(cast(:status as character varying) as INTEGER) is not null and status=cast(cast(:status as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(:name as character varying) is not null and name like concat('%', :name, '%')) or (cast(:name as character varying) is null))",
+            countQuery = "select count(*) from projects\n" +
+                    " where\n" +
+                    "    ((cast(:identifier as character varying) is not null and identifier like concat('%', :identifier, '%')) or (cast(:identifier as character varying) is null))\n" +
+                    "  AND ((cast(cast(:start_date_left as character varying) as timestamp) is null or cast(cast(:start_date_right as character varying) as timestamp) is null) or ((cast(cast(:start_date_left as character varying) as timestamp) is not null and cast(cast(:start_date_right as character varying) as timestamp) is not null and start_date between to_timestamp(:start_date_left, 'YYYY-MM-DD') and to_timestamp(:start_date_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:due_date_left as character varying) as timestamp) is null or cast(cast(:due_date_right as character varying) as timestamp) is null) or ((cast(cast(:due_date_left as character varying) as timestamp) is not null and cast(cast(:due_date_right as character varying) as timestamp) is not null and due_date between to_timestamp(:due_date_left, 'YYYY-MM-DD') and to_timestamp(:due_date_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:created_on_left as character varying) as timestamp) is null or cast(cast(:created_on_right as character varying) as timestamp) is null) or ((cast(cast(:created_on_left as character varying) as timestamp) is not null and cast(cast(:created_on_right as character varying) as timestamp) is not null and created_on between to_timestamp(:created_on_left, 'YYYY-MM-DD') and to_timestamp(:created_on_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:national_project_id as character varying) as INTEGER) is null) or (cast(cast(:national_project_id as character varying) as INTEGER) is not null and national_project_id=cast(cast(:national_project_id as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:updated_on_left as character varying) as timestamp) is null or cast(cast(:updated_on_right as character varying) as timestamp) is null) or ((cast(cast(:updated_on_left as character varying) as timestamp) is not null and cast(cast(:updated_on_right as character varying) as timestamp) is not null and updated_on between to_timestamp(:updated_on_left, 'YYYY-MM-DD') and to_timestamp(:updated_on_right, 'YYYY-MM-DD'))))\n" +
+                    "  AND ((cast(cast(:project_status_id as character varying) as INTEGER) is null) or (cast(cast(:project_status_id as character varying) as INTEGER) is not null and project_status_id=cast(cast(:project_status_id as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:federal_project_id as CHARACTER varying) as INTEGER) is null) or (cast(cast(:federal_project_id as CHARACTER varying) as INTEGER) is not null and federal_project_id=cast(cast(:federal_project_id as CHARACTER varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:project_approve_status_id as character varying) as INTEGER) is null) or (cast(cast(:project_approve_status_id as character varying) as INTEGER) is not null and project_approve_status_id=cast(cast(:project_approve_status_id as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(cast(:status as character varying) as INTEGER) is null) or (cast(cast(:status as character varying) as INTEGER) is not null and status=cast(cast(:status as character varying) as INTEGER)))\n" +
+                    "  AND ((cast(:name as character varying) is not null and name like concat('%', :name, '%')) or (cast(:name as character varying) is null))"
+    )
+    Page<Project> findByProjectRegisterFields(
+            @Param("start_date_left") String start_date_left,
+            @Param("start_date_right") String start_date_right,
+            @Param("due_date_left") String due_date_left,
+            @Param("due_date_right") String due_date_right,
+            @Param("created_on_left") String created_on_left,
+            @Param("created_on_right") String created_on_right,
+            @Param("identifier") String identifier,
+            @Param("national_project_id") Integer national_project_id,
+            @Param("updated_on_left") String updated_on_left,
+            @Param("updated_on_right") String updated_on_right,
+            @Param("project_status_id") Integer project_status_id,
+            @Param("federal_project_id") Integer federal_project_id,
+            @Param("project_approve_status_id") Integer project_approve_status_id,
+            @Param("status") Integer status,
+            @Param("name") String name,
+            Pageable pageable
+    );
 }
