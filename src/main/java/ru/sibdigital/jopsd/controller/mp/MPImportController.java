@@ -26,7 +26,7 @@ import java.util.Map;
 public class MPImportController extends SuperController {
 
     @Autowired
-    ProjectService projectService;
+    ProjectService projectService;// TODO remove duplicate
 
     @GetMapping("/upload_mpp")
     public String viewAppointment(Model model, HttpSession session) {

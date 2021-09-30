@@ -13,6 +13,9 @@ import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.service.ProjectService;
+import ru.sibdigital.jopsd.service.page.PageFileService;
+import ru.sibdigital.jopsd.service.page.PageMapService;
+import ru.sibdigital.jopsd.service.page.PageService;
 
 @Slf4j
 @Controller
@@ -46,6 +49,15 @@ public class SuperController {
 
     @Autowired
     protected TargetService targetService;
+
+    @Autowired
+    protected PageService pageService;
+
+    @Autowired
+    protected PageFileService pageFileService;
+
+    @Autowired
+    protected PageMapService pageMapService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
