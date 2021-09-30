@@ -62,6 +62,21 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
     }
 
     @Override
+    public WorkPackage putMetaIdToWorkPackage(InputStream inputStream, Long workPackageId) throws Exception {
+        WorkPackage workPackage = null;
+        try {
+            Long resultMetaId = getResultMetaIdInInputStream(inputStream);
+            if (resultMetaId != null) {
+                workPackage = workPackageService.putMetaId(workPackageId, resultMetaId);
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+
+        return workPackage;
+    }
+
+    @Override
     @Transactional
     public WorkPackage createWorkPackage(InputStream inputStream, String workPackageName, Long projectId, String projectName, Long authorId) throws Exception {
         if (projectId == 0) {

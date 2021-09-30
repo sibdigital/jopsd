@@ -84,6 +84,9 @@ public class SuperServiceImpl implements SuperService {
     protected ProjectService projectService;
 
     @Autowired
+    protected WorkPackageService workPackageService;
+
+    @Autowired
     protected TypeRepository typeRepository;
 
     @Autowired
@@ -94,6 +97,9 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected CostTypeRepository costTypeRepository;
+
+    @Autowired
+    protected SettingRepository settingRepository;
 
     @Autowired
     protected PageRepository pageRepository;

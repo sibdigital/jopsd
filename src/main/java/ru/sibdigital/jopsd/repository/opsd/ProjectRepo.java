@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
 import java.util.List;
 
-@Repository
+@RepositoryRestResource
 public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project> {
 
     @Query(value = "SELECT *\n" +
@@ -57,4 +58,13 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
     List<Project> findByName(String name);
 
     Page<Project> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    @Override
+    @RestResource(exported = false)
+    void deleteById(Long id);
+
+
+    @Override
+    @RestResource(exported = false)
+    void delete(Project project);
 }

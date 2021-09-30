@@ -7,4 +7,5 @@ import ru.sibdigital.jopsd.model.opsd.Session;
 
 @RepositoryRestResource(exported = false)
 public interface SessionRepository extends JpaRepository<Session, Long>, JpaSpecificationExecutor<Session> {
+    Session findBySessionId(String sessionId);
 }

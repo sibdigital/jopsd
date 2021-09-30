@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@RepositoryRestResource
 public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSpecificationExecutor<WorkPackage> {
 
     @Query(nativeQuery = true,
@@ -26,4 +27,13 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
     Page<WorkPackage> findByProject_IdAndSubjectContainingIgnoreCase(Long projectId, String subject, Pageable pageable);
 
     Optional<WorkPackage> findWorkPackageByMetaId(Long metaId);
+
+    @Override
+    @RestResource(exported = false)
+    void deleteById(Long id);
+
+
+    @Override
+    @RestResource(exported = false)
+    void delete(WorkPackage workPackage);
 }

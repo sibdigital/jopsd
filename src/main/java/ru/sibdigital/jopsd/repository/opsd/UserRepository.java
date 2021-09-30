@@ -8,4 +8,6 @@ import ru.sibdigital.jopsd.model.opsd.User;
 
 @RepositoryRestResource(exported = false)
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+
+    User findUserByLogin(String login);
 }

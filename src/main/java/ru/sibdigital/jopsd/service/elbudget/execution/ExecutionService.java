@@ -12,6 +12,8 @@ public interface ExecutionService {
 
     WorkPackage findWorkPackage(InputStream inputStream) throws Exception;
 
+    WorkPackage putMetaIdToWorkPackage(InputStream inputStream, Long workPackageId) throws Exception;
+
     WorkPackage createWorkPackage(InputStream inputStream, String workPackageName, Long projectId, String projectName, Long authorId) throws Exception;
 
     void matchData(InputStream inputStream, Map<String, Object> params) throws Exception;
