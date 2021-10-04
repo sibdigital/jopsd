@@ -27,6 +27,7 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
     Page<WorkPackage> findByProject_IdAndSubjectContainingIgnoreCase(Long projectId, String subject, Pageable pageable);
 
     Optional<WorkPackage> findWorkPackageByMetaId(Long metaId);
+    List<WorkPackage> findAllByProjectId(Long projectId);
 
     @Override
     @RestResource(exported = false)

@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Page;
+import ru.sibdigital.jopsd.model.opsd.projection.PageProjection;
 
 import java.util.List;
 
-@RepositoryRestResource
+@RepositoryRestResource(excerptProjection = PageProjection.class)
 public interface PageRepository extends JpaRepository<Page, Long>, JpaSpecificationExecutor<Page> {
 
     @Override

@@ -18,24 +18,10 @@ public class PageController extends SuperController {
         return pageService.getGroups();
     }
 
-    @PostMapping("/pages/new")
-    public @ResponseBody Object createPage(@RequestBody Page body) {
+    @PostMapping("/pages/upsert")
+    public @ResponseBody ResponseEntity upsertPage(@RequestBody Page body) {
         try {
-            return pageService.createOrUpdatePage(body);
-        }
-        catch (Exception e){
-            logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
-        }
-    }
-
-    @PostMapping("/pages/{id_page}/edit")
-    public @ResponseBody Object updatePage(@RequestBody Page body, @PathVariable("id_page") Long pageId) {
-        try {
-            return pageService.createOrUpdatePage(body);
+            return ResponseEntity.ok(pageService.createOrUpdatePage(body));
         }
         catch (Exception e){
             logError(e);

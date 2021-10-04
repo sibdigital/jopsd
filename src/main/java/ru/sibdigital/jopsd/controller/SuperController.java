@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.sibdigital.jopsd.repository.opsd.CostObjectRepo;
 import ru.sibdigital.jopsd.service.SettingService;
+import ru.sibdigital.jopsd.service.WorkPackageService;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
 import ru.sibdigital.jopsd.service.elbudget.execution.FinancialService;
 import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
@@ -23,6 +24,9 @@ public class SuperController {
 
     @Autowired
     protected ProjectService projectService;
+
+    @Autowired
+    protected WorkPackageService workPackageService;
 
     @Autowired
     protected MPService MPService;
