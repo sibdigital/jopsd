@@ -2,18 +2,23 @@ package ru.sibdigital.jopsd.service.page;
 
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.model.opsd.Page;
+import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PageServiceImpl extends SuperServiceImpl implements PageService {
     @Override
-    public Page createOrUpdatePage(Page page) {
-        page.setAuthor(userRepository.findById(page.getAuthor().getId()).orElse(null));
-        page.setParent(pageRepository.findById(page.getParent().getId()).orElse(null));
-        page.setWorkPackage(workPackageRepo.findById(page.getWorkPackage().getId()).orElse(null));
-        page.setProject(projectRepo.findById(page.getProject().getId()).orElse(null));
+    public Page createOrUpdatePage(Page page, User currentUser) {
+        page.setAuthor(currentUser);
+        if (page.getParent().getId() == null) page.setParent(null);
+        if (page.getProject().getId() == null) page.setProject(null);
+        if (page.getWorkPackage().getId() == null) page.setWorkPackage(null);
+        if (page.getCreatedOn() == null) page.setCreatedOn(LocalDateTime.now());
+        page.setUpdatedOn(LocalDateTime.now());
         pageRepository.save(page);
         return page;
     }

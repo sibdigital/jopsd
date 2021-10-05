@@ -6,8 +6,7 @@ import ru.sibdigital.jopsd.model.opsd.Project;
 import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Projection(name = "pageProjection", types = {Page.class})
 public interface PageProjection {
@@ -21,6 +20,6 @@ public interface PageProjection {
     Project getProject();
     WorkPackage getWorkPackage();
     Page getParent();
-    Instant getUpdatedOn();
-    Timestamp getCreatedOn();
+    LocalDateTime getUpdatedOn();
+    LocalDateTime getCreatedOn();
 }

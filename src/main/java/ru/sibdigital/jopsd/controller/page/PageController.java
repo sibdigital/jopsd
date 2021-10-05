@@ -2,12 +2,16 @@ package ru.sibdigital.jopsd.controller.page;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.sibdigital.jopsd.config.user.details.CustomUserDetails;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.model.opsd.Page;
 import ru.sibdigital.jopsd.model.opsd.PageFile;
 import ru.sibdigital.jopsd.model.opsd.PageMap;
+import ru.sibdigital.jopsd.model.opsd.User;
 
 import java.util.List;
 
@@ -19,9 +23,9 @@ public class PageController extends SuperController {
     }
 
     @PostMapping("/pages/upsert")
-    public @ResponseBody ResponseEntity upsertPage(@RequestBody Page body) {
+    public @ResponseBody ResponseEntity upsertPage(@RequestBody Page body, @AuthenticationPrincipal CustomUserDetails user) {
         try {
-            return ResponseEntity.ok(pageService.createOrUpdatePage(body));
+            return ResponseEntity.ok(pageService.createOrUpdatePage(body, user.getUser()));
         }
         catch (Exception e){
             logError(e);

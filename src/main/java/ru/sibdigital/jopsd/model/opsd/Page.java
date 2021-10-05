@@ -1,12 +1,10 @@
 package ru.sibdigital.jopsd.model.opsd;
 
-import lombok.Builder;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "pages")
 @Entity
@@ -52,24 +50,24 @@ public class Page {
     private String content;
 
     @Column(name = "created_on", nullable = false)
-    private Timestamp createdOn;
+    private LocalDateTime createdOn;
 
     @Column(name = "updated_on")
-    private Instant updatedOn;
+    private LocalDateTime updatedOn;
 
-    public Instant getUpdatedOn() {
+    public LocalDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(Instant updatedOn) {
+    public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public Timestamp getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Timestamp createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
