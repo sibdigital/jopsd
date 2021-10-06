@@ -101,6 +101,9 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected SettingRepository settingRepository;
 
+    @Autowired
+    protected ContractRepository contractRepository;
+
     protected void logError(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();

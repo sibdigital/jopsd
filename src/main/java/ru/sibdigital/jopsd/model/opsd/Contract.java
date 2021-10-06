@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -10,6 +13,9 @@ import java.time.LocalDateTime;
 
 @Table(name = "contracts")
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
