@@ -47,4 +47,7 @@ public class ContractDto {
     private String conclusionOfProjectDocumentationDetails;
     private String conclusionOfProjectDocumentationNumber;
     private Date conclusionOfProjectDocumentationDate;
+    private String conclusionOfEcologicalExpertiseDetails;
+    private String conclusionOfEcologicalExpertiseNumber;
+    private Date conclusionOfEcologicalExpertiseDate;
 }

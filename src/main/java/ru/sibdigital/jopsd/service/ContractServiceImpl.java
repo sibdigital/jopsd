@@ -14,17 +14,25 @@ public class ContractServiceImpl extends SuperServiceImpl implements ContractSer
     @Override
     public Contract saveContract(ContractDto contractDto) {
         Project project = (contractDto.getProjectId() != null) ? projectRepo.findById(contractDto.getProjectId()).orElse(null) : null;
+        Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+        Boolean isApprove = true;
+        if (contractDto.getId() != null) {
+            Contract prevVersion = contractRepository.findById(contractDto.getId()).orElse(null);
+            if (prevVersion != null) {
+                createdAt = prevVersion.getCreatedAt();
+                isApprove = prevVersion.getIsApprove();
+            }
+        }
         Contract contract = Contract.builder()
                             .id(contractDto.getId())
                             .contractSubject(contractDto.getContractSubject())
                             .contractDate(convertToLocalDateTimeViaInstant(contractDto.getContractDate()))
                             .price(contractDto.getPrice())
                             .executor(contractDto.getExecutor())
-//                            .createdAt(contractDto.getCreatedAt())
-//                            .createdAt(new Timestamp(System.currentTimeMillis()))
+                            .createdAt(createdAt)
                             .updatedAt(new Timestamp(System.currentTimeMillis()))
                             .contractNum(contractDto.getContractNum())
-                            .isApprove(contractDto.getIsApprove())
+                            .isApprove(isApprove)
                             .eisHref(contractDto.getEisHref())
                             .name(contractDto.getName())
                             .sposob(contractDto.getSposob())
@@ -46,6 +54,12 @@ public class ContractServiceImpl extends SuperServiceImpl implements ContractSer
                             .conclusionOfEstimatedCostDetails(contractDto.getConclusionOfEstimatedCostDetails())
                             .conclusionOfEstimatedCostNumber(contractDto.getConclusionOfEstimatedCostNumber())
                             .conclusionOfEstimatedCostDate(convertToLocalDateTimeViaInstant(contractDto.getConclusionOfEstimatedCostDate()))
+                            .conclusionOfProjectDocumentationDetails(contractDto.getConclusionOfProjectDocumentationDetails())
+                            .conclusionOfProjectDocumentationNumber(contractDto.getConclusionOfProjectDocumentationNumber())
+                            .conclusionOfProjectDocumentationDate(convertToLocalDateTimeViaInstant(contractDto.getConclusionOfProjectDocumentationDate()))
+                            .conclusionOfEcologicalExpertiseDate(convertToLocalDateTimeViaInstant(contractDto.getConclusionOfEcologicalExpertiseDate()))
+                            .conclusionOfEcologicalExpertiseNumber(contractDto.getConclusionOfEcologicalExpertiseNumber())
+                            .conclusionOfEcologicalExpertiseDetails(contractDto.getConclusionOfEcologicalExpertiseDetails())
                             .build();
 
         contractRepository.save(contract);

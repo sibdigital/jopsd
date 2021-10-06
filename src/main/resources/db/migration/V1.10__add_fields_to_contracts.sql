@@ -51,3 +51,14 @@ ALTER TABLE contracts
 -- Дата
 ALTER TABLE contracts
     ADD COLUMN IF NOT EXISTS conclusion_of_project_documentation_date date;
+
+-- Положительное заключение государственной экологической экспертизы
+-- Реквизиты
+ALTER TABLE contracts
+    ADD COLUMN IF NOT EXISTS conclusion_of_ecological_expertise_details text;
+-- Номер
+ALTER TABLE contracts
+    ADD COLUMN IF NOT EXISTS conclusion_of_ecological_expertise_number text;
+-- Дата
+ALTER TABLE contracts
+    ADD COLUMN IF NOT EXISTS conclusion_of_ecological_expertise_date date;

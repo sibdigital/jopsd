@@ -121,6 +121,15 @@ public class Contract {
     @Column(name = "conclusion_of_project_documentation_date")
     private LocalDateTime conclusionOfProjectDocumentationDate;
 
+    @Column(name = "conclusion_of_ecological_expertise_details")
+    private String conclusionOfEcologicalExpertiseDetails;
+
+    @Column(name = "conclusion_of_ecological_expertise_number")
+    private String conclusionOfEcologicalExpertiseNumber;
+
+    @Column(name = "conclusion_of_ecological_expertise_date")
+    private LocalDateTime conclusionOfEcologicalExpertiseDate;
+
     public Project getProject() {
         return project;
     }
@@ -383,5 +392,29 @@ public class Contract {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getConclusionOfEcologicalExpertiseDetails() {
+        return conclusionOfEcologicalExpertiseDetails;
+    }
+
+    public void setConclusionOfEcologicalExpertiseDetails(String conclusionOfEcologicalExpertiseDetails) {
+        this.conclusionOfEcologicalExpertiseDetails = conclusionOfEcologicalExpertiseDetails;
+    }
+
+    public String getConclusionOfEcologicalExpertiseNumber() {
+        return conclusionOfEcologicalExpertiseNumber;
+    }
+
+    public void setConclusionOfEcologicalExpertiseNumber(String conclusionOfEcologicalExpertiseNumber) {
+        this.conclusionOfEcologicalExpertiseNumber = conclusionOfEcologicalExpertiseNumber;
+    }
+
+    public LocalDateTime getConclusionOfEcologicalExpertiseDate() {
+        return conclusionOfEcologicalExpertiseDate;
+    }
+
+    public void setConclusionOfEcologicalExpertiseDate(LocalDateTime conclusionOfEcologicalExpertiseDate) {
+        this.conclusionOfEcologicalExpertiseDate = conclusionOfEcologicalExpertiseDate;
     }
 }
