@@ -10,8 +10,11 @@ import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.model.opsd.Page;
 import ru.sibdigital.jopsd.model.opsd.PageFile;
 import ru.sibdigital.jopsd.model.opsd.PageMap;
+import ru.sibdigital.jopsd.utils.DataFormatUtils;
 
+import javax.xml.crypto.Data;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PageController extends SuperController {
@@ -22,43 +25,43 @@ public class PageController extends SuperController {
 
     @PostMapping("/pages/upsert")
     public @ResponseBody ResponseEntity upsertPage(@RequestBody Page body, @AuthenticationPrincipal CustomUserDetails user) {
+        Map<Object, Object> result;
         try {
             return ResponseEntity.ok(pageService.createOrUpdatePage(body, user.getUser()));
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping("/page_maps/upsert")
     public @ResponseBody Object upsertPageMap(@RequestBody PageMap body) {
+        Map<Object, Object> result;
         try {
             return pageMapService.createOrUpdatePageMap(body);
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+           result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping("/page_files/upsert")
     public @ResponseBody Object upsertPageFile(@RequestBody PageFile body) {
+        Map<Object, Object> result;
         try {
             return pageFileService.createOrUpdatePageFile(body);
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 }

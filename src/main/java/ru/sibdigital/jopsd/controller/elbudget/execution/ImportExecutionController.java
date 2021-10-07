@@ -30,6 +30,7 @@ import java.util.Map;
 public class ImportExecutionController extends SuperController {
     @PostMapping(value = "/import/execution/find_work_package")
     public @ResponseBody Object findWorkPackage(@RequestParam("file") MultipartFile multipartFile) {
+        Map<Object, Object> result;
         try {
             InputStream inputStream = multipartFile.getInputStream();
             WorkPackage workPackage = executionService.findWorkPackage(inputStream);
@@ -42,15 +43,17 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping(value = "/import/execution/put_metaid_to_work_package")
     public @ResponseBody Object putMetaidToWorkPackage(@RequestParam("file") MultipartFile multipartFile,
                                                   @RequestParam("workPackageId") Long workPackageId,
                                                   HttpSession session) {
+        Map<Object, Object> result;
         try {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
@@ -66,9 +69,10 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping(value = "/import/execution/create_work_package")
@@ -77,6 +81,7 @@ public class ImportExecutionController extends SuperController {
                                                   @RequestParam("projectId") Long projectId,
                                                   @RequestParam("projectName") String projectName,
                                                   HttpSession session) {
+        Map<Object, Object> result;
         try {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
@@ -92,9 +97,10 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping("/import/execution/save_finance")
@@ -102,6 +108,7 @@ public class ImportExecutionController extends SuperController {
             @RequestParam("file") MultipartFile multipartFile,
             @RequestParam("workPackageId") Long workPackageId,
             HttpSession session) {
+        Map<Object, Object> result;
         try {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
@@ -117,18 +124,20 @@ public class ImportExecutionController extends SuperController {
             if (costObject != null) {
                 return costObject;
             } else {
-                return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", "Cost object is null"));
+                result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", "Cost object is null");
             }
         }
         catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result =  Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping("/import/execution/match_purpose_criteria")
     public @ResponseBody Object matchPurposeCriteria(@RequestParam("file") MultipartFile multipartFile) {
+        Map<Object, Object> result;
         try {
             InputStream inputStream = multipartFile.getInputStream();
 
@@ -138,15 +147,17 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @PostMapping("/import/execution/process_targets")
     public @ResponseBody Object processPurposeCriteria(@RequestBody List<TargetMatch> targetMatches,
                                                      @RequestParam("workPackageId") Long workPackageId,
                                                      HttpSession session) {
+        Map<Object, Object> result;
         try {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
@@ -159,9 +170,10 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
     @GetMapping("/cost_objects_all")
