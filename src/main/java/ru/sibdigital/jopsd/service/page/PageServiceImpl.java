@@ -13,7 +13,9 @@ public class PageServiceImpl extends SuperServiceImpl implements PageService {
     @Override
     public Page createOrUpdatePage(Page page, User currentUser) {
         page.setAuthor(currentUser);
-        if (page.getCreatedOn() == null) page.setCreatedOn(LocalDateTime.now());
+        if (page.getCreatedOn() == null) {
+            page.setCreatedOn(LocalDateTime.now());
+        }
         page.setUpdatedOn(LocalDateTime.now());
         pageRepository.save(page);
         return page;
