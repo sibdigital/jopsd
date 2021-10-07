@@ -4,5 +4,4 @@ import ru.sibdigital.jopsd.model.opsd.PageMap;
 
 public interface PageMapService {
     PageMap createOrUpdatePageMap(PageMap pageMap);
-    PageMap deletePageMap(Long id);
 }

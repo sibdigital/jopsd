@@ -5,6 +5,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Table(name = "page_maps")
 @Entity
@@ -26,24 +27,24 @@ public class PageMap {
     private String source;
 
     @Column(name = "created_on", nullable = false)
-    private Timestamp createdOn;
+    private LocalDateTime createdOn;
 
     @Column(name = "updated_on")
-    private Timestamp updatedOn;
+    private LocalDateTime updatedOn;
 
-    public Timestamp getUpdatedOn() {
+    public LocalDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(Timestamp updatedOn) {
+    public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public Timestamp getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Timestamp createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -71,7 +72,9 @@ public class PageMap {
         this.isDeleted = isDeleted;
     }
 
-    public Long getId() {return id;}
+    public Long getId() {
+        return id;
+    }
 
     public void setId(Long id) {
         this.id = id;

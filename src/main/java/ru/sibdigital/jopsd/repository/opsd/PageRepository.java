@@ -21,4 +21,6 @@ public interface PageRepository extends JpaRepository<Page, Long>, JpaSpecificat
     void delete(Page page);
 
     List<Page> findAllByIsGroup(boolean isGroup);
+
+    List<Page> findAllByIsGroupAndIdIsNot(boolean isGroup, Long id);
 }
