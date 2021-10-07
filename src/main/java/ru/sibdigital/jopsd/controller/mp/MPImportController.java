@@ -20,6 +20,7 @@ import ru.sibdigital.jopsd.model.opsd.Project;
 import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.service.ProjectService;
+import ru.sibdigital.jopsd.utils.DataFormatUtils;
 
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
@@ -54,10 +55,8 @@ public class MPImportController extends SuperController {
 
         } catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"" + e.getMessage() +"\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 

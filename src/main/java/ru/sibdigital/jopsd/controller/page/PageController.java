@@ -12,8 +12,10 @@ import ru.sibdigital.jopsd.model.opsd.Page;
 import ru.sibdigital.jopsd.model.opsd.PageFile;
 import ru.sibdigital.jopsd.model.opsd.PageMap;
 import ru.sibdigital.jopsd.model.opsd.User;
+import ru.sibdigital.jopsd.utils.DataFormatUtils;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PageController extends SuperController {
@@ -29,10 +31,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -43,10 +43,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -57,10 +55,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -71,10 +67,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -85,10 +79,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -99,10 +91,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -113,10 +103,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -127,10 +115,8 @@ public class PageController extends SuperController {
         }
         catch (Exception e){
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"Ошибка сохранения\"," +
-                            "\"sname\": \"" + e.getMessage() + "\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 }

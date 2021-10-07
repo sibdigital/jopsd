@@ -14,6 +14,7 @@ import ru.sibdigital.jopsd.model.opsd.CostObject;
 import ru.sibdigital.jopsd.model.opsd.Target;
 import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
+import ru.sibdigital.jopsd.utils.DataFormatUtils;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -34,20 +35,15 @@ public class ImportExecutionController extends SuperController {
             WorkPackage workPackage = executionService.findWorkPackage(inputStream);
 
             if (workPackage == null) {
-                return ResponseEntity.ok()
-                        .body("{\"status\": \"server\"," +
-                                "\"cause\":\"Мероприятие не найдено. Выберите вручную или создайте\"," +
-                                "\"sname\": \"null\"}");
+                return DataFormatUtils.buildOkResponse(Map.of("status", "server", "name", "null", "cause", "Мероприятие не найдено. Выберите вручную или создайте"));
             } else {
                 return workPackage;
             }
         }
         catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"" + e.getMessage() + "\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -63,20 +59,15 @@ public class ImportExecutionController extends SuperController {
             WorkPackage workPackage = executionService.putMetaIdToWorkPackage(inputStream, workPackageId);
 
             if (workPackage == null) {
-                return ResponseEntity.ok()
-                        .body("{\"status\": \"server\"," +
-                                "\"cause\":\"\"Не найден по id workPackage\"\"," +
-                                "\"sname\": \"Ошибка сохранения\"}");
+                return DataFormatUtils.buildOkResponse(Map.of("status", "server", "name", "null", "cause", "Не найден по id workPackage"));
             } else {
                 return workPackage;
             }
         }
         catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\\" + e.getMessage() + "\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -94,20 +85,15 @@ public class ImportExecutionController extends SuperController {
             WorkPackage workPackage = executionService.createWorkPackage(inputStream, workPackageName, projectId, projectName, user.getId());
 
             if (workPackage == null) {
-                return ResponseEntity.ok()
-                        .body("{\"status\": \"server\"," +
-                                "\"cause\":\"\"null\"\"," +
-                                "\"sname\": \"Ошибка сохранения\"}");
+                return DataFormatUtils.buildOkResponse(Map.of("status", "server", "name", "null", "cause", "Ошибка сохранения"));
             } else {
                 return workPackage;
             }
         }
         catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\\" + e.getMessage() + "\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -131,18 +117,13 @@ public class ImportExecutionController extends SuperController {
             if (costObject != null) {
                 return costObject;
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("{\"status\": \"server\"," +
-                                "\"cause\":\"costObject is null\"," +
-                                "\"sname\": \"Ошибка сохранения\"}");
+                return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", "Cost object is null"));
             }
         }
         catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"" + e.getMessage() + "\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -157,10 +138,8 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\""+ e.getMessage() + "\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
@@ -180,10 +159,8 @@ public class ImportExecutionController extends SuperController {
         }
         catch (Exception e) {
             logError(e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("{\"status\": \"server\"," +
-                            "\"cause\":\"" + e.getMessage() + "\"," +
-                            "\"sname\": \"Ошибка сохранения\"}");
+            String mes =  e.getMessage() == null ? "" : e.getMessage();
+            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
         }
     }
 
