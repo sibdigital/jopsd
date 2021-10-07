@@ -15,13 +15,13 @@ public class Page {
     private Long id;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @Column(name = "is_publicated")
-    private Boolean isPublicated;
+    private Boolean isPublicated = false;
 
     @Column(name = "is_group")
-    private Boolean isGroup;
+    private Boolean isGroup = false;
 
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)

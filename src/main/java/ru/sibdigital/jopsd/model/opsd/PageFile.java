@@ -4,7 +4,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Table(name = "page_files")
 @Entity
@@ -44,24 +44,24 @@ public class PageFile {
     private Long fileSize;
 
     @Column(name = "created_on", nullable = false)
-    private Timestamp createdOn;
+    private LocalDateTime createdOn;
 
     @Column(name = "updated_on")
-    private Timestamp updatedOn;
+    private LocalDateTime updatedOn;
 
-    public Timestamp getUpdatedOn() {
+    public LocalDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(Timestamp updatedOn) {
+    public void setUpdatedOn(LocalDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public Timestamp getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(Timestamp createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 

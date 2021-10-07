@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface PageService {
     Page createOrUpdatePage(Page page, User currentUser);
-    Page deletePage(Long id);
-    List<Page> getGroups();
+    List<Page> getGroups(Long id);
 }
