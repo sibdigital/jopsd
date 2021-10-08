@@ -40,6 +40,7 @@ public class MPImportController extends SuperController {
                              @RequestParam("projectId") Long projectId,
                              HttpSession session
     ) {
+        Map<Object, Object> result;
         try {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
@@ -55,9 +56,10 @@ public class MPImportController extends SuperController {
 
         } catch (Exception e) {
             logError(e);
-            String mes =  e.getMessage() == null ? "" : e.getMessage();
-            return DataFormatUtils.buildInternalServerErrorResponse(Map.of("status", "server", "name", "Ошибка сохранения", "cause", mes));
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
+        return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
 }
