@@ -21,6 +21,7 @@ public class ContractServiceImpl extends SuperServiceImpl implements ContractSer
             if (prevVersion != null) {
                 createdAt = prevVersion.getCreatedAt();
                 isApprove = prevVersion.getIsApprove();
+                project   = prevVersion.getProject();
             }
         }
         Contract contract = Contract.builder()
@@ -63,6 +64,6 @@ public class ContractServiceImpl extends SuperServiceImpl implements ContractSer
                             .build();
 
         contractRepository.save(contract);
-        return null;
+        return contract;
     }
 }
