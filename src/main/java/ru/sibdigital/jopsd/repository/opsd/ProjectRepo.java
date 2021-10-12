@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
 import java.util.List;
@@ -119,4 +119,13 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
             @Param("name") String name,
             Pageable pageable
     );
+
+    @Query(value = "SELECT * FROM projects " +
+            "WHERE status <> 4 and status <> 3 and " +
+            "   ((SELECT type FROM roles WHERE id = " +
+            "       (SELECT role_id FROM principal_roles WHERE principal_id =:id)) = 'GlobalRole'" +
+            "   OR id in (SELECT project_id FROM  members WHERE user_id =:id))"
+            , nativeQuery = true)
+    List <Project> findProjectsByUserRoles(Long id);
+
 }

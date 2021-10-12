@@ -2,9 +2,14 @@ package ru.sibdigital.jopsd.repository.opsd;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Meeting;
+
+import java.util.List;
+import java.util.Map;
 
 @RepositoryRestResource
 public interface MeetingRepository extends JpaRepository<Meeting, Long>, JpaSpecificationExecutor<Meeting> {
@@ -16,4 +21,29 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long>, JpaSpec
     @Override
     @RestResource(exported = false)
     void delete(Meeting meeting);
+
+    @Query(value = "SELECT * FROM meetings " +
+            "inner join members ON members.project_id = meetings.project_id AND user_id =:id " +
+            "WHERE current_timestamp > start_time"
+            , nativeQuery = true)
+    List<Meeting> findExpiredMeetingsByUserId(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM meetings " +
+            "WHERE project_id =:id " +
+            "AND current_timestamp > start_time"
+            , nativeQuery = true)
+    List<Meeting> findExpiredMeetingsByProjectId(Long id);
+
+    @Query(value = "SELECT * FROM meetings " +
+            "WHERE project_id =:id " +
+            "AND cast(start_time as date) - CURRENT_DATE >= 14"
+            , nativeQuery = true)
+    List <Meeting> findMeetingsOverDays(Long id);
+
+    @Query(value = "SELECT name, count(subject) " +
+            "FROM statuses " +
+            "inner join work_packages on project_id =:id " +
+            "AND statuses.id = status_id group by name"
+            , nativeQuery = true)
+    List<Map<String, Object>> findCountWorkPackagesByProjectId(Long id);
 }
