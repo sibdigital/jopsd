@@ -12,6 +12,7 @@ import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.service.ProjectService;
+import ru.sibdigital.jopsd.service.report.LightService;
 
 @Slf4j
 @Controller
@@ -42,6 +43,9 @@ public class SuperController {
 
     @Autowired
     protected ContractService contractService;
+
+    @Autowired
+    protected LightService lightService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
