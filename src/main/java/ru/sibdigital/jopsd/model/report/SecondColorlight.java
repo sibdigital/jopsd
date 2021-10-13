@@ -1,12 +1,5 @@
 package ru.sibdigital.jopsd.model.report;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import ru.sibdigital.jopsd.dto.ContractDto;
-import ru.sibdigital.jopsd.model.opsd.Contract;
-import ru.sibdigital.jopsd.model.opsd.WorkPackage;
-import ru.sibdigital.jopsd.repository.opsd.ContractRepository;
-import ru.sibdigital.jopsd.repository.opsd.WorkPackageRepo;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PostLoad;
@@ -30,7 +23,7 @@ public class SecondColorlight implements Serializable {
     private String contractSubject;
     private BigDecimal nmck;
     private BigDecimal price;
-    private Double spent;
+    private BigDecimal spent;
     private Date scheduleDate;
     private Date scheduleDatePlan;
     private Date notificationDate;
@@ -52,50 +45,71 @@ public class SecondColorlight implements Serializable {
     private String conclusionOfEcologicalExpertiseNumber;
     private String conclusionOfEcologicalExpertiseDetails;
 
-    @Transient
-    private ContractDto contract;
+//    @Transient
+//    private ContractDto contract;
 
     @Transient
     private BigDecimal economy;
 
+    @Transient
+    private String conclusionOfEstimatedCost;
+
+    @Transient
+    private String conclusionOfProjectDocumentation;
+
+    @Transient
+    private String conclusionOfEcologicalExpertise;
+
     @PostLoad
     private void postLoad() {
-        this.contract = ContractDto.builder()
+        this.conclusionOfEstimatedCost = ((this.conclusionOfEstimatedCostDate != null) ? this.conclusionOfEstimatedCostDate : "" ) + " " +
+                ((this.conclusionOfEstimatedCostNumber != null) ? this.conclusionOfEstimatedCostNumber : "" ) + " " +
+                ((this.conclusionOfEstimatedCostDetails != null) ? this.conclusionOfEstimatedCostDetails : "" );
 
-                        .contractSubject(contractSubject)
-                        .nmck(nmck)
-                        .price(price)
+        this.conclusionOfProjectDocumentation = ((this.conclusionOfProjectDocumentationDate != null) ? this.conclusionOfProjectDocumentationDate : "" ) + " " +
+                ((this.conclusionOfProjectDocumentationNumber != null) ? this.conclusionOfProjectDocumentationNumber : "" ) + " " +
+                ((this.conclusionOfProjectDocumentationDetails != null) ? this.conclusionOfProjectDocumentationDetails : "" );
 
-                        .scheduleDate(scheduleDate) // план-график закупок
-                        .scheduleDatePlan(scheduleDatePlan)
+        this.conclusionOfEcologicalExpertise = ((this.conclusionOfEcologicalExpertiseDate != null) ? this.conclusionOfEcologicalExpertiseDate : "" ) + " " +
+                ((this.conclusionOfEcologicalExpertiseNumber != null) ? this.conclusionOfEcologicalExpertiseNumber : "" ) + " " +
+                ((this.conclusionOfEcologicalExpertiseDetails != null) ? this.conclusionOfEcologicalExpertiseDetails : "" );
 
-                        .notificationDate(notificationDate) // размещение извещения
-                        .notificationDatePlan(notificationDatePlan)
-
-                        .auctionDate(auctionDate) // проведение аукциона
-                        .auctionDatePlan(auctionDatePlan)
-
-                        .contractDate(contractDate)
-                        .contractDatePlan(contractDatePlan)
-
-                        .dateEnd(dateEnd)
-                        .dateEndPlan(dateEndPlan)
-
-                        .note(note)
-
-                        .conclusionOfEstimatedCostDate(conclusionOfEstimatedCostDate)
-                        .conclusionOfEstimatedCostNumber(conclusionOfEstimatedCostNumber)
-                        .conclusionOfEstimatedCostDetails(conclusionOfEstimatedCostDetails)
-
-                        .conclusionOfProjectDocumentationDate(conclusionOfProjectDocumentationDate)
-                        .conclusionOfProjectDocumentationNumber(conclusionOfProjectDocumentationNumber)
-                        .conclusionOfProjectDocumentationDetails(conclusionOfProjectDocumentationDetails)
-
-                        .conclusionOfEcologicalExpertiseDate(conclusionOfEcologicalExpertiseDate)
-                        .conclusionOfEcologicalExpertiseNumber(conclusionOfEcologicalExpertiseNumber)
-                        .conclusionOfEcologicalExpertiseDetails(conclusionOfEcologicalExpertiseDetails)
-
-                        .build();
+//        this.contract = ContractDto.builder()
+//
+//                        .contractSubject(contractSubject)
+//                        .nmck(nmck)
+//                        .price(price)
+//
+//                        .scheduleDate(scheduleDate) // план-график закупок
+//                        .scheduleDatePlan(scheduleDatePlan)
+//
+//                        .notificationDate(notificationDate) // размещение извещения
+//                        .notificationDatePlan(notificationDatePlan)
+//
+//                        .auctionDate(auctionDate) // проведение аукциона
+//                        .auctionDatePlan(auctionDatePlan)
+//
+//                        .contractDate(contractDate)
+//                        .contractDatePlan(contractDatePlan)
+//
+//                        .dateEnd(dateEnd)
+//                        .dateEndPlan(dateEndPlan)
+//
+//                        .note(note)
+//
+//                        .conclusionOfEstimatedCostDate(conclusionOfEstimatedCostDate)
+//                        .conclusionOfEstimatedCostNumber(conclusionOfEstimatedCostNumber)
+//                        .conclusionOfEstimatedCostDetails(conclusionOfEstimatedCostDetails)
+//
+//                        .conclusionOfProjectDocumentationDate(conclusionOfProjectDocumentationDate)
+//                        .conclusionOfProjectDocumentationNumber(conclusionOfProjectDocumentationNumber)
+//                        .conclusionOfProjectDocumentationDetails(conclusionOfProjectDocumentationDetails)
+//
+//                        .conclusionOfEcologicalExpertiseDate(conclusionOfEcologicalExpertiseDate)
+//                        .conclusionOfEcologicalExpertiseNumber(conclusionOfEcologicalExpertiseNumber)
+//                        .conclusionOfEcologicalExpertiseDetails(conclusionOfEcologicalExpertiseDetails)
+//
+//                        .build();
 
         this.economy = Optional.ofNullable(this.nmck).orElse(BigDecimal.ZERO).subtract(
                 Optional.ofNullable(this.price).orElse(BigDecimal.ZERO));
@@ -120,11 +134,11 @@ public class SecondColorlight implements Serializable {
         this.contractId = contractId;
     }
 
-    public Double getSpent() {
+    public BigDecimal getSpent() {
         return spent;
     }
 
-    public void setSpent(Double spent) {
+    public void setSpent(BigDecimal spent) {
         this.spent = spent;
     }
 
@@ -336,13 +350,13 @@ public class SecondColorlight implements Serializable {
         this.conclusionOfEcologicalExpertiseDetails = conclusionOfEcologicalExpertiseDetails;
     }
 
-    public ContractDto getContract() {
-        return contract;
-    }
-
-    public void setContract(ContractDto contract) {
-        this.contract = contract;
-    }
+//    public ContractDto getContract() {
+//        return contract;
+//    }
+//
+//    public void setContract(ContractDto contract) {
+//        this.contract = contract;
+//    }
 
     public BigDecimal getEconomy() {
         return economy;
@@ -352,16 +366,40 @@ public class SecondColorlight implements Serializable {
         this.economy = economy;
     }
 
+    public String getConclusionOfEstimatedCost() {
+        return conclusionOfEstimatedCost;
+    }
+
+    public void setConclusionOfEstimatedCost(String conclusionOfEstimatedCost) {
+        this.conclusionOfEstimatedCost = conclusionOfEstimatedCost;
+    }
+
+    public String getConclusionOfProjectDocumentation() {
+        return conclusionOfProjectDocumentation;
+    }
+
+    public void setConclusionOfProjectDocumentation(String conclusionOfProjectDocumentation) {
+        this.conclusionOfProjectDocumentation = conclusionOfProjectDocumentation;
+    }
+
+    public String getConclusionOfEcologicalExpertise() {
+        return conclusionOfEcologicalExpertise;
+    }
+
+    public void setConclusionOfEcologicalExpertise(String conclusionOfEcologicalExpertise) {
+        this.conclusionOfEcologicalExpertise = conclusionOfEcologicalExpertise;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SecondColorlight that = (SecondColorlight) o;
-        return Objects.equals(workPackageId, that.workPackageId) && Objects.equals(contractId, that.contractId) && Objects.equals(year, that.year) && Objects.equals(workPackageName, that.workPackageName) && Objects.equals(paymentBalance, that.paymentBalance) && Objects.equals(contractSubject, that.contractSubject) && Objects.equals(nmck, that.nmck) && Objects.equals(price, that.price) && Objects.equals(spent, that.spent) && Objects.equals(scheduleDate, that.scheduleDate) && Objects.equals(scheduleDatePlan, that.scheduleDatePlan) && Objects.equals(notificationDate, that.notificationDate) && Objects.equals(notificationDatePlan, that.notificationDatePlan) && Objects.equals(auctionDate, that.auctionDate) && Objects.equals(auctionDatePlan, that.auctionDatePlan) && Objects.equals(contractDate, that.contractDate) && Objects.equals(contractDatePlan, that.contractDatePlan) && Objects.equals(dateEnd, that.dateEnd) && Objects.equals(dateEndPlan, that.dateEndPlan) && Objects.equals(note, that.note) && Objects.equals(conclusionOfEstimatedCostDate, that.conclusionOfEstimatedCostDate) && Objects.equals(conclusionOfEstimatedCostNumber, that.conclusionOfEstimatedCostNumber) && Objects.equals(conclusionOfEstimatedCostDetails, that.conclusionOfEstimatedCostDetails) && Objects.equals(conclusionOfProjectDocumentationDate, that.conclusionOfProjectDocumentationDate) && Objects.equals(conclusionOfProjectDocumentationNumber, that.conclusionOfProjectDocumentationNumber) && Objects.equals(conclusionOfProjectDocumentationDetails, that.conclusionOfProjectDocumentationDetails) && Objects.equals(conclusionOfEcologicalExpertiseDate, that.conclusionOfEcologicalExpertiseDate) && Objects.equals(conclusionOfEcologicalExpertiseNumber, that.conclusionOfEcologicalExpertiseNumber) && Objects.equals(conclusionOfEcologicalExpertiseDetails, that.conclusionOfEcologicalExpertiseDetails) && Objects.equals(contract, that.contract) && Objects.equals(economy, that.economy);
+        return Objects.equals(workPackageId, that.workPackageId) && Objects.equals(contractId, that.contractId) && Objects.equals(year, that.year) && Objects.equals(workPackageName, that.workPackageName) && Objects.equals(paymentBalance, that.paymentBalance) && Objects.equals(contractSubject, that.contractSubject) && Objects.equals(nmck, that.nmck) && Objects.equals(price, that.price) && Objects.equals(spent, that.spent) && Objects.equals(scheduleDate, that.scheduleDate) && Objects.equals(scheduleDatePlan, that.scheduleDatePlan) && Objects.equals(notificationDate, that.notificationDate) && Objects.equals(notificationDatePlan, that.notificationDatePlan) && Objects.equals(auctionDate, that.auctionDate) && Objects.equals(auctionDatePlan, that.auctionDatePlan) && Objects.equals(contractDate, that.contractDate) && Objects.equals(contractDatePlan, that.contractDatePlan) && Objects.equals(dateEnd, that.dateEnd) && Objects.equals(dateEndPlan, that.dateEndPlan) && Objects.equals(note, that.note) && Objects.equals(conclusionOfEstimatedCostDate, that.conclusionOfEstimatedCostDate) && Objects.equals(conclusionOfEstimatedCostNumber, that.conclusionOfEstimatedCostNumber) && Objects.equals(conclusionOfEstimatedCostDetails, that.conclusionOfEstimatedCostDetails) && Objects.equals(conclusionOfProjectDocumentationDate, that.conclusionOfProjectDocumentationDate) && Objects.equals(conclusionOfProjectDocumentationNumber, that.conclusionOfProjectDocumentationNumber) && Objects.equals(conclusionOfProjectDocumentationDetails, that.conclusionOfProjectDocumentationDetails) && Objects.equals(conclusionOfEcologicalExpertiseDate, that.conclusionOfEcologicalExpertiseDate) && Objects.equals(conclusionOfEcologicalExpertiseNumber, that.conclusionOfEcologicalExpertiseNumber) && Objects.equals(conclusionOfEcologicalExpertiseDetails, that.conclusionOfEcologicalExpertiseDetails) && Objects.equals(economy, that.economy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(workPackageId, contractId, year, workPackageName, paymentBalance, contractSubject, nmck, price, spent, scheduleDate, scheduleDatePlan, notificationDate, notificationDatePlan, auctionDate, auctionDatePlan, contractDate, contractDatePlan, dateEnd, dateEndPlan, note, conclusionOfEstimatedCostDate, conclusionOfEstimatedCostNumber, conclusionOfEstimatedCostDetails, conclusionOfProjectDocumentationDate, conclusionOfProjectDocumentationNumber, conclusionOfProjectDocumentationDetails, conclusionOfEcologicalExpertiseDate, conclusionOfEcologicalExpertiseNumber, conclusionOfEcologicalExpertiseDetails, contract, economy);
+        return Objects.hash(workPackageId, contractId, year, workPackageName, paymentBalance, contractSubject, nmck, price, spent, scheduleDate, scheduleDatePlan, notificationDate, notificationDatePlan, auctionDate, auctionDatePlan, contractDate, contractDatePlan, dateEnd, dateEndPlan, note, conclusionOfEstimatedCostDate, conclusionOfEstimatedCostNumber, conclusionOfEstimatedCostDetails, conclusionOfProjectDocumentationDate, conclusionOfProjectDocumentationNumber, conclusionOfProjectDocumentationDetails, conclusionOfEcologicalExpertiseDate, conclusionOfEcologicalExpertiseNumber, conclusionOfEcologicalExpertiseDetails, economy);
     }
 }
