@@ -41,10 +41,15 @@ public class LightServiceImpl extends JasperReportServiceImpl implements LightSe
     }
 
     private Query getArbitatyObjectQuery(Long typeId, Long projectId) throws IOException {
-        String queryString = getQueryString("classpath:reports/contracts/colorlight2.sql");
+        String queryString = getQueryString("classpath:reports/contracts/colorlight2_w_projectId.sql");
+        if (projectId == null) {
+            queryString = getQueryString("classpath:reports/contracts/colorlight2_wo_projectId.sql");
+        }
         Query query = entityManager.createNativeQuery(queryString, SecondColorlight.class);
         query.setParameter("type_id",typeId);
-//        query.setParameter("project_id", projectId);
+        if (projectId != null) {
+            query.setParameter("project_id", projectId);
+        }
         return query;
     }
 
