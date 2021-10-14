@@ -148,14 +148,15 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
 
     private MaterialBudgetItem createMaterialBudgetItem(Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource,
                                                         CostType costType, CostObject costObject) {
+        BigDecimal cbr = (financialSource.getCBR() != null) ? financialSource.getCBR().multiply(BigDecimal.valueOf(1000)) : BigDecimal.valueOf(0);
         return MaterialBudgetItem.builder()
                 .costObject(costObject)
                 .units(1.0)
                 .costType(costType)
                 .comments("Загружен из Эл. Бюджета")
-                .budget(financialSource.getCBR())
-                .passportUnits(financialSource.getCBR()) // не выгружается из ЭлБюджета
-                .consolidateUnits(financialSource.getCBR())
+                .budget(cbr)
+                .passportUnits(cbr) // не выгружается из ЭлБюджета
+                .consolidateUnits(cbr)
                 .planYear(Calendar.getInstance().get(Calendar.YEAR)) // пока текущий год
                 .build();
 
