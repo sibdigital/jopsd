@@ -18,7 +18,7 @@ public class LightController extends SuperController {
             method = RequestMethod.GET
     )
     public @ResponseBody
-    String generateInspectionReport(@PathVariable String format,
+    void generateInspectionReport(@PathVariable String format,
                                     @RequestParam(value = "typeId") Long typeId,
                                     @RequestParam(value = "projectId", required = false) Long projectId,
                                     HttpServletResponse response) throws ParseException, IOException {
@@ -37,6 +37,5 @@ public class LightController extends SuperController {
         out.write(bytes);
         out.flush();
         out.close();
-        return null;
     }
 }
