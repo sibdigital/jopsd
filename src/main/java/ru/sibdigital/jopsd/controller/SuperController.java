@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.sibdigital.jopsd.repository.opsd.CostObjectRepo;
+import ru.sibdigital.jopsd.service.ContractService;
 import ru.sibdigital.jopsd.service.SettingService;
 import ru.sibdigital.jopsd.service.WorkPackageService;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
@@ -15,6 +16,7 @@ import ru.sibdigital.jopsd.service.ProjectService;
 import ru.sibdigital.jopsd.service.page.PageFileService;
 import ru.sibdigital.jopsd.service.page.PageMapService;
 import ru.sibdigital.jopsd.service.page.PageService;
+import ru.sibdigital.jopsd.service.report.LightService;
 
 @Slf4j
 @Controller
@@ -54,6 +56,12 @@ public class SuperController {
 
     @Autowired
     protected PageMapService pageMapService;
+
+    @Autowired
+    protected ContractService contractService;
+
+    @Autowired
+    protected LightService lightService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

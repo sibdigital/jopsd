@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.9.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="light_2_6" pageWidth="2500" pageHeight="595" orientation="Landscape" columnWidth="2460" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="753a4446-3913-4109-86c9-2105f01eda7c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="225"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="770"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="isup"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab Data Text" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<field name="workPackageId" class="java.lang.Integer"/>
+	<field name="workPackageName" class="java.lang.String"/>
+	<field name="contractId" class="java.lang.Integer"/>
+	<field name="contractSubject" class="java.lang.String"/>
+	<field name="nmck" class="java.math.BigDecimal"/>
+	<field name="price" class="java.math.BigDecimal"/>
+	<field name="year" class="java.lang.Integer"/>
+	<field name="spent" class="java.math.BigDecimal"/>
+	<field name="economy" class="java.math.BigDecimal"/>
+	<field name="paymentBalance" class="java.math.BigDecimal"/>
+	<field name="scheduleDate" class="java.util.Date"/>
+	<field name="scheduleDatePlan" class="java.util.Date"/>
+	<field name="notificationDate" class="java.util.Date"/>
+	<field name="notificationDatePlan" class="java.util.Date"/>
+	<field name="auctionDate" class="java.util.Date"/>
+	<field name="auctionDatePlan" class="java.util.Date"/>
+	<field name="contractDate" class="java.util.Date"/>
+	<field name="contractDatePlan" class="java.util.Date"/>
+	<field name="dateEnd" class="java.util.Date"/>
+	<field name="dateEndPlan" class="java.util.Date"/>
+	<field name="note" class="java.lang.String"/>
+	<field name="conclusionOfEstimatedCost" class="java.lang.String"/>
+	<field name="conclusionOfProjectDocumentation" class="java.lang.String"/>
+	<field name="conclusionOfEcologicalExpertise" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="555" splitType="Stretch">
+			<crosstab>
+				<reportElement x="-20" y="-20" width="2310" height="555" uuid="56325c7b-a91d-4f00-9a53-6cfe49de0e45">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report"/>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="200" height="60" uuid="5a658dbb-85db-47a9-b902-7a39b2d78c84"/>
+							<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Наименование объекта капитального строительства]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="200" y="0" width="170" height="60" uuid="126fec8d-c87e-40e0-8fc3-cdcb637390cf"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Наименование контракта]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="370" y="0" width="100" height="60" uuid="223dac90-4c38-480c-9ecb-33a45af3b030"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[НМЦК]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="470" y="0" width="100" height="60" uuid="93f4ebd5-2404-4a2d-b23c-82d22e70516c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Цена контракта]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="570" y="0" width="100" height="60" uuid="eef48b44-a71f-4021-9a01-cf2918e3294e"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Экономия]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="670" y="0" width="100" height="60" uuid="4de779c3-01a2-4ed4-8d68-4ed273908094"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Остаток по оплате]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="770" y="0" width="120" height="30" uuid="cda910cf-59aa-49f2-aef0-7fcacf87472c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Дата размещения ПГ]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="770" y="30" width="60" height="30" uuid="cda910cf-59aa-49f2-aef0-7fcacf87472c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Факт]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="830" y="30" width="60" height="30" uuid="7b599a28-824b-4c87-951a-00eac04c58ca"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[План]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="890" y="0" width="160" height="30" uuid="cda910cf-59aa-49f2-aef0-7fcacf87472c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Дата размещения извещения]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="890" y="30" width="80" height="30" uuid="bf9d5359-c4f8-4433-b48c-d0d80a667eba"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Факт]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="970" y="30" width="80" height="30" uuid="00e2ab1a-ab54-4e7d-a01c-5597aebf0009"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[План]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1050" y="0" width="160" height="30" uuid="cda910cf-59aa-49f2-aef0-7fcacf87472c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Дата проведения аукциона]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1050" y="30" width="80" height="30" uuid="8db3d29d-5394-4b7b-a8e3-5f18b09277bf"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Факт]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1130" y="30" width="80" height="30" uuid="c64fdebb-0bcd-4fd8-a7b7-3b7ce562e2c2"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[План]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1210" y="0" width="160" height="30" uuid="cda910cf-59aa-49f2-aef0-7fcacf87472c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Дата заключения контракта]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1210" y="30" width="80" height="30" uuid="d4b1d374-51eb-4d81-8a2f-d2fbe652e064"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Факт]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1290" y="30" width="80" height="30" uuid="f5c42e0e-c2f1-438c-a8a2-ee60b02c4837"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[План]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1370" y="0" width="160" height="30" uuid="cda910cf-59aa-49f2-aef0-7fcacf87472c"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Дата заключения контракта]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1370" y="30" width="80" height="30" uuid="ffef642e-50c5-4823-a810-a14dd747a8fb"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Факт]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1450" y="30" width="80" height="30" uuid="5eb8a996-0f1a-4557-b2db-7c886eb0b0db"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[План]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1530" y="0" width="100" height="60" uuid="95405a61-ea99-46b0-a76a-c23976376de8"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Примечание]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1630" y="0" width="100" height="60" uuid="21174b01-1ce2-47ec-b00b-a2e0638d3289"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Заключение сметной стоимости]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1730" y="0" width="100" height="60" uuid="55a37ec3-e90f-448f-8bd0-2c84a3bdad19"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Заключение экспертизы проект. док-ии]]></text>
+						</staticText>
+						<staticText>
+							<reportElement style="Crosstab Data Text" x="1830" y="0" width="100" height="60" uuid="fedb2a0c-8186-47d1-8640-d89d2abb0678"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement>
+								<font isBold="true"/>
+							</textElement>
+							<text><![CDATA[Заключение эколог. экспертизы]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="workPackageName" width="200">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{workPackageName}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="200" height="20" uuid="71bb90cf-0935-4aed-8842-8191b0cdbf06"/>
+								<textFieldExpression><![CDATA[$V{workPackageName}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="180" height="20" forecolor="#FFFFFF" uuid="207e2824-1d2f-4cbb-b203-c82877b9da02"/>
+								<text><![CDATA[Total workPackageName]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="contractSubject" width="170">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{contractSubject}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="170" height="20" uuid="3ab810f5-adea-46fc-8365-58b8aac90f73"/>
+								<textFieldExpression><![CDATA[$V{contractSubject}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="20" uuid="00d5d9ed-33e2-41f1-bc29-3f646017dc8c"/>
+								<text><![CDATA[Total contractSubject]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="nmck" width="100">
+					<bucket class="java.math.BigDecimal">
+						<bucketExpression><![CDATA[$F{nmck}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="0bf33d2d-43b0-485d-931d-f61001527fca"/>
+								<textFieldExpression><![CDATA[($V{nmck} != null) ? $V{nmck} : 0]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="20" uuid="658f7489-31a2-45f1-8552-7451ca0e6919"/>
+								<text><![CDATA[Total nmck]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="price" width="100">
+					<bucket class="java.math.BigDecimal">
+						<bucketExpression><![CDATA[$F{price}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="52044ce9-78ea-4c8f-afab-ea94b3bcafd6"/>
+								<textFieldExpression><![CDATA[($V{price} != null) ? $V{price} : 0]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="20" uuid="72b295fb-c49b-4579-a159-fbcb017bd6f1"/>
+								<text><![CDATA[Total price]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="economy" width="100">
+					<bucket class="java.math.BigDecimal">
+						<bucketExpression><![CDATA[$F{economy}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="b42d2d23-ee6b-4bcb-baf3-1771dc254f56"/>
+								<textFieldExpression><![CDATA[($V{economy} != null) ? $V{economy} : 0]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="20" uuid="054b1282-b5d5-4384-aec4-3a8c93f79111"/>
+								<text><![CDATA[Total economy]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="paymentBalance" width="100">
+					<bucket class="java.math.BigDecimal">
+						<bucketExpression><![CDATA[$F{paymentBalance}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="5fa01136-cf59-4eb1-93fb-a81929005189"/>
+								<textFieldExpression><![CDATA[($V{paymentBalance} != null) ? $V{paymentBalance} : 0]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="20" uuid="cf04bd28-a1e0-44f6-8618-784e746b956c"/>
+								<text><![CDATA[Total paymentBalance]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="scheduleDate" width="60">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{scheduleDate}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="60" height="20" uuid="098a270a-8319-444c-bdc8-1f1ec233aa08"/>
+								<textFieldExpression><![CDATA[($V{scheduleDate} != null) ? $V{scheduleDate} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="7d229334-dade-41ca-b29a-f9b90c5b4a41"/>
+								<text><![CDATA[Total scheduleDate]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="scheduleDatePlan" width="60">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{scheduleDatePlan}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" uuid="0fb784c0-1dcb-49a3-a8bf-557c4c864d7d"/>
+								<textFieldExpression><![CDATA[($V{scheduleDatePlan} != null) ? $V{scheduleDatePlan} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="166a2e1e-9954-428e-96d1-a1a8562fc46a"/>
+								<text><![CDATA[Total scheduleDatePlan]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="notificationDate" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{notificationDate}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="1cf445e4-a8a0-4139-ac5d-2655506de264"/>
+								<textFieldExpression><![CDATA[($V{notificationDate} != null) ? $V{notificationDate} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="cbd3df86-2865-4be9-ab23-5d66fcd7266a"/>
+								<text><![CDATA[Total notificationDate]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="notificationDatePlan" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{notificationDatePlan}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="2085bb09-b83c-4bff-b8f7-f59f7047a420"/>
+								<textFieldExpression><![CDATA[($V{notificationDatePlan} != null) ? $V{notificationDatePlan} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="afb2e089-810f-4a44-8514-d2af3366bde4"/>
+								<text><![CDATA[Total notificationDatePlan]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="auctionDate" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{auctionDate}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="613ae94d-4639-4d85-9a6b-935f4f287c8e"/>
+								<textFieldExpression><![CDATA[($V{auctionDate} != null) ? $V{auctionDate} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="b6c89f26-76ce-4752-835c-62e1873656d1"/>
+								<text><![CDATA[Total auctionDate]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="auctionDatePlan" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{auctionDatePlan}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="e34a5ed0-6f13-45f7-b218-0691c714605f"/>
+								<textFieldExpression><![CDATA[($V{auctionDatePlan} != null) ? $V{auctionDatePlan} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="8103715d-8078-497d-8738-dc39888dfed6"/>
+								<text><![CDATA[Total auctionDatePlan]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="contractDate" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{contractDate}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="37f79f13-d8fb-4aaf-9812-61b11b11606a"/>
+								<textFieldExpression><![CDATA[($V{contractDate} != null) ? $V{contractDate} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="bc7ef026-1e28-42cb-8bb4-1d57a51a1c22"/>
+								<text><![CDATA[Total contractDate]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="contractDatePlan" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{contractDatePlan}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="c3bdfd43-6f2d-4dad-b183-58c1ca5ef6fc"/>
+								<textFieldExpression><![CDATA[($V{contractDatePlan} != null) ? $V{contractDatePlan} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="1e2b2d52-4930-44df-944e-bf5cd8ecaaa6"/>
+								<text><![CDATA[Total contractDatePlan]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="dateEnd" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{dateEnd}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="ca1ca41d-3ed6-4000-a4b4-347807fdbf4b"/>
+								<textFieldExpression><![CDATA[($V{dateEnd} != null) ? $V{dateEnd} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="4e9dab9d-6fc0-47e3-a671-9caaea4d9bee"/>
+								<text><![CDATA[Total dateEnd]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="dateEndPlan" width="80">
+					<bucket class="java.util.Date">
+						<bucketExpression><![CDATA[$F{dateEndPlan}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="80" height="20" uuid="8918f466-b76c-4f42-a475-ee5d189d5f2c"/>
+								<textFieldExpression><![CDATA[($V{dateEndPlan} != null) ? $V{dateEndPlan} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="c15d680d-e19d-434f-bc19-4f9dee25a6fd"/>
+								<text><![CDATA[Total dateEndPlan]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="note" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{note}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="13ed356d-0bb4-4a87-9a5e-64cebf98309a"/>
+								<textFieldExpression><![CDATA[($V{note} != null) ? $V{note} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="81f79458-8212-4970-9ff8-debaff702783"/>
+								<text><![CDATA[Total note]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="conclusionOfEstimatedCost" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{conclusionOfEstimatedCost}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="d9c2f131-2593-4ae0-bcc1-bc1f46d58dc1"/>
+								<textFieldExpression><![CDATA[($V{conclusionOfEstimatedCost} != null) ? $V{conclusionOfEstimatedCost} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="1b3909cd-049e-4ce4-8e4a-f1bd9d77c12a"/>
+								<text><![CDATA[Total conclusionOfEstimatedCost]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="conclusionOfProjectDocumentation" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{conclusionOfProjectDocumentation}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="789243e1-10e1-4dc1-9ac5-47a9ac8f2de9"/>
+								<textFieldExpression><![CDATA[($V{conclusionOfProjectDocumentation} != null) ? $V{conclusionOfProjectDocumentation} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="7810cc4c-8afc-423d-9fad-95cdf44428f5"/>
+								<text><![CDATA[Total conclusionOfProjectDocumentation]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="conclusionOfEcologicalExpertise" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{conclusionOfEcologicalExpertise}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="100" height="20" uuid="1e50b940-31b4-4864-a96b-58ad9ade6849"/>
+								<textFieldExpression><![CDATA[($V{conclusionOfEcologicalExpertise} != null) ? $V{conclusionOfEcologicalExpertise} : "-"]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="105f8cd5-7083-433f-958d-57d0fc963882"/>
+								<text><![CDATA[Total conclusionOfEcologicalExpertise]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="year" height="60">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{year}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="60" uuid="d0a11ab7-2c11-4c4e-80bc-bb90c2d49232"/>
+								<textFieldExpression><![CDATA["Расходы за " + (($V{year} != null) ? $V{year} : "-") + " г."]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="5cdf6118-a778-4a38-8449-6f95199cbda7"/>
+								<text><![CDATA[Total year]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="spent_MEASURE" class="java.math.BigDecimal" calculation="Sum">
+					<measureExpression><![CDATA[$F{spent}]]></measureExpression>
+				</measure>
+				<crosstabCell width="60" height="20">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="73a6b1f0-4308-49c0-8a74-292c118a24e5"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="e276ab40-5b2a-4fee-9a81-33a5b5c84d1b"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="workPackageName">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="90f4a29e-1479-4120-aea7-806ae684a9b3"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="workPackageName" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="2563141d-a102-42d6-8ea4-9ab44a0ba67a"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="contractSubject">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="8f3ccb79-c81e-4412-940c-0eda0cdd1a7a"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="contractSubject" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="a48a9842-1b56-4c33-b27b-ab8d292367e0"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="nmck">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="930696e0-2e4f-4ace-9e62-b5f3ebfceffb"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="nmck" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="76453e53-a890-4289-948d-30b96e1489ee"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="price">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="dec157a4-b6d6-4ce8-b1bf-f56cc071df0f"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="price" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="6dd64757-eb00-4db4-b7b5-128dcddc713e"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="economy">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="cc6a05a0-96bb-4b4d-a032-8dc3692ab37d"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="economy" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="d6352944-8164-451a-8fbd-c504dcfb42aa"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="paymentBalance">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="9319c4b1-f383-4783-a0c7-b4192bf9d595"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="paymentBalance" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="ffe9330c-3de8-4360-bdb1-3fd2f28397d5"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="scheduleDate">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="8e034c51-fcbd-436a-bac5-861ada69c82f"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="scheduleDate" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="fd949308-6c6b-4bd1-8617-8230b78f253f"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="scheduleDatePlan">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="0adf54aa-90e4-4f7c-8dd0-35c86e3beec8"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="scheduleDatePlan" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="a2428961-7ba5-493e-b4b5-716ee1e1de4b"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="notificationDate">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="90d251b9-9485-4249-a05c-522569a2f03e"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="notificationDate" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="a399c651-9596-4870-a1cd-5f308f7502b8"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="notificationDatePlan">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="33f29776-96d0-4412-b15c-11a8d48dd67e"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="notificationDatePlan" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="302a6bf2-a6b5-4796-b3ba-2a7c9d110be4"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="auctionDate">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="0174529a-36c2-499a-b53e-e07c12448430"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="auctionDate" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="c2bf046e-2603-45c9-a1a8-82bd6e5676e6"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="auctionDatePlan">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="e4cea802-ad18-4b2f-a1b7-f54aac6ad374"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="auctionDatePlan" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="9681f0d6-f10f-497f-94f1-a2d1a583d8fa"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="contractDate">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="6da14c41-0920-4b3f-ab04-809465687ccd"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="contractDate" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="4835d7cb-3a03-4471-96b3-8894239c90dd"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="contractDatePlan">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="1c069f76-c4ac-4129-ad17-524b53e7ac62"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="contractDatePlan" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="05c644ad-5c78-4c9b-ab51-1f364e55a5dd"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="dateEnd">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="ed6c6f9f-808d-446c-8719-3d60d8f4c9cd"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="dateEnd" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="9cbc3d7d-ed06-4d1e-8ccb-d5399ec7c139"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="dateEndPlan">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="d080ca2b-9f21-4fd8-a805-86f5b8e7a0f5"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="dateEndPlan" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="e6030b2c-3a42-4ea4-9f1a-3125824f624e"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="note">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="61f53242-2b49-440b-8fe5-5d61337b84db"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="note" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="4bf5addc-a83c-42cc-986a-5219ae2e29db"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="conclusionOfEstimatedCost">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="b5ad45e8-106f-40b3-9de3-64973ffa45a1"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="conclusionOfEstimatedCost" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="c92ed28c-a5fa-4280-8905-a80dc51869f0"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="conclusionOfProjectDocumentation">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="42d643c2-9e77-478f-be4c-35b851dee4d7"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="conclusionOfProjectDocumentation" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="8d152eac-75d0-4e44-b501-383800df0be6"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="conclusionOfEcologicalExpertise">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="397f8119-8f7d-4faf-b886-6b6f482adce7"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="conclusionOfEcologicalExpertise" columnTotalGroup="year">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="8ff50fa4-25a9-48ce-9879-0e0aac32edac"/>
+							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>
