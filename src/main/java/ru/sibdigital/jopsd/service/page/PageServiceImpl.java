@@ -3,6 +3,7 @@ package ru.sibdigital.jopsd.service.page;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.model.opsd.Page;
 import ru.sibdigital.jopsd.model.opsd.User;
+import ru.sibdigital.jopsd.model.opsd.projection.PageShortProjection;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.time.LocalDateTime;
@@ -28,5 +29,10 @@ public class PageServiceImpl extends SuperServiceImpl implements PageService {
         } else {
             return pageRepository.findAllByIsGroupAndIdIsNot(true, id);
         }
+    }
+
+    @Override
+    public List<PageShortProjection> getList() {
+        return pageRepository.findAllByIsPublicatedAndIsDeletedAndParentIsNull(true, false);
     }
 }

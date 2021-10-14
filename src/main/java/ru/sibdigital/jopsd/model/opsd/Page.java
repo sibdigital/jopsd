@@ -5,6 +5,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Table(name = "pages")
 @Entity
@@ -37,6 +38,11 @@ public class Page {
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "parent_id")
     private Page parent;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "parent_id")
+    private List<Page> children;
 
     @ManyToOne(optional = false)
     @NotFound(action = NotFoundAction.IGNORE)
@@ -101,6 +107,14 @@ public class Page {
 
     public void setParent(Page parent) {
         this.parent = parent;
+    }
+
+    public List<Page> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Page> children) {
+        this.children = children;
     }
 
     public WorkPackage getWorkPackage() {

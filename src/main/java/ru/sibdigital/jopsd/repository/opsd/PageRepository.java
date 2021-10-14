@@ -6,6 +6,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Page;
 import ru.sibdigital.jopsd.model.opsd.projection.PageProjection;
+import ru.sibdigital.jopsd.model.opsd.projection.PageShortProjection;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface PageRepository extends JpaRepository<Page, Long>, JpaSpecificat
     List<Page> findAllByIsGroup(boolean isGroup);
 
     List<Page> findAllByIsGroupAndIdIsNot(boolean isGroup, Long id);
+
+    List<PageShortProjection> findAllByIsPublicatedAndIsDeletedAndParentIsNull(boolean isPublicated, boolean isDeleted);
 }

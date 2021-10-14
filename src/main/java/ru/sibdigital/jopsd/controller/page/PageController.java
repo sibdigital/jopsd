@@ -10,6 +10,7 @@ import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.model.opsd.Page;
 import ru.sibdigital.jopsd.model.opsd.PageFile;
 import ru.sibdigital.jopsd.model.opsd.PageMap;
+import ru.sibdigital.jopsd.model.opsd.projection.PageShortProjection;
 
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class PageController extends SuperController {
         return pageService.getGroups(id);
     }
 
+    @GetMapping("pages/list")
+    public @ResponseBody List<PageShortProjection> list() {
+        return pageService.getList();
+    }
     @PostMapping("/pages/upsert")
     public @ResponseBody ResponseEntity upsertPage(@RequestBody Page body, @AuthenticationPrincipal CustomUserDetails user) {
         try {
