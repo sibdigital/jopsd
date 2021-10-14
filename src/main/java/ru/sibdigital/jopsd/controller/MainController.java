@@ -22,4 +22,9 @@ public class MainController extends SuperController {
         httpServletResponse.setStatus(302);
     }
 
+    @GetMapping({"/test"})
+    public String test(Model model) {
+        return "test";
+    }
+
 }
