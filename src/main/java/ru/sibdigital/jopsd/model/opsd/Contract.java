@@ -1,5 +1,8 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -10,6 +13,9 @@ import java.time.LocalDateTime;
 
 @Table(name = "contracts")
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder = true)
 public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +26,6 @@ public class Contract {
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "project_id")
     private Project project;
-    public Project getProject() {
-        return project;
-    }
-    public void setProject(Project project) {
-        this.project = project;
-    }
 
     @Column(name = "contract_subject")
     private String contractSubject;
@@ -77,6 +77,178 @@ public class Contract {
 
     @Column(name = "schedule_date")
     private LocalDateTime scheduleDate;
+
+
+    @Column(name = "nmck", precision = 15, scale = 2)
+    private BigDecimal nmck;
+
+    @Column(name = "schedule_date_plan")
+    private LocalDateTime scheduleDatePlan;
+
+    @Column(name = "notification_date_plan")
+    private LocalDateTime notificationDatePlan;
+
+    @Column(name = "notification_date")
+    private LocalDateTime notificationDate;
+
+    @Column(name = "auction_date_plan")
+    private LocalDateTime auctionDatePlan;
+
+    @Column(name = "contract_date_plan")
+    private LocalDateTime contractDatePlan;
+
+    @Column(name = "date_end_plan")
+    private LocalDateTime dateEndPlan;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "conclusion_of_estimated_cost_details")
+    private String conclusionOfEstimatedCostDetails;
+
+    @Column(name = "conclusion_of_estimated_cost_number")
+    private String conclusionOfEstimatedCostNumber;
+
+    @Column(name = "conclusion_of_estimated_cost_date")
+    private LocalDateTime conclusionOfEstimatedCostDate;
+
+    @Column(name = "conclusion_of_project_documentation_details")
+    private String conclusionOfProjectDocumentationDetails;
+
+    @Column(name = "conclusion_of_project_documentation_number")
+    private String conclusionOfProjectDocumentationNumber;
+
+    @Column(name = "conclusion_of_project_documentation_date")
+    private LocalDateTime conclusionOfProjectDocumentationDate;
+
+    @Column(name = "conclusion_of_ecological_expertise_details")
+    private String conclusionOfEcologicalExpertiseDetails;
+
+    @Column(name = "conclusion_of_ecological_expertise_number")
+    private String conclusionOfEcologicalExpertiseNumber;
+
+    @Column(name = "conclusion_of_ecological_expertise_date")
+    private LocalDateTime conclusionOfEcologicalExpertiseDate;
+
+    public Project getProject() {
+        return project;
+    }
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+
+    public LocalDateTime getConclusionOfProjectDocumentationDate() {
+        return conclusionOfProjectDocumentationDate;
+    }
+
+    public void setConclusionOfProjectDocumentationDate(LocalDateTime conclusionOfProjectDocumentationDate) {
+        this.conclusionOfProjectDocumentationDate = conclusionOfProjectDocumentationDate;
+    }
+
+    public String getConclusionOfProjectDocumentationNumber() {
+        return conclusionOfProjectDocumentationNumber;
+    }
+
+    public void setConclusionOfProjectDocumentationNumber(String conclusionOfProjectDocumentationNumber) {
+        this.conclusionOfProjectDocumentationNumber = conclusionOfProjectDocumentationNumber;
+    }
+
+    public String getConclusionOfProjectDocumentationDetails() {
+        return conclusionOfProjectDocumentationDetails;
+    }
+
+    public void setConclusionOfProjectDocumentationDetails(String conclusionOfProjectDocumentationDetails) {
+        this.conclusionOfProjectDocumentationDetails = conclusionOfProjectDocumentationDetails;
+    }
+
+    public LocalDateTime getConclusionOfEstimatedCostDate() {
+        return conclusionOfEstimatedCostDate;
+    }
+
+    public void setConclusionOfEstimatedCostDate(LocalDateTime conclusionOfEstimatedCostDate) {
+        this.conclusionOfEstimatedCostDate = conclusionOfEstimatedCostDate;
+    }
+
+    public String getConclusionOfEstimatedCostNumber() {
+        return conclusionOfEstimatedCostNumber;
+    }
+
+    public void setConclusionOfEstimatedCostNumber(String conclusionOfEstimatedCostNumber) {
+        this.conclusionOfEstimatedCostNumber = conclusionOfEstimatedCostNumber;
+    }
+
+    public String getConclusionOfEstimatedCostDetails() {
+        return conclusionOfEstimatedCostDetails;
+    }
+
+    public void setConclusionOfEstimatedCostDetails(String conclusionOfEstimatedCostDetails) {
+        this.conclusionOfEstimatedCostDetails = conclusionOfEstimatedCostDetails;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public LocalDateTime getDateEndPlan() {
+        return dateEndPlan;
+    }
+
+    public void setDateEndPlan(LocalDateTime dateEndPlan) {
+        this.dateEndPlan = dateEndPlan;
+    }
+
+    public LocalDateTime getContractDatePlan() {
+        return contractDatePlan;
+    }
+
+    public void setContractDatePlan(LocalDateTime contractDatePlan) {
+        this.contractDatePlan = contractDatePlan;
+    }
+
+    public LocalDateTime getAuctionDatePlan() {
+        return auctionDatePlan;
+    }
+
+    public void setAuctionDatePlan(LocalDateTime auctionDatePlan) {
+        this.auctionDatePlan = auctionDatePlan;
+    }
+
+    public LocalDateTime getNotificationDate() {
+        return notificationDate;
+    }
+
+    public void setNotificationDate(LocalDateTime notificationDate) {
+        this.notificationDate = notificationDate;
+    }
+
+    public LocalDateTime getNotificationDatePlan() {
+        return notificationDatePlan;
+    }
+
+    public void setNotificationDatePlan(LocalDateTime notificationDatePlan) {
+        this.notificationDatePlan = notificationDatePlan;
+    }
+
+    public LocalDateTime getScheduleDatePlan() {
+        return scheduleDatePlan;
+    }
+
+    public void setScheduleDatePlan(LocalDateTime scheduleDatePlan) {
+        this.scheduleDatePlan = scheduleDatePlan;
+    }
+
+    public BigDecimal getNmck() {
+        return nmck;
+    }
+
+    public void setNmck(BigDecimal nmck) {
+        this.nmck = nmck;
+    }
 
     public LocalDateTime getScheduleDate() {
         return scheduleDate;
@@ -220,5 +392,29 @@ public class Contract {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getConclusionOfEcologicalExpertiseDetails() {
+        return conclusionOfEcologicalExpertiseDetails;
+    }
+
+    public void setConclusionOfEcologicalExpertiseDetails(String conclusionOfEcologicalExpertiseDetails) {
+        this.conclusionOfEcologicalExpertiseDetails = conclusionOfEcologicalExpertiseDetails;
+    }
+
+    public String getConclusionOfEcologicalExpertiseNumber() {
+        return conclusionOfEcologicalExpertiseNumber;
+    }
+
+    public void setConclusionOfEcologicalExpertiseNumber(String conclusionOfEcologicalExpertiseNumber) {
+        this.conclusionOfEcologicalExpertiseNumber = conclusionOfEcologicalExpertiseNumber;
+    }
+
+    public LocalDateTime getConclusionOfEcologicalExpertiseDate() {
+        return conclusionOfEcologicalExpertiseDate;
+    }
+
+    public void setConclusionOfEcologicalExpertiseDate(LocalDateTime conclusionOfEcologicalExpertiseDate) {
+        this.conclusionOfEcologicalExpertiseDate = conclusionOfEcologicalExpertiseDate;
     }
 }

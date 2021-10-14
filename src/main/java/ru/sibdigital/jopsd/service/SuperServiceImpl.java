@@ -110,9 +110,13 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected PageMapRepository pageMapRepository;
 
+    @Autowired
+    protected ContractRepository contractRepository;
+
     protected void logError(Exception e) {
-        log.error(e.getMessage());
-        e.printStackTrace();
+//        log.error(e.getMessage());
+//        e.printStackTrace();
+        log.error("{}", e);
     }
 
     protected void logError(String errorMessage) {
@@ -146,8 +150,12 @@ public class SuperServiceImpl implements SuperService {
     }
 
     public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
+        if (dateToConvert != null) {
+            return dateToConvert.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+        } else {
+            return null;
+        }
     }
 }
