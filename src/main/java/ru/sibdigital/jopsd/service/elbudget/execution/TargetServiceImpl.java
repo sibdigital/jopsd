@@ -47,16 +47,22 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
                 target.setComment("Загружено из Эл. Бюджета");
             } else {
                 // если с frontend не все поля пришли, чтобы не перезатереть:
-                target = targetRepo.findById(targetMatch.getTarget().getId()).orElse(null);
-                target.setMetaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId());
+                if (targetMatch.getTarget() != null) {
+                    target = targetRepo.findById(targetMatch.getTarget().getId()).orElse(null);
+                    target.setMetaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId());
+                    targetRepo.save(target);
+                } else {
+                    target = null;
+                }
             }
-            targetRepo.save(target);
 
-            Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria purposeCriteria = targetMatch.getPurposeCriteria();
-            List<WorkPackageTarget> workPackageTargets = parsePurposeCriteria(purposeCriteria, target, workPackage);
+            if (target != null) {
+                Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria purposeCriteria = targetMatch.getPurposeCriteria();
+                List<WorkPackageTarget> workPackageTargets = parsePurposeCriteria(purposeCriteria, target, workPackage);
 
-            workPackageTargetList.addAll(workPackageTargets);
-            targetMatchesAfterProcess.add(TargetMatch.builder().target(target).purposeCriteria(purposeCriteria).createNewTarget(false).build());
+                workPackageTargetList.addAll(workPackageTargets);
+                targetMatchesAfterProcess.add(TargetMatch.builder().target(target).purposeCriteria(purposeCriteria).createNewTarget(false).build());
+            }
         }
 
         workPackageTargetRepo.saveAll(workPackageTargetList);
