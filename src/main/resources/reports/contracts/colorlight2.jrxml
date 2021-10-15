@@ -103,7 +103,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Наименование объекта капитального строительства]]></text>
 						</staticText>
@@ -116,7 +116,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Наименование контракта]]></text>
 						</staticText>
@@ -129,7 +129,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[НМЦК]]></text>
 						</staticText>
@@ -142,7 +142,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Цена контракта]]></text>
 						</staticText>
@@ -155,7 +155,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Экономия]]></text>
 						</staticText>
@@ -168,7 +168,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Остаток по оплате]]></text>
 						</staticText>
@@ -181,7 +181,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Дата размещения ПГ]]></text>
 						</staticText>
@@ -194,7 +194,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Факт]]></text>
 						</staticText>
@@ -207,7 +207,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[План]]></text>
 						</staticText>
@@ -220,7 +220,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Дата размещения извещения]]></text>
 						</staticText>
@@ -233,7 +233,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Факт]]></text>
 						</staticText>
@@ -246,7 +246,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[План]]></text>
 						</staticText>
@@ -259,7 +259,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Дата проведения аукциона]]></text>
 						</staticText>
@@ -272,7 +272,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Факт]]></text>
 						</staticText>
@@ -285,7 +285,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[План]]></text>
 						</staticText>
@@ -298,7 +298,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Дата заключения контракта]]></text>
 						</staticText>
@@ -311,7 +311,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Факт]]></text>
 						</staticText>
@@ -324,7 +324,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[План]]></text>
 						</staticText>
@@ -337,7 +337,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Дата заключения контракта]]></text>
 						</staticText>
@@ -350,7 +350,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Факт]]></text>
 						</staticText>
@@ -363,7 +363,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[План]]></text>
 						</staticText>
@@ -376,7 +376,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Примечание]]></text>
 						</staticText>
@@ -389,7 +389,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Заключение сметной стоимости]]></text>
 						</staticText>
@@ -402,7 +402,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Заключение экспертизы проект. док-ии]]></text>
 						</staticText>
@@ -415,7 +415,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement>
-								<font isBold="true"/>
+								<font fontName="Times New Roman" isBold="true"/>
 							</textElement>
 							<text><![CDATA[Заключение эколог. экспертизы]]></text>
 						</staticText>
@@ -430,6 +430,9 @@
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="200" height="20" uuid="71bb90cf-0935-4aed-8842-8191b0cdbf06"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$V{workPackageName}]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -452,6 +455,9 @@
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="170" height="20" uuid="3ab810f5-adea-46fc-8365-58b8aac90f73"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$V{contractSubject}]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -473,6 +479,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="0bf33d2d-43b0-485d-931d-f61001527fca"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{nmck} != null) ? $V{nmck} : 0]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -494,6 +503,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="52044ce9-78ea-4c8f-afab-ea94b3bcafd6"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{price} != null) ? $V{price} : 0]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -515,6 +527,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="b42d2d23-ee6b-4bcb-baf3-1771dc254f56"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{economy} != null) ? $V{economy} : 0]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -536,6 +551,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="5fa01136-cf59-4eb1-93fb-a81929005189"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{paymentBalance} != null) ? $V{paymentBalance} : 0]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -557,6 +575,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="60" height="20" uuid="098a270a-8319-444c-bdc8-1f1ec233aa08"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{scheduleDate} != null) ? $V{scheduleDate} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -578,6 +599,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField>
 								<reportElement x="0" y="0" width="60" height="20" uuid="0fb784c0-1dcb-49a3-a8bf-557c4c864d7d"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{scheduleDatePlan} != null) ? $V{scheduleDatePlan} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -599,6 +623,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="1cf445e4-a8a0-4139-ac5d-2655506de264"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{notificationDate} != null) ? $V{notificationDate} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -620,6 +647,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="2085bb09-b83c-4bff-b8f7-f59f7047a420"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{notificationDatePlan} != null) ? $V{notificationDatePlan} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -641,6 +671,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="613ae94d-4639-4d85-9a6b-935f4f287c8e"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{auctionDate} != null) ? $V{auctionDate} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -662,6 +695,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="e34a5ed0-6f13-45f7-b218-0691c714605f"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{auctionDatePlan} != null) ? $V{auctionDatePlan} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -683,6 +719,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="37f79f13-d8fb-4aaf-9812-61b11b11606a"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{contractDate} != null) ? $V{contractDate} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -704,6 +743,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="c3bdfd43-6f2d-4dad-b183-58c1ca5ef6fc"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{contractDatePlan} != null) ? $V{contractDatePlan} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -725,6 +767,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="ca1ca41d-3ed6-4000-a4b4-347807fdbf4b"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{dateEnd} != null) ? $V{dateEnd} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -746,6 +791,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="80" height="20" uuid="8918f466-b76c-4f42-a475-ee5d189d5f2c"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{dateEndPlan} != null) ? $V{dateEndPlan} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -767,6 +815,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="13ed356d-0bb4-4a87-9a5e-64cebf98309a"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{note} != null) ? $V{note} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -788,6 +839,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="d9c2f131-2593-4ae0-bcc1-bc1f46d58dc1"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{conclusionOfEstimatedCost} != null) ? $V{conclusionOfEstimatedCost} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -809,6 +863,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="789243e1-10e1-4dc1-9ac5-47a9ac8f2de9"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{conclusionOfProjectDocumentation} != null) ? $V{conclusionOfProjectDocumentation} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -830,6 +887,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="100" height="20" uuid="1e50b940-31b4-4864-a96b-58ad9ade6849"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA[($V{conclusionOfEcologicalExpertise} != null) ? $V{conclusionOfEcologicalExpertise} : "-"]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -851,6 +911,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField>
 								<reportElement x="0" y="0" width="60" height="60" uuid="d0a11ab7-2c11-4c4e-80bc-bb90c2d49232"/>
+								<textElement>
+									<font fontName="Times New Roman"/>
+								</textElement>
 								<textFieldExpression><![CDATA["Расходы за " + (($V{year} != null) ? $V{year} : "-") + " г."]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -871,6 +934,9 @@
 					<cellContents mode="Opaque" style="Crosstab_CD">
 						<textField>
 							<reportElement x="0" y="0" width="60" height="20" uuid="73a6b1f0-4308-49c0-8a74-292c118a24e5"/>
+							<textElement>
+								<font fontName="Times New Roman"/>
+							</textElement>
 							<textFieldExpression><![CDATA[$V{spent_MEASURE}]]></textFieldExpression>
 						</textField>
 					</cellContents>
