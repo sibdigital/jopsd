@@ -13,6 +13,7 @@ import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.service.ProjectService;
+import ru.sibdigital.jopsd.service.opsd.LboService;
 import ru.sibdigital.jopsd.service.page.PageFileService;
 import ru.sibdigital.jopsd.service.page.PageMapService;
 import ru.sibdigital.jopsd.service.page.PageService;
@@ -62,6 +63,9 @@ public class SuperController {
 
     @Autowired
     protected LightService lightService;
+
+    @Autowired
+    protected LboService lboService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
