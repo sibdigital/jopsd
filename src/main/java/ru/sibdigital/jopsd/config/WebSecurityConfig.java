@@ -47,8 +47,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/libs/**", "/css/**", "/js/**", "/assets/**").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/projects/all/*").permitAll()
-                .antMatchers("/meetings/expired_meeting_users/*", "/meetings/expired_meeting_projects/*", "/meetings/meeting_over_days/*", "/meetings/count_work_packages/*").permitAll()
+                .antMatchers("/meetings/expired_meeting_users/*",
+                        "/meetings/expired_meeting_projects/*",
+                        "/meetings/meeting_over_days/*",
+                        "/meetings/count_work_packages/*").permitAll()
                 .antMatchers("/test").permitAll()
+                .antMatchers("/pages/list").permitAll()
+                .antMatchers("/api/pages/*").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

@@ -1,5 +1,6 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -42,6 +43,7 @@ public class Page {
     @OneToMany(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "parent_id")
+    @JsonIgnore
     private List<Page> children;
 
     @ManyToOne(optional = false)
