@@ -16,6 +16,6 @@ public class LboServiceImpl extends SuperServiceImpl implements LboService {
 
     @Override
     public void delete(Long lboId) {
-        lboRepository.deleteById(lboId); ;
+        lboRepository.deleteById(lboId);
     }
 }

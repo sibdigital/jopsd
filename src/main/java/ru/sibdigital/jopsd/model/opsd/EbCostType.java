@@ -10,11 +10,9 @@ public class EbCostType {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Lob
     @Column(name = "code")
     private String code;
 
-    @Lob
     @Column(name = "name")
     private String name;
 
