@@ -116,6 +116,15 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected LboRepository lboRepository;
 
+    @Autowired
+    protected RateRepository rateRepository;
+
+    @Autowired
+    protected EbCostTypeRepository ebCostTypeRepository;
+
+    @Autowired
+    protected RegEbCostTypeRepository regEbCostTypeRepository;
+
     protected void logError(Exception e) {
 //        log.error(e.getMessage());
 //        e.printStackTrace();

@@ -57,6 +57,9 @@ public class Rate {
     @Column(name = "type", nullable = false)
     private String type;
 
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+
     public String getType() {
         return type;
     }
@@ -87,5 +90,13 @@ public class Rate {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

@@ -18,4 +18,9 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
                 .orElse("");
         return protocol + "://" + host_name;
     }
+
+    @Override
+    public Setting findByName(String name) {
+        return settingRepository.findByName(name).orElse(null);
+    }
 }

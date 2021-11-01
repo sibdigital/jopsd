@@ -13,7 +13,9 @@ import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.service.ProjectService;
+import ru.sibdigital.jopsd.service.opsd.CostTypeService;
 import ru.sibdigital.jopsd.service.opsd.LboService;
+import ru.sibdigital.jopsd.service.opsd.RateService;
 import ru.sibdigital.jopsd.service.page.PageFileService;
 import ru.sibdigital.jopsd.service.page.PageMapService;
 import ru.sibdigital.jopsd.service.page.PageService;
@@ -66,6 +68,12 @@ public class SuperController {
 
     @Autowired
     protected LboService lboService;
+
+    @Autowired
+    protected RateService rateService;
+
+    @Autowired
+    protected CostTypeService costTypeService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

@@ -1,7 +1,14 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "reg_eb_cost_types")
 @Entity
 public class RegEbCostType {
@@ -11,27 +18,27 @@ public class RegEbCostType {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_el_cost_type", nullable = false)
-    private EbCostType idElCostType;
+    @JoinColumn(name = "id_eb_cost_type", nullable = false)
+    private EbCostType ebCostType;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_cost_type", nullable = false)
-    private CostType idCostType;
+    private CostType costType;
 
-    public CostType getIdCostType() {
-        return idCostType;
+    public CostType getCostType() {
+        return costType;
     }
 
-    public void setIdCostType(CostType idCostType) {
-        this.idCostType = idCostType;
+    public void setCostType(CostType costType) {
+        this.costType = costType;
     }
 
-    public EbCostType getIdElCostType() {
-        return idElCostType;
+    public EbCostType getEbCostType() {
+        return ebCostType;
     }
 
-    public void setIdElCostType(EbCostType idElCostType) {
-        this.idElCostType = idElCostType;
+    public void setEbCostType(EbCostType ebCostType) {
+        this.ebCostType = ebCostType;
     }
 
     public Long getId() {
