@@ -9,7 +9,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Meeting;
 
 import java.util.List;
-import java.util.Map;
 
 @RepositoryRestResource
 public interface MeetingRepository extends JpaRepository<Meeting, Long>, JpaSpecificationExecutor<Meeting> {
@@ -40,10 +39,4 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long>, JpaSpec
             , nativeQuery = true)
     List <Meeting> findMeetingsOverDays(Long id);
 
-    @Query(value = "SELECT name, count(subject) " +
-            "FROM statuses " +
-            "inner join work_packages on project_id =:id " +
-            "AND statuses.id = status_id group by name"
-            , nativeQuery = true)
-    List<Map<String, Object>> findCountWorkPackagesByProjectId(Long id);
 }

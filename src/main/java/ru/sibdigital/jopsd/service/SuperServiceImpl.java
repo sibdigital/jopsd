@@ -113,6 +113,12 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected ContractRepository contractRepository;
 
+    @Autowired
+    protected MeetingRepository meetingRepository;
+
+    @Autowired
+    protected SettingService settingService;
+
     protected void logError(Exception e) {
 //        log.error(e.getMessage());
 //        e.printStackTrace();

@@ -9,7 +9,6 @@ import ru.sibdigital.jopsd.model.opsd.Meeting;
 import ru.sibdigital.jopsd.repository.opsd.MeetingRepository;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MeetingController extends SuperController{
@@ -32,10 +31,5 @@ public class MeetingController extends SuperController{
     @GetMapping("/meetings/meeting_over_days/{id}")
     public @ResponseBody List <Meeting> getMeetingsOverDaysByProjectId(@PathVariable ("id") Long id) {
         return meetingRepository.findMeetingsOverDays(id);
-    }
-
-    @GetMapping("/meetings/count_work_packages/{id}")
-    public @ResponseBody List <Map<String, Object>> getCountWorkPackagesByProjectId(@PathVariable ("id") Long id) {
-        return meetingRepository.findCountWorkPackagesByProjectId(id);
     }
 }

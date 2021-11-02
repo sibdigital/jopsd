@@ -136,6 +136,9 @@ public class User {
     @Column(name = "last_ip")
     private String lastIp;
 
+    @Column(name = "identificator")
+    private String identificator;
+
     public String getLastIp() {
         return lastIp;
     }
@@ -350,5 +353,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getIdentificator() {
+        return identificator;
+    }
+
+    public void setIdentificator(String identificator) {
+        this.identificator = identificator;
     }
 }

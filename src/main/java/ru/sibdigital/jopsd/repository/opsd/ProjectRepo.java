@@ -11,6 +11,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
 import java.util.List;
+import java.util.Map;
 
 @RepositoryRestResource
 public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project> {
@@ -120,12 +121,24 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
             Pageable pageable
     );
 
-    @Query(value = "SELECT * FROM projects " +
-            "WHERE status <> 4 and status <> 3 and " +
-            "   ((SELECT type FROM roles WHERE id = " +
-            "       (SELECT role_id FROM principal_roles WHERE principal_id =:id)) = 'GlobalRole'" +
-            "   OR id in (SELECT project_id FROM  members WHERE user_id =:id))"
+    @Query(value = "SELECT *\n" +
+            "FROM (SELECT *\n" +
+            "      FROM projects\n" +
+            "      WHERE NOT status IN (3, 4)\n" +
+            "     ) AS proj\n" +
+            "WHERE exists(SELECT DISTINCT type\n" +
+            "             FROM roles as r\n" +
+            "                      INNER JOIN (SELECT *\n" +
+            "                                  FROM principal_roles\n" +
+            "                                  WHERE principal_id = :id\n" +
+            "             ) AS pr ON r.id = pr.role_id\n" +
+            "    )\n" +
+            "OR\n" +
+            "    proj.id in (SELECT project_id\n" +
+            "                FROM members\n" +
+            "                WHERE user_id = :id\n" +
+            "    )"
             , nativeQuery = true)
-    List <Project> findProjectsByUserRoles(Long id);
+    List<Project> findProjectsByUserRoles(Long id);
 
 }
