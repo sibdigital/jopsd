@@ -1,15 +1,11 @@
 package ru.sibdigital.jopsd.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class RequestUtils {
 
