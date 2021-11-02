@@ -116,12 +116,6 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected LboRepository lboRepository;
 
-    @Autowired
-    protected SettingService settingService;
-
-    @Autowired
-    protected MeetingRepository meetingRepository;
-
     protected void logError(Exception e) {
 //        log.error(e.getMessage());
 //        e.printStackTrace();
