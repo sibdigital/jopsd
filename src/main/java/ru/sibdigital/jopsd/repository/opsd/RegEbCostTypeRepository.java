@@ -4,12 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-import ru.sibdigital.jopsd.model.opsd.Rate;
-
-import java.util.List;
+import ru.sibdigital.jopsd.model.opsd.CostType;
+import ru.sibdigital.jopsd.model.opsd.RegEbCostType;
 
 @RepositoryRestResource
-public interface RateRepository extends JpaRepository<Rate, Long>, JpaSpecificationExecutor<Rate> {
+public interface RegEbCostTypeRepository extends JpaRepository<RegEbCostType, Long>, JpaSpecificationExecutor<RegEbCostType> {
     @Override
     @RestResource(exported = false)
     void deleteById(Long id);
@@ -17,8 +16,7 @@ public interface RateRepository extends JpaRepository<Rate, Long>, JpaSpecificat
 
     @Override
     @RestResource(exported = false)
-    void delete(Rate rate);
+    void delete(RegEbCostType regEbCostType);
 
-    List<Rate> findByCostType_Id(Long costTypeId);
-
+    void deleteAllByCostType(CostType costType);
 }

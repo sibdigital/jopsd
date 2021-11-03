@@ -16,4 +16,5 @@ public interface SettingService {
     String getEventMeetingsMemberElem();
     String getEventMeetingsMemberElemOverdue();
 
+    Setting findByName(String name);
 }

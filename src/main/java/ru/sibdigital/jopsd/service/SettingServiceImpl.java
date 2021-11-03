@@ -157,4 +157,9 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
     }
 
 
+
+    @Override
+    public Setting findByName(String name) {
+        return settingRepository.findByName(name).orElse(null);
+    }
 }
