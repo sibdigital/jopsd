@@ -9,6 +9,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Enumeration;
 
+import java.util.List;
+
 @RepositoryRestResource
 public interface EnumerationRepo extends JpaRepository<Enumeration, Long>, JpaSpecificationExecutor<Enumeration> {
     @Override
@@ -20,4 +22,9 @@ public interface EnumerationRepo extends JpaRepository<Enumeration, Long>, JpaSp
     void delete(Enumeration enumeration);
 
     Page findByType(@Param("type") String type, Pageable p);
+
+    List<Enumeration> findAllByActiveAndTypeAndNameIn(Boolean active, String type, List<String> names);
+
+    @Override
+    List<Enumeration> findAll();
 }

@@ -40,11 +40,10 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
             List<MaterialBudgetItem> newMaterialBudgetItemList = new ArrayList<>();
             List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSourceList = executionParseService.getFinancialSourceList(resultsExecution.getRegProject());
             if (financialSourceList != null) {
-                Map<String, CostTypes> mapCostTypes = getMapCostTypes();
+                Map<String, CostType> mapCostTypes = getMapCostTypes();
                 List<String> codes = new ArrayList<>(mapCostTypes.keySet());
                 for (String code : codes) {
-                    Long costTypeId = mapCostTypes.get(code).getValue();
-                    CostType costType = costTypeRepository.findById(costTypeId).orElse(null);
+                    CostType costType = mapCostTypes.get(code);
 
                     List<Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource> financialSources =
                             getFinancialSourcesByCode(financialSourceList, code);
@@ -70,7 +69,9 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         List<MaterialBudgetItem> newMaterialBudgetItems = new ArrayList<>();
 
         for (Resultsexecution.RegProject.Results.Result.FinancialSources.FinancialSource financialSource : financialSources) {
-            newMaterialBudgetItems.add(createMaterialBudgetItem(financialSource, costType, costObject));
+            if (financialSource.getCBR().compareTo(BigDecimal.ZERO) > 0) {
+                newMaterialBudgetItems.add(createMaterialBudgetItem(financialSource, costType, costObject));
+            }
         }
 
         return newMaterialBudgetItems;
@@ -109,17 +110,13 @@ public class FinancialServiceImpl extends SuperServiceImpl implements FinancialS
         return sum;
     }
 
-    private Map<String, CostTypes> getMapCostTypes(){
-        // 220 - бюджет субъекта
-        // 221 - федеральный бюджет
-        // 250 - внебюджетные источники
-        // 230 - свод бюджетов муниципальных образований
-        Map<String, CostTypes> mapCode = new HashMap<>();
-        mapCode.put("220", CostTypes.REGIONAL_BUDGET);
-        mapCode.put("221", CostTypes.FEDERAL_BUDGET);
-        mapCode.put("250", CostTypes.EXTRABUDGETARY_FUNDS);
-        mapCode.put("230", CostTypes.MUNICIPAL_BUDGET);
-        return mapCode;
+    private Map<String, CostType> getMapCostTypes(){
+        List<RegEbCostType> regEbCostTypeList = regEbCostTypeRepository.findAll();
+        Map<String, CostType> map = new HashMap<>();
+        regEbCostTypeList.forEach(ctr -> {
+            map.put(ctr.getEbCostType().getCode(), ctr.getCostType());
+        });
+        return map;
     }
 
     private CostObject createCostObjectByWorkPackageAndResultMetaId(WorkPackage workPackage, User author, Map<String, Object> params) {
