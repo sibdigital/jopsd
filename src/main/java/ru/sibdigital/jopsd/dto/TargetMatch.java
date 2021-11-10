@@ -14,6 +14,4 @@ import ru.sibdigital.jopsd.model.opsd.Target;
 public class TargetMatch {
     private Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria purposeCriteria;
     private Target target;
-    private Boolean createNewTarget;
-    private String newTargetName;
 }

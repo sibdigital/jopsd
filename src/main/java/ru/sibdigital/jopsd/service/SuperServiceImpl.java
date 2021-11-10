@@ -131,6 +131,9 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected RegEbCostTypeRepository regEbCostTypeRepository;
 
+    @Autowired
+    protected OrganizationRepository organizationRepository;
+
     protected void logError(Exception e) {
 //        log.error(e.getMessage());
 //        e.printStackTrace();

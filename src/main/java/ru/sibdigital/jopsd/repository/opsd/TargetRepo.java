@@ -17,6 +17,8 @@ public interface TargetRepo extends JpaRepository<Target, Long>, JpaSpecificatio
     List<Target> findAllByProjectId(Long projectId);
     Page<Target> findAllByProject_Id(Long projectId, Pageable pageable);
     Page<Target> findByProject_IdAndNameContainingIgnoreCase(Long projectId, String name, Pageable pageable);
+    Page<Target> findByProject_IdAndNameContainingIgnoreCaseAndIdIsNotIn(Long projectId, String name, List<Long> ids, Pageable pageable);
+
 
     @Override
     @RestResource(exported = false)

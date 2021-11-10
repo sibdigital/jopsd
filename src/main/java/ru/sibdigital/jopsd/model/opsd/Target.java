@@ -9,8 +9,6 @@ import org.hibernate.annotations.NotFoundAction;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name = "targets", schema = "public")
@@ -71,16 +69,18 @@ public class Target {
         this.measureUnit = measureUnit;
     }
 
-    @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    @JoinColumn(name = "parent_id")
-    private Target parent;
-    public Target getParent() {
-        return parent;
-    }
-    public void setParent(Target parent) {
-        this.parent = parent;
-    }
+    // По default из ruby ставится 0, что приводит к ошибкам
+//    @NotFound(action = NotFoundAction.IGNORE)
+//    @JoinColumn(name = "parent_id")
+//    private Target parent;
+//    public Target getParent() {
+//        return parent;
+//    }
+//    public void setParent(Target parent) {
+//        this.parent = parent;
+//    }
+
+    private Long parentId;
 
     private String name;
     private String unit;
@@ -279,5 +279,15 @@ public class Target {
 
     public void setMetaId(Long metaId) {
         this.metaId = metaId;
+    }
+
+    @Basic
+    @Column(name = "parent_id")
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 }
