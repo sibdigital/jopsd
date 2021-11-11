@@ -111,6 +111,12 @@ public class SuperServiceImpl implements SuperService {
     protected PageMapRepository pageMapRepository;
 
     @Autowired
+    protected KpiRepository kpiRepository;
+
+    @Autowired
+    protected KpiVariableRepository kpiVariableRepository;
+
+    @Autowired
     protected ContractRepository contractRepository;
 
     @Autowired

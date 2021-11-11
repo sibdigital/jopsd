@@ -6,6 +6,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.KpiVariable;
 
+import java.util.List;
+
 @RepositoryRestResource
 public interface KpiVariableRepository extends JpaRepository<KpiVariable, Long>, JpaSpecificationExecutor<KpiVariable> {
     @Override
@@ -16,4 +18,6 @@ public interface KpiVariableRepository extends JpaRepository<KpiVariable, Long>,
     @Override
     @RestResource(exported = false)
     void delete(KpiVariable kpiVariable);
+
+    List<KpiVariable> findAllByKpi_Id(Long kpiId);
 }
