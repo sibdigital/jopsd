@@ -75,14 +75,4 @@ public class SuperController {
 
     @Autowired
     protected CostTypeService costTypeService;
-
-    protected void logError(Exception e) {
-        log.error(e.getMessage());
-        e.printStackTrace();
-    }
-
-    protected void logError(String errorMessage) {
-        log.error(errorMessage);
-        System.out.println(errorMessage);
-    }
 }

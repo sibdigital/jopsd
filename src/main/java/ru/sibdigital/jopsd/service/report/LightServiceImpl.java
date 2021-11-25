@@ -2,14 +2,15 @@ package ru.sibdigital.jopsd.service.report;
 
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRParameter;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.model.report.SecondColorlight;
 
 import javax.persistence.Query;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -30,7 +31,7 @@ public class LightServiceImpl extends JasperReportServiceImpl implements LightSe
 
             return exportJasperReport(jrxmlPath, secondColorlights, parameters, "xlsx");
         } catch (Exception e) {
-            logError(e);
+            log.error("Ошибка выгрузки Светофора. {}", e.getMessage());
         }
         return new byte[0];
     }

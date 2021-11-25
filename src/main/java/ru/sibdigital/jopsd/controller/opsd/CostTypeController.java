@@ -1,5 +1,6 @@
 package ru.sibdigital.jopsd.controller.opsd;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Slf4j
 public class CostTypeController extends SuperController {
 
     @PostMapping("/costType/save")
@@ -27,7 +29,7 @@ public class CostTypeController extends SuperController {
             return ResponseEntity.ok().build();
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка сохранения costType. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
@@ -43,7 +45,7 @@ public class CostTypeController extends SuperController {
             return ResponseEntity.ok().build();
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка удаления costType. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }

@@ -140,17 +140,6 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected OrganizationRepository organizationRepository;
 
-    protected void logError(Exception e) {
-//        log.error(e.getMessage());
-//        e.printStackTrace();
-        log.error("{}", e);
-    }
-
-    protected void logError(String errorMessage) {
-        log.error(errorMessage);
-        System.out.println(errorMessage);
-    }
-
     protected static Unmarshaller getUnmarshaller(Class clazz) {
         Unmarshaller unmarshaller = null;
         try {

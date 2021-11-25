@@ -1,5 +1,6 @@
 package ru.sibdigital.jopsd.controller.opsd;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import ru.sibdigital.jopsd.utils.DataFormatUtils;
 import java.util.Map;
 
 @Controller
+@Slf4j
 public class LboController extends SuperController {
 
     @PostMapping("/lbo/save")
@@ -22,7 +24,7 @@ public class LboController extends SuperController {
             return lboService.save(lbo);
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка сохранения ЛБО. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
@@ -38,7 +40,7 @@ public class LboController extends SuperController {
             return ResponseEntity.ok().build();
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка удаления ЛБО. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }

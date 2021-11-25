@@ -10,6 +10,7 @@ import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -36,10 +37,14 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
     public Resultsexecution getResultsexecutionInInputStream(InputStream inputStream) {
         try {
             return executionParseService.unmarshalInputStream(inputStream);
-        } catch (Exception e) {
-            logError(e);
-            return null;
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения ResultExecution. {}", ioException.getMessage());
+        }
+        catch (Exception e) {
+            log.error("Ошибка при создании мероприятия по файлу исполнения. {}", e.getMessage());
+        }
+        return null;
     }
 
     @Override

@@ -14,6 +14,7 @@ import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.utils.DataFormatUtils;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +35,12 @@ public class ImportExecutionController extends SuperController {
                 return workPackage;
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при поиске мероприятия по файлу исполнения. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -59,8 +64,12 @@ public class ImportExecutionController extends SuperController {
                 return workPackage;
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сохранении metaId мероприятия по файлу исполнения. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -87,8 +96,12 @@ public class ImportExecutionController extends SuperController {
                 return workPackage;
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при создании мероприятия по файлу исполнения. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -117,8 +130,12 @@ public class ImportExecutionController extends SuperController {
                 result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", "Cost object is null");
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сохранении финансирования. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result =  Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -133,8 +150,12 @@ public class ImportExecutionController extends SuperController {
 
             return targetMatches;
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сопоставлении целевых показателей. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -157,7 +178,7 @@ public class ImportExecutionController extends SuperController {
             return targetMatchesAfterProcess;
         }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сохранении целевых показателей. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
