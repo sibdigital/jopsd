@@ -33,7 +33,14 @@ public class SchedulerBrbo {
     private MemberMeetings meetingsMemberOverdue;
     @Autowired
     private MemberMeetingsOverdue memberMeetingsOverdue;
-
+    @Autowired
+    private FindProject findProject;
+    @Autowired
+    private FoundProjects foundProjects;
+    @Autowired
+    private FindMember findMember;
+    @Autowired
+    private FoundMember foundMember;
 
     @PostConstruct
     public void scheduleRunnableWithCronTrigger() {
@@ -46,7 +53,10 @@ public class SchedulerBrbo {
         taskScheduler.schedule(projectMembers, cronTrigger);
         taskScheduler.schedule(meetingsMemberOverdue, cronTrigger);
         taskScheduler.schedule(memberMeetingsOverdue, cronTrigger);
-
+        taskScheduler.schedule(findProject, cronTrigger);
+        taskScheduler.schedule(foundProjects, cronTrigger);
+        taskScheduler.schedule(findMember, cronTrigger);
+        taskScheduler.schedule(foundMember, cronTrigger);
     }
 
 }

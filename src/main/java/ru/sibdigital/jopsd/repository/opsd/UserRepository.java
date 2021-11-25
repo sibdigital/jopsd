@@ -30,4 +30,15 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
             "               AND project_id =:id"
             , nativeQuery = true)
     List<User> findMembersByProjectId(Long id);
+
+    @Query(value = "SELECT *\n" +
+            "FROM users\n" +
+            "    INNER JOIN members\n" +
+            "        ON members.user_id = users.id\n" +
+            "               AND project_id =:id\n" +
+            "WHERE lastname LIKE %:lastname% \n" +
+            "   OR firstname LIKE  :firstname% \n" +
+            "   OR patronymic LIKE :patronymic%"
+            , nativeQuery = true)
+    List<User> findMembersByProjectIdAndFio(Long id, String lastname, String firstname, String patronymic);
 }

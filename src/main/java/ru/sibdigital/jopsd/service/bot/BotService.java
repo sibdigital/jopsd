@@ -13,4 +13,8 @@ public interface BotService {
     String processMembersProject (String url, String json);
     String processMeetingsMemberElem(String url, String json);
     String processMeetingsMemberOverdue(String url, String json);
+    String processFindProj(String url, String json);
+    String processFoundProject(String url, String json);
+    String processFindMemb(String url, String json);
+    String processFoundMemb(String url, String json);
 }

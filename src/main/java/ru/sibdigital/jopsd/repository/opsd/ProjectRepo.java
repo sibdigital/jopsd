@@ -122,23 +122,48 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
     );
 
     @Query(value = "SELECT *\n" +
-            "FROM (SELECT *\n" +
-            "      FROM projects\n" +
-            "      WHERE NOT status IN (3, 4)\n" +
-            "     ) AS proj\n" +
+            "            FROM (SELECT *\n" +
+            "                  FROM projects\n" +
+            "                  WHERE NOT status IN (3, 4)\n" +
+            "                 ) AS proj\n" +
+            "            JOIN (SELECT project_id, max(updated_at) AS date\n" +
+            "                  FROM work_packages\n" +
+            "                  GROUP BY project_id\n" +
+            "                  ORDER BY date DESC )r\n" +
+            "                  ON proj.id = r.project_id\n" +
             "WHERE exists(SELECT DISTINCT type\n" +
-            "             FROM roles as r\n" +
-            "                      INNER JOIN (SELECT *\n" +
-            "                                  FROM principal_roles\n" +
-            "                                  WHERE principal_id = :id\n" +
-            "             ) AS pr ON r.id = pr.role_id\n" +
-            "    )\n" +
-            "OR\n" +
-            "    proj.id in (SELECT project_id\n" +
-            "                FROM members\n" +
-            "                WHERE user_id = :id\n" +
-            "    )"
+            "                         FROM roles as r\n" +
+            "                                  INNER JOIN (SELECT *\n" +
+            "                                              FROM principal_roles\n" +
+            "                                              WHERE principal_id = :id\n" +
+            "                         ) AS pr ON r.id = pr.role_id\n" +
+            "                )\n" +
+            "            OR\n" +
+            "                proj.id in (SELECT project_id\n" +
+            "                            FROM members\n" +
+            "                            WHERE user_id = :id\n" +
+            "                )\n" +
+            "ORDER BY date DESC LIMIT 20"
             , nativeQuery = true)
     List<Project> findProjectsByUserRoles(Long id);
+
+    @Query(value = "SELECT *\n" +
+            "FROM (SELECT *\n" +
+            "       FROM projects\n" +
+            "       WHERE NOT status IN (3, 4) and name LIKE %:name%\n" +
+            "       ) AS proj\n" +
+            "WHERE exists(SELECT DISTINCT type\n" +
+            "             FROM roles as r\n" +
+            "               INNER JOIN (SELECT *\n" +
+            "                   FROM principal_roles\n" +
+            "                   WHERE principal_id = :id\n" +
+            "             ) AS pr ON r.id = pr.role_id\n" +
+            ")\n" +
+            "OR\n" +
+            "     proj.id in (SELECT project_id\n" +
+            "                 FROM members\n" +
+            "                 WHERE user_id = :id)"
+            , nativeQuery = true)
+    List<Project> findProjectsByName(String name, Long id);
 
 }

@@ -15,5 +15,10 @@ public interface SettingService {
     String getEventMembersProject();
     String getEventMeetingsMemberElem();
     String getEventMeetingsMemberElemOverdue();
+    String getEventFindProject();
+    String getEventProjMessage();
+    String getEventFindMember();
+    String getEventMembMessage();
+    String getSizeProjectsForReestr();
 
 }

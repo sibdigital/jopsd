@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class StatusesMeeting implements Runnable {
+public class FindProject implements Runnable {
 
     @Autowired
     private BotService botService;
@@ -23,13 +23,15 @@ public class StatusesMeeting implements Runnable {
     @Override
     public void run() {
 
+        //log.info("run " + new Date());
+
         final Request request = Request.builder()
-                .eventTypeCode(settingService.getEventStatuses())
+                .eventTypeCode(settingService.getEventFindProject())
                 .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
         final String jsonRequest = RequestUtils.toJSON(request);
 
         try {
-              botService.processEventsStatus(settingService.getUrlRequestBrbo(), jsonRequest);
+              botService.processFindProj(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
             log.error(e.getMessage());

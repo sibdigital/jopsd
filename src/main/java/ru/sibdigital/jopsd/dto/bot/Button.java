@@ -15,5 +15,7 @@ public class Button {
     private String identificator;
     private String label;
     private String eventTypeCode;
+    private String text;
+    private String idBot;
 
 }

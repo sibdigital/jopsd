@@ -23,7 +23,6 @@ public class MemberMeetings implements Runnable {
     @Override
     public void run() {
 
-        log.info("run " + new Date());
 
         final Request request = Request.builder()
                 .eventTypeCode(settingService.getEventMeetingsMemberElem())

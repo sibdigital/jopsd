@@ -36,7 +36,12 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
                 .map(Setting::getValue)
                 .orElse("api");
 
-        return protocolBrbo + "://" + urlBrbo +":" + uroPortBrbo + "/" + urlContextPathBrbo ;
+        if (urlBrbo.contains("localhost")){
+            return protocolBrbo + "://" + urlBrbo +":" + uroPortBrbo + "/" + urlContextPathBrbo ;
+        }
+        else{
+            return protocolBrbo + "://" + urlBrbo + "/" + urlContextPathBrbo ;
+        }
     }
     @Override
     public String getUrlMessageBrbo() {
@@ -146,8 +151,8 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
         return meetingsMemberElem;
     }
 
-    @Override
-    public String getEventMeetingsMemberElemOverdue() {
+     @Override
+     public String getEventMeetingsMemberElemOverdue() {
 
         String meetingsMemberElemOverdue = settingRepository.findByName("event_meetings_overdue_memb")
                 .map(Setting::getValue)
@@ -155,6 +160,52 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
 
         return meetingsMemberElemOverdue;
     }
+    @Override
+    public String getEventFindProject() {
 
+        String eventFindProject = settingRepository.findByName("event_find_proj")
+                .map(Setting::getValue)
+                .orElse("FIND_PROJ");
+
+        return eventFindProject;
+    }
+
+    @Override
+    public String getEventProjMessage() {
+
+        String eventProjMessage = settingRepository.findByName("event_get_proj_message")
+                .map(Setting::getValue)
+                .orElse("GET_FOR_SEARCHING_PROJ");
+
+        return eventProjMessage;
+    }
+
+    @Override
+    public String getEventFindMember() {
+
+        String eventFindMemb = settingRepository.findByName("event_find_memb")
+                .map(Setting::getValue)
+                .orElse("FIND_MEMBER");
+
+        return eventFindMemb;
+    }
+    @Override
+    public String getEventMembMessage() {
+
+        String eventMembMessage = settingRepository.findByName("event_get_member_message")
+                .map(Setting::getValue)
+                .orElse("GET_FOR_SEARCHING_MEMB");
+
+        return eventMembMessage;
+    }
+    @Override
+    public String getSizeProjectsForReestr() {
+
+        String sizeProjects = settingRepository.findByName("size_projects_for_event_proj_reestr")
+                .map(Setting::getValue)
+                .orElse("20");
+
+        return sizeProjects;
+    }
 
 }
