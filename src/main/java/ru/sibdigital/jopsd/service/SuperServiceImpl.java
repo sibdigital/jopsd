@@ -111,6 +111,12 @@ public class SuperServiceImpl implements SuperService {
     protected PageMapRepository pageMapRepository;
 
     @Autowired
+    protected KpiRepository kpiRepository;
+
+    @Autowired
+    protected KpiVariableRepository kpiVariableRepository;
+
+    @Autowired
     protected ContractRepository contractRepository;
 
     @Autowired
@@ -122,16 +128,17 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected MeetingRepository meetingRepository;
 
-    protected void logError(Exception e) {
-//        log.error(e.getMessage());
-//        e.printStackTrace();
-        log.error("{}", e);
-    }
+    @Autowired
+    protected RateRepository rateRepository;
 
-    protected void logError(String errorMessage) {
-        log.error(errorMessage);
-        System.out.println(errorMessage);
-    }
+    @Autowired
+    protected EbCostTypeRepository ebCostTypeRepository;
+
+    @Autowired
+    protected RegEbCostTypeRepository regEbCostTypeRepository;
+
+    @Autowired
+    protected OrganizationRepository organizationRepository;
 
     protected static Unmarshaller getUnmarshaller(Class clazz) {
         Unmarshaller unmarshaller = null;

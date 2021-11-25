@@ -1,15 +1,15 @@
 package ru.sibdigital.jopsd.repository.opsd;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-import ru.sibdigital.jopsd.model.opsd.Organization;
+import ru.sibdigital.jopsd.model.opsd.KpiVariable;
+
+import java.util.List;
 
 @RepositoryRestResource
-public interface OrganizationRepository extends JpaRepository<Organization, Long>, JpaSpecificationExecutor<Organization> {
+public interface KpiVariableRepository extends JpaRepository<KpiVariable, Long>, JpaSpecificationExecutor<KpiVariable> {
     @Override
     @RestResource(exported = false)
     void deleteById(Long id);
@@ -17,8 +17,7 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
 
     @Override
     @RestResource(exported = false)
-    void delete(Organization organization);
+    void delete(KpiVariable kpiVariable);
 
-    Page<Organization> findByNameContainingIgnoreCaseAndIsApprove(String name, Boolean isApprove, Pageable pageable);
-
+    List<KpiVariable> findAllByKpi_Id(Long kpiId);
 }

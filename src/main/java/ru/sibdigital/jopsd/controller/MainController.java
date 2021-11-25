@@ -10,8 +10,15 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @Controller
 public class MainController extends SuperController {
-    @GetMapping({"/upload/el_budget", "/upload/mpp"})
-    public String admin(Model model) {
+    @GetMapping("/upload/el_budget")
+    public String elBudgetPage(Model model) {
+        model.addAttribute("title", "Загрузка из Электронного Бюджета | Цифровой проект");
+        return "index";
+    }
+
+    @GetMapping("/upload/mpp")
+    public String mppPage(Model model) {
+        model.addAttribute("title", "Загрузка из MS Project | Цифровой проект");
         return "index";
     }
 

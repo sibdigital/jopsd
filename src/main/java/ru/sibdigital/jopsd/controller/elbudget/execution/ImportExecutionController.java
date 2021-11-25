@@ -1,8 +1,6 @@
 package ru.sibdigital.jopsd.controller.elbudget.execution;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,16 +9,13 @@ import ru.sibdigital.jopsd.config.user.details.CustomUserDetails;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.model.opsd.CostObject;
-import ru.sibdigital.jopsd.model.opsd.Target;
 import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.utils.DataFormatUtils;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +26,7 @@ public class ImportExecutionController extends SuperController {
     @PostMapping(value = "/import/execution/find_work_package")
     public @ResponseBody Object findWorkPackage(@RequestParam("file") MultipartFile multipartFile) {
         Map<Object, Object> result;
-        try {
-            InputStream inputStream = multipartFile.getInputStream();
+        try (InputStream inputStream = multipartFile.getInputStream()) {
             WorkPackage workPackage = executionService.findWorkPackage(inputStream);
 
             if (workPackage == null) {
@@ -41,8 +35,12 @@ public class ImportExecutionController extends SuperController {
                 return workPackage;
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при поиске мероприятия по файлу исполнения. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -54,11 +52,10 @@ public class ImportExecutionController extends SuperController {
                                                   @RequestParam("workPackageId") Long workPackageId,
                                                   HttpSession session) {
         Map<Object, Object> result;
-        try {
+        try (InputStream inputStream = multipartFile.getInputStream()) {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
 
-            InputStream inputStream = multipartFile.getInputStream();
             WorkPackage workPackage = executionService.putMetaIdToWorkPackage(inputStream, workPackageId);
 
             if (workPackage == null) {
@@ -67,8 +64,12 @@ public class ImportExecutionController extends SuperController {
                 return workPackage;
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сохранении metaId мероприятия по файлу исполнения. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -80,14 +81,14 @@ public class ImportExecutionController extends SuperController {
                                                   @RequestParam("workPackageName") String workPackageName,
                                                   @RequestParam("projectId") Long projectId,
                                                   @RequestParam("projectName") String projectName,
+                                                  @RequestParam("organizationId") Long organizationId,
                                                   HttpSession session) {
         Map<Object, Object> result;
-        try {
+        try (InputStream inputStream = multipartFile.getInputStream()) {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
 
-            InputStream inputStream = multipartFile.getInputStream();
-            WorkPackage workPackage = executionService.createWorkPackage(inputStream, workPackageName, projectId, projectName, user.getId());
+            WorkPackage workPackage = executionService.createWorkPackage(inputStream, workPackageName, projectId, projectName, user.getId(), organizationId);
 
             if (workPackage == null) {
                 return DataFormatUtils.buildOkResponse(Map.of("status", "server", "name", "null", "cause", "Ошибка сохранения"));
@@ -95,8 +96,12 @@ public class ImportExecutionController extends SuperController {
                 return workPackage;
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при создании мероприятия по файлу исполнения. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -109,11 +114,9 @@ public class ImportExecutionController extends SuperController {
             @RequestParam("workPackageId") Long workPackageId,
             HttpSession session) {
         Map<Object, Object> result;
-        try {
+        try (InputStream inputStream = multipartFile.getInputStream();) {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
-
-            InputStream inputStream = multipartFile.getInputStream();
 
             Map<String, Object> params = new HashMap<>();
             params.put("workPackageId", workPackageId);
@@ -127,8 +130,12 @@ public class ImportExecutionController extends SuperController {
                 result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", "Cost object is null");
             }
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сохранении финансирования. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result =  Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -138,15 +145,17 @@ public class ImportExecutionController extends SuperController {
     @PostMapping("/import/execution/match_purpose_criteria")
     public @ResponseBody Object matchPurposeCriteria(@RequestParam("file") MultipartFile multipartFile) {
         Map<Object, Object> result;
-        try {
-            InputStream inputStream = multipartFile.getInputStream();
-
+        try (InputStream inputStream = multipartFile.getInputStream()) {
             List<TargetMatch> targetMatches = targetService.matchTargets(inputStream);
 
             return targetMatches;
         }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+        }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сопоставлении целевых показателей. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }
@@ -169,7 +178,7 @@ public class ImportExecutionController extends SuperController {
             return targetMatchesAfterProcess;
         }
         catch (Exception e) {
-            logError(e);
+            log.error("Ошибка при сохранении целевых показателей. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
         }

@@ -1,5 +1,4 @@
 package ru.sibdigital.jopsd.utils;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.LoggerFactory;

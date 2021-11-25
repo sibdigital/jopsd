@@ -1,5 +1,6 @@
 package ru.sibdigital.jopsd.controller.page;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Slf4j
 public class PageController extends SuperController {
     @GetMapping("pages/groups")
     public @ResponseBody List<Page> groups(@RequestParam(name = "id", required = false) Long id) {
@@ -33,7 +35,7 @@ public class PageController extends SuperController {
             return ResponseEntity.ok(pageService.createOrUpdatePage(body, user.getUser()));
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка изменения page. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
@@ -47,7 +49,7 @@ public class PageController extends SuperController {
             return pageMapService.createOrUpdatePageMap(body);
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка изменения page_map. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
            result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }
@@ -61,7 +63,7 @@ public class PageController extends SuperController {
             return pageFileService.createOrUpdatePageFile(body);
         }
         catch (Exception e){
-            logError(e);
+            log.error("Ошибка изменения page_file. {}", e.getMessage());
             String message =  e.getMessage() == null ? "" : e.getMessage();
             result = (Map.of("status", "server", "name", "Ошибка сохранения", "cause", message));
         }

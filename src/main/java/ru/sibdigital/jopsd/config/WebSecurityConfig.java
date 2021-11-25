@@ -54,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test").permitAll()
                 .antMatchers("/pages/list").permitAll()
                 .antMatchers("/api/pages/*").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

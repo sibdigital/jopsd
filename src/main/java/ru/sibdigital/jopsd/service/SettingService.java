@@ -1,5 +1,7 @@
 package ru.sibdigital.jopsd.service;
 
+import ru.sibdigital.jopsd.model.opsd.Setting;
+
 public interface SettingService {
     String getOpsdHref();
     String getBaseBrbo();
@@ -21,4 +23,5 @@ public interface SettingService {
     String getEventMembMessage();
     String getSizeProjectsForReestr();
 
+    Setting findByName(String name);
 }

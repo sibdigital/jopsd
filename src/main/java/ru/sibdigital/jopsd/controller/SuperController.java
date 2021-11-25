@@ -4,16 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.sibdigital.jopsd.repository.opsd.CostObjectRepo;
-import ru.sibdigital.jopsd.service.ContractService;
-import ru.sibdigital.jopsd.service.SettingService;
-import ru.sibdigital.jopsd.service.WorkPackageService;
+import ru.sibdigital.jopsd.service.*;
 import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
 import ru.sibdigital.jopsd.service.elbudget.execution.FinancialService;
 import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
 import ru.sibdigital.jopsd.service.mp.MPService;
 import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.service.ProjectService;
+import ru.sibdigital.jopsd.service.opsd.CostTypeService;
 import ru.sibdigital.jopsd.service.opsd.LboService;
+import ru.sibdigital.jopsd.service.opsd.RateService;
 import ru.sibdigital.jopsd.service.page.PageFileService;
 import ru.sibdigital.jopsd.service.page.PageMapService;
 import ru.sibdigital.jopsd.service.page.PageService;
@@ -53,6 +53,9 @@ public class SuperController {
     protected PageService pageService;
 
     @Autowired
+    protected KpiService kpiService;
+
+    @Autowired
     protected PageFileService pageFileService;
 
     @Autowired
@@ -67,13 +70,9 @@ public class SuperController {
     @Autowired
     protected LboService lboService;
 
-    protected void logError(Exception e) {
-        log.error(e.getMessage());
-        e.printStackTrace();
-    }
+    @Autowired
+    protected RateService rateService;
 
-    protected void logError(String errorMessage) {
-        log.error(errorMessage);
-        System.out.println(errorMessage);
-    }
+    @Autowired
+    protected CostTypeService costTypeService;
 }

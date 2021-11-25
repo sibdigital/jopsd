@@ -208,4 +208,9 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
         return sizeProjects;
     }
 
+
+    @Override
+    public Setting findByName(String name) {
+        return settingRepository.findByName(name).orElse(null);
+    }
 }

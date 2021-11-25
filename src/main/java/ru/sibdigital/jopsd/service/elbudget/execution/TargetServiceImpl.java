@@ -4,15 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.TargetMatch;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
-import ru.sibdigital.jopsd.model.opsd.*;
-import ru.sibdigital.jopsd.model.enums.TargetTypes;
-import ru.sibdigital.jopsd.model.opsd.Enumeration;
+import ru.sibdigital.jopsd.model.opsd.Target;
+import ru.sibdigital.jopsd.model.opsd.TargetExecutionValue;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
+import ru.sibdigital.jopsd.model.opsd.WorkPackageTarget;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -42,26 +42,23 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         WorkPackage workPackage = workPackageRepo.findById(workPackageId).orElse(null);
 
         for (TargetMatch targetMatch : targetMatches) {
-            if (targetMatch.getCreateNewTarget()) {
-                target = createTarget(targetMatch, workPackage);
-                target.setComment("Загружено из Эл. Бюджета");
+
+            // если с frontend не все поля пришли, чтобы не перезатереть:
+            if (targetMatch.getTarget() != null) {
+                target = targetRepo.findById(targetMatch.getTarget().getId()).orElse(null);
+                target.setMetaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId());
+                targetRepo.save(target);
             } else {
-                // если с frontend не все поля пришли, чтобы не перезатереть:
-                if (targetMatch.getTarget() != null) {
-                    target = targetRepo.findById(targetMatch.getTarget().getId()).orElse(null);
-                    target.setMetaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId());
-                    targetRepo.save(target);
-                } else {
-                    target = null;
-                }
+                target = null;
             }
+
 
             if (target != null) {
                 Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria purposeCriteria = targetMatch.getPurposeCriteria();
                 List<WorkPackageTarget> workPackageTargets = parsePurposeCriteria(purposeCriteria, target, workPackage);
 
                 workPackageTargetList.addAll(workPackageTargets);
-                targetMatchesAfterProcess.add(TargetMatch.builder().target(target).purposeCriteria(purposeCriteria).createNewTarget(false).build());
+                targetMatchesAfterProcess.add(TargetMatch.builder().target(target).purposeCriteria(purposeCriteria).build());
             }
         }
 
@@ -141,16 +138,11 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         return targetRepo.findTargetByMetaId(purposeCriteria.getPurposeCriteriaMetaId()).orElse(null);
     }
 
-    private Target createTarget(TargetMatch targetMatch, WorkPackage workPackage) {
-        Enumeration type = enumerationRepo.findById(TargetTypes.PURPOSE.getValue()).orElse(null);
-        return Target.builder()
-                    .name(targetMatch.getNewTargetName())
-                    .targetType(type)
-                    .parent(Target.builder().id(Long.valueOf(0)).build())
-                    .project(workPackage.getProject())
-                    .createdAt(Timestamp.from(Instant.now()))
-                    .updatedAt(Timestamp.from(Instant.now()))
-                    .metaId(targetMatch.getPurposeCriteria().getPurposeCriteriaMetaId())
-                    .build();
+    @Override
+    public Target changeMetaId(Long targetId, Long metaId) {
+        Target target = targetRepo.findById(targetId).orElse(null);
+        target.setMetaId(null);
+        targetRepo.save(target);
+        return target;
     }
 }

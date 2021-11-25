@@ -10,6 +10,7 @@ import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
 import javax.xml.bind.Unmarshaller;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -33,11 +34,24 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
     }
 
     @Override
-    public Long getResultMetaIdInInputStream(InputStream inputStream) throws Exception {
+    public Resultsexecution getResultsexecutionInInputStream(InputStream inputStream) {
+        try {
+            return executionParseService.unmarshalInputStream(inputStream);
+        }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения ResultExecution. {}", ioException.getMessage());
+        }
+        catch (Exception e) {
+            log.error("Ошибка при создании мероприятия по файлу исполнения. {}", e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Long getResultMetaIdFromResultsexecution(Resultsexecution resultsexecution){
         Long resultMetaId = null;
 
-        Resultsexecution resultsExecution = executionParseService.unmarshalInputStream(inputStream);
-        Resultsexecution.RegProject.Results.Result result = executionParseService.getResult(resultsExecution);
+        Resultsexecution.RegProject.Results.Result result = executionParseService.getResult(resultsexecution);
         if (result != null) {
             resultMetaId = result.getResultMetaId();
         }
@@ -46,16 +60,20 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
     }
 
     @Override
+    public Long getRegProjectMetaIdFromResultsexecution(Resultsexecution resultsexecution) {
+        return resultsexecution.getRegProject().getRegProjectMetaId();
+    }
+
+    @Override
     public WorkPackage findWorkPackage(InputStream inputStream) throws Exception {
         WorkPackage workPackage = null;
 
-        try {
-            Long resultMetaId = getResultMetaIdInInputStream(inputStream);
+        Resultsexecution resultsexecution = getResultsexecutionInInputStream(inputStream);
+        if (resultsexecution != null) {
+            Long resultMetaId = getResultMetaIdFromResultsexecution(resultsexecution);
             if (resultMetaId != null) {
                 workPackage = workPackageRepo.findWorkPackageByMetaId(resultMetaId).orElse(null);
             }
-        } catch (Exception e) {
-            throw e;
         }
 
         return workPackage;
@@ -64,13 +82,18 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
     @Override
     public WorkPackage putMetaIdToWorkPackage(InputStream inputStream, Long workPackageId) throws Exception {
         WorkPackage workPackage = null;
-        try {
-            Long resultMetaId = getResultMetaIdInInputStream(inputStream);
+        Resultsexecution resultsexecution = getResultsexecutionInInputStream(inputStream);
+        if (resultsexecution != null) {
+            Long resultMetaId = getResultMetaIdFromResultsexecution(resultsexecution);
             if (resultMetaId != null) {
                 workPackage = workPackageService.putMetaId(workPackageId, resultMetaId);
             }
-        } catch (Exception e) {
-            throw e;
+
+            // Set regProjectMetaId to project
+            Long regProjectMetaId = getRegProjectMetaIdFromResultsexecution(resultsexecution);
+            Project project = workPackage.getProject();
+            project.setMetaId(regProjectMetaId);
+            projectRepo.save(project);
         }
 
         return workPackage;
@@ -78,33 +101,43 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
 
     @Override
     @Transactional
-    public WorkPackage createWorkPackage(InputStream inputStream, String workPackageName, Long projectId, String projectName, Long authorId) throws Exception {
+    public WorkPackage createWorkPackage(InputStream inputStream, String workPackageName, Long projectId, String projectName, Long authorId, Long organizationId) throws Exception {
         if (projectId == 0) {
             Project project = createProjectWithSettings(projectName);
             projectId = project.getId();
         }
 
-        Long resultMetaId = getResultMetaIdInInputStream(inputStream);
+        Resultsexecution resultsexecution = getResultsexecutionInInputStream(inputStream);
+        if (resultsexecution != null) {
+            Long resultMetaId = getResultMetaIdFromResultsexecution(resultsexecution);
+            Type type = typeRepository.findById(Types.EVENT.getValue()).orElse(null);
+            Project project = projectRepo.findById(projectId).orElse(null);
+            Status status = statusRepository.findById(Statuses.IN_WORK.getValue()).orElse(null);
+            User author = userRepository.findById(authorId).orElse(null);
+            Organization organization = organizationRepository.findById(organizationId).orElse(null);
 
-        Type type = typeRepository.findById(Types.EVENT.getValue()).orElse(null);
-        Project project = projectRepo.findById(projectId).orElse(null);
-        Status status = statusRepository.findById(Statuses.IN_WORK.getValue()).orElse(null);
-        User author = userRepository.findById(authorId).orElse(null);
+            Long regProjectMetaId = getRegProjectMetaIdFromResultsexecution(resultsexecution);
+            project.setMetaId(regProjectMetaId);
+            projectRepo.save(project);
 
-        WorkPackage workPackage = WorkPackage.builder()
-                                    .type(type)
-                                    .project(project)
-                                    .subject(workPackageName)
-                                    .status(status)
-                                    .author(author)
-                                    .lockVersion(Long.valueOf(0))
-                                    .doneRatio(Long.valueOf(0))
-                                    .createdAt(Timestamp.from(Instant.now()))
-                                    .updatedAt(Timestamp.from(Instant.now()))
-                                    .metaId(resultMetaId)
-                                    .build();
-        workPackageRepo.save(workPackage);
-        return workPackage;
+            WorkPackage workPackage = WorkPackage.builder()
+                    .type(type)
+                    .project(project)
+                    .subject(workPackageName)
+                    .status(status)
+                    .author(author)
+                    .lockVersion(Long.valueOf(0))
+                    .doneRatio(Long.valueOf(0))
+                    .createdAt(Timestamp.from(Instant.now()))
+                    .updatedAt(Timestamp.from(Instant.now()))
+                    .organization(organization)
+                    .metaId(resultMetaId)
+                    .build();
+            workPackageRepo.save(workPackage);
+            return workPackage;
+        } else {
+            return null;
+        }
     }
 
     @Transactional
