@@ -1,6 +1,8 @@
 package ru.sibdigital.jopsd.schedule.tasks;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.sibdigital.jopsd.dto.bot.Request;
@@ -20,21 +22,23 @@ public class StatusesMeeting implements Runnable {
     @Autowired
     private SettingService settingService;
 
+    private final static Logger botLogger = LoggerFactory.getLogger("botLogger");
+
     @Override
     public void run() {
 
-        log.info("run " + new Date());
-
-        final Request request = Request.builder()
-                .eventTypeCode(settingService.getEventStatuses())
-                .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
-        final String jsonRequest = RequestUtils.toJSON(request);
+        botLogger.info("run " + new Date());
 
         try {
-              botService.processEventsStatus(settingService.getUrlRequestBrbo(), jsonRequest);
+            final Request request = Request.builder()
+                    .eventTypeCode(settingService.getEventStatuses())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
+            final String jsonRequest = RequestUtils.toJSON(request);
+
+            botService.processEventsStatus(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            log.error(e.getMessage());
+            botLogger.error(e.getMessage());
         }
     }
 
