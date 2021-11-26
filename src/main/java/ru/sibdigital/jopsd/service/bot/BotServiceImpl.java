@@ -2,9 +2,16 @@ package ru.sibdigital.jopsd.service.bot;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.sibdigital.jopsd.dto.bot.*;
-import ru.sibdigital.jopsd.model.opsd.*;
+import ru.sibdigital.jopsd.dto.bot.Button;
+import ru.sibdigital.jopsd.dto.bot.ClsEventType;
+import ru.sibdigital.jopsd.dto.bot.RegIncomRequest;
+import ru.sibdigital.jopsd.dto.bot.RegSentMessage;
+import ru.sibdigital.jopsd.model.opsd.Meeting;
+import ru.sibdigital.jopsd.model.opsd.Project;
+import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 import ru.sibdigital.jopsd.utils.RequestUtils;
 
@@ -16,6 +23,7 @@ import java.util.Map;
 @Slf4j
 public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
+    private final static Logger botLogger = LoggerFactory.getLogger("botLogger");
 
     public String processProjectRegistry(String url, String json) {
 
