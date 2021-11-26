@@ -38,7 +38,7 @@ public class MeetingsOverdue implements Runnable {
             botService.processEventsOverdue(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            botLogger.error(e.getMessage());
+            botLogger.error("ERROR at MeetingsOverdue: ", e);
         }
     }
 

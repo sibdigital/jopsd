@@ -38,7 +38,7 @@ public class MeetingsVia14Day implements Runnable {
             botService.processEventsVia14Days(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            botLogger.error(e.getMessage());
+            botLogger.error("ERROR at MeetingsVia14Day: ", e);
         }
     }
 

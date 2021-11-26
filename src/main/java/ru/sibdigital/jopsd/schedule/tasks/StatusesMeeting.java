@@ -38,7 +38,7 @@ public class StatusesMeeting implements Runnable {
             botService.processEventsStatus(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            botLogger.error(e.getMessage());
+            botLogger.error("ERROR at StatusesMeeting: ", e);
         }
     }
 
