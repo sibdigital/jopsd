@@ -117,6 +117,9 @@ public class SuperServiceImpl implements SuperService {
     protected KpiVariableRepository kpiVariableRepository;
 
     @Autowired
+    protected MapPointRepository mapPointRepository;
+
+    @Autowired
     protected ContractRepository contractRepository;
 
     @Autowired
@@ -139,6 +142,9 @@ public class SuperServiceImpl implements SuperService {
 
     @Autowired
     protected OrganizationRepository organizationRepository;
+
+    @Autowired
+    protected RolePermissionRepository rolePermissionRepository;
 
     protected void logError(Exception e) {
 //        log.error(e.getMessage());

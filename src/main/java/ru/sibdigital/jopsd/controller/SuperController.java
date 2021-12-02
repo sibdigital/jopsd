@@ -56,6 +56,9 @@ public class SuperController {
     protected KpiService kpiService;
 
     @Autowired
+    protected MapPointService mapPointService;
+
+    @Autowired
     protected PageFileService pageFileService;
 
     @Autowired
@@ -75,6 +78,9 @@ public class SuperController {
 
     @Autowired
     protected CostTypeService costTypeService;
+
+    @Autowired
+    protected UserService userService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());

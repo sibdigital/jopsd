@@ -1,21 +1,25 @@
 package ru.sibdigital.jopsd.model.opsd;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Table(name = "maps")
+@Table(name = "geographic_maps")
 @Entity
-public class GMap {
+public class GeographicMap {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_project", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
+
+    @OneToMany(mappedBy = "geographicMap", fetch = FetchType.EAGER)
+    private List<MapPoint> mapPoints;
 
     public Long getId() {
         return id;
@@ -39,5 +43,13 @@ public class GMap {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public List<MapPoint> getMapPoints() {
+        return mapPoints;
+    }
+
+    public void setMapPoints(List<MapPoint> mapPoints) {
+        this.mapPoints = mapPoints;
     }
 }

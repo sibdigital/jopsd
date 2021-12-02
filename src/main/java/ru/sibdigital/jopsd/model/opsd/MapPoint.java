@@ -2,6 +2,15 @@ package ru.sibdigital.jopsd.model.opsd;
 
 import javax.persistence.*;
 
+// граф нужен для прекращения рекурсии
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "map-point-entity-graph",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "geographicMap")
+                }
+        )
+})
 @Table(name = "map_points")
 @Entity
 public class MapPoint {
@@ -10,30 +19,40 @@ public class MapPoint {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
     @Column(name = "longitude")
     private Double longitude;
 
     @Column(name = "latitude")
     private Double latitude;
 
-    @Lob
     @Column(name = "description")
     private String description;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "id_work_package", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "work_package_id")
     private WorkPackage workPackage;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_project", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_map", nullable = false)
-    private GMap gMap;
+    @JoinColumn(name = "geographic_map_id", nullable = false)
+    private GeographicMap geographicMap;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Long getId() {
         return id;
@@ -91,11 +110,11 @@ public class MapPoint {
         this.project = project;
     }
 
-    public GMap getgMap() {
-        return gMap;
+    public GeographicMap getGeographicMap() {
+        return geographicMap;
     }
 
-    public void setgMap(GMap gMap) {
-        this.gMap = gMap;
+    public void setGeographicMap(GeographicMap geographicMap) {
+        this.geographicMap = geographicMap;
     }
 }
