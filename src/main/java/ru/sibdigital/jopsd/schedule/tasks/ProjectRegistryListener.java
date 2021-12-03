@@ -38,7 +38,7 @@ public class ProjectRegistryListener implements Runnable {
             botService.processProjectRegistry(settingService.getUrlRequestBrbo(), jsonRequest);
         }
          catch (Exception e) {
-             botLogger.error(e.getMessage());
+             botLogger.error("ERROR at ProjectRegistryListener: ", e);
         }
     }
 

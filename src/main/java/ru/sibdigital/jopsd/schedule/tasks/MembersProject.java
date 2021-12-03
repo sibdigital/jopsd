@@ -38,7 +38,7 @@ public class MembersProject implements Runnable {
             botService.processMembersProject(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            botLogger.error(e.getMessage());
+            botLogger.error("ERROR at MembersProject: ", e);
         }
     }
 

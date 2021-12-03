@@ -38,7 +38,7 @@ public class MemberMeetings implements Runnable {
             botService.processMeetingsMemberElem(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            botLogger.error(e.getMessage());
+            botLogger.error("ERROR at MemberMeetings: ", e);
         }
     }
 
