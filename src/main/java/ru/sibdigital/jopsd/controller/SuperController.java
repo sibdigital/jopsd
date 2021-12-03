@@ -17,6 +17,7 @@ import ru.sibdigital.jopsd.service.opsd.RateService;
 import ru.sibdigital.jopsd.service.page.PageFileService;
 import ru.sibdigital.jopsd.service.page.PageMapService;
 import ru.sibdigital.jopsd.service.page.PageService;
+import ru.sibdigital.jopsd.service.report.KpiReportService;
 import ru.sibdigital.jopsd.service.report.LightService;
 
 @Slf4j
@@ -81,6 +82,9 @@ public class SuperController {
 
     @Autowired
     protected UserService userService;
+
+    @Autowired
+    protected KpiReportService kpiReportService;
 
     protected void logError(Exception e) {
         log.error(e.getMessage());
