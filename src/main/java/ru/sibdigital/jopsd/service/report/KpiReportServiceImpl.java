@@ -58,7 +58,7 @@ public class KpiReportServiceImpl extends JasperReportServiceImpl implements Kpi
 
             return exportJasperReport(jrxmlPath, kpiReports, parameters, "html");
         } catch (Exception e) {
-            logError(e);
+            log.error("error", e);
         }
         return new byte[0];
     }
