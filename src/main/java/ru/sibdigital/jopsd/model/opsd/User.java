@@ -1,5 +1,6 @@
 package ru.sibdigital.jopsd.model.opsd;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -364,6 +365,7 @@ public class User {
     }
 
     @Transient
+    @JsonIgnore
     public String getFIO() {
         return this.lastname + " "
                 + ((this.firstname != null) ? (this.firstname.toUpperCase().charAt(0) + ". ") : "")
