@@ -4,12 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-import ru.sibdigital.jopsd.model.opsd.Kpi;
+import ru.sibdigital.jopsd.model.opsd.GeographicMap;
 
 import java.util.List;
 
 @RepositoryRestResource
-public interface KpiRepository extends JpaRepository<Kpi, Long>, JpaSpecificationExecutor<Kpi> {
+public interface GeographicMapRepository extends JpaRepository<GeographicMap, Long>, JpaSpecificationExecutor<GeographicMap> {
     @Override
     @RestResource(exported = false)
     void deleteById(Long id);
@@ -17,7 +17,7 @@ public interface KpiRepository extends JpaRepository<Kpi, Long>, JpaSpecificatio
 
     @Override
     @RestResource(exported = false)
-    void delete(Kpi kpi);
+    void delete(GeographicMap geographicMap);
 
-    List<Kpi> findAllByIsDeletedFalse();
+    List<GeographicMap> findAllByProject_Id(Long projectId);
 }

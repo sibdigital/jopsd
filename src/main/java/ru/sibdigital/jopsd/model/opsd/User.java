@@ -362,4 +362,11 @@ public class User {
     public void setIdentificator(String identificator) {
         this.identificator = identificator;
     }
+
+    @Transient
+    public String getFIO() {
+        return this.lastname + " "
+                + ((this.firstname != null) ? (this.firstname.toUpperCase().charAt(0) + ". ") : "")
+                + ((this.patronymic != null) ? (this.patronymic.toUpperCase().charAt(0) + ".") : "");
+    }
 }
