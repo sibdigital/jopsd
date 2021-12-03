@@ -4,11 +4,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
-import ru.sibdigital.jopsd.model.opsd.Project;
 import ru.sibdigital.jopsd.model.opsd.Risk;
+import ru.sibdigital.jopsd.model.opsd.Target;
+import ru.sibdigital.jopsd.model.opsd.TargetRisk;
+
+import java.util.List;
 
 @RepositoryRestResource
-public interface RiskRepo extends JpaRepository<Risk, Long>, JpaSpecificationExecutor<Risk> {
+public interface TargetRiskRepository extends JpaRepository<TargetRisk, Long>, JpaSpecificationExecutor<TargetRisk> {
     @Override
     @RestResource(exported = false)
     void deleteById(Long id);
@@ -16,7 +19,9 @@ public interface RiskRepo extends JpaRepository<Risk, Long>, JpaSpecificationExe
 
     @Override
     @RestResource(exported = false)
-    void delete(Risk risk);
+    void delete(TargetRisk targetRisk);
 
-    Risk findRiskByProjectAndName(Project project, String name);
+    TargetRisk findByTargetAndRisk(Target target, Risk risk);
+
+    List<TargetRisk> findAllByTarget(Target target);
 }

@@ -3,17 +3,19 @@ package ru.sibdigital.jopsd.service.elbudget.execution;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.TargetMatch;
+import ru.sibdigital.jopsd.dto.elbudget.execution.EbRisk;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
-import ru.sibdigital.jopsd.model.opsd.Target;
-import ru.sibdigital.jopsd.model.opsd.TargetExecutionValue;
-import ru.sibdigital.jopsd.model.opsd.WorkPackage;
-import ru.sibdigital.jopsd.model.opsd.WorkPackageTarget;
+import ru.sibdigital.jopsd.model.enums.TargetTypes;
+import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -59,6 +61,13 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
 
                 workPackageTargetList.addAll(workPackageTargets);
                 targetMatchesAfterProcess.add(TargetMatch.builder().target(target).purposeCriteria(purposeCriteria).build());
+
+                List<EbRisk> risks =
+                        purposeCriteria.getRisks().stream()
+                                .map(item -> item.getRisk())
+                                .filter(item -> item != null)
+                                .collect(Collectors.toList());
+                riskService.saveEbRisksForTargets(risks, target);
             }
         }
 
@@ -144,5 +153,70 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         target.setMetaId(null);
         targetRepo.save(target);
         return target;
+    }
+
+    @Override
+    public Target saveRpResultIndicator(Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator rpResultIndicator, WorkPackage workPackage) {
+        if (rpResultIndicator != null) {
+            Target target = targetRepo.findTargetByMetaId(rpResultIndicator.getResultIndicatorMetaId()).orElse(new Target());
+            if (target.getName() == null) {
+                target.setName(workPackage.getSubject());
+            }
+            target.setProject(workPackage.getProject());
+            target.setParentId(0L);
+            target.setMetaId(rpResultIndicator.getResultIndicatorMetaId());
+            target.setTargetType(enumerationRepo.findById(TargetTypes.RESULT.getValue()).orElse(null));
+            if (rpResultIndicator.getValueFact() != null) {
+                target.setBasicValue(rpResultIndicator.getValueFact().doubleValue());
+            }
+            if (rpResultIndicator.getValuePrognosInEndOfYear() != null) {
+                target.setPlanValue(rpResultIndicator.getValuePrognosInEndOfYear().doubleValue());
+            }
+
+            if (rpResultIndicator.getExecutionDate() != null) {
+                XMLGregorianCalendar xgc = rpResultIndicator.getExecutionDate();
+                GregorianCalendar gc = xgc.toGregorianCalendar();
+                target.setResultDueDate(gc.toZonedDateTime().toLocalDateTime());
+            }
+
+            if (target.getCreatedAt() == null) {
+                target.setCreatedAt(Timestamp.from(Instant.now()));
+            }
+            target.setUpdatedAt(Timestamp.from(Instant.now()));
+
+            targetRepo.save(target);
+
+            WorkPackageTarget workPackageTarget = WorkPackageTarget.builder()
+                                                    .workPackage(workPackage)
+                                                    .target(target)
+                                                    .project(workPackage.getProject())
+                                                    .value((target.getBasicValue() != null) ? BigDecimal.valueOf(target.getBasicValue()) : null)
+                                                    .planValue((target.getPlanValue() != null) ? BigDecimal.valueOf(target.getPlanValue()) : null)
+                                                    .month(12)
+                                                    .quarter(4)
+                                                    .year(Calendar.getInstance().get(Calendar.YEAR))
+                                                    .createdAt(Timestamp.from(Instant.now()))
+                                                    .updatedAt(Timestamp.from(Instant.now()))
+                                                    .build();
+            workPackageTargetRepo.save(workPackageTarget);
+
+            List<EbRisk> riskList =
+                    rpResultIndicator.getRisks().stream().map(item -> item.getRisk()).collect(Collectors.toList());
+            riskService.saveEbRisksForTargets(riskList, target);
+
+            return target;
+        }
+        else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Target> getTargetsByWorkPackage(WorkPackage workPackage) {
+        return workPackageTargetRepo.findAllByWorkPackage(workPackage).stream()
+                .filter(wpp -> wpp.getTarget() != null && wpp.getTarget().getTargetType().getId() != Long.valueOf(41))
+                .map(wpp -> wpp.getTarget())
+                .distinct()
+                .collect(Collectors.toList());
     }
 }

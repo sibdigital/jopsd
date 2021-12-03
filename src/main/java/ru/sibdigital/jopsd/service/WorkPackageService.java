@@ -7,4 +7,5 @@ import java.util.List;
 public interface WorkPackageService {
     WorkPackage putMetaId(Long workPackageId, Long metaId);
     List<WorkPackage> getWorkPackagesByProject(Long projectId);
+    WorkPackage getWorkPackageById(Long workPackageId);
 }

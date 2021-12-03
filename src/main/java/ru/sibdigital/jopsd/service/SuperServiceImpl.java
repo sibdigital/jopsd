@@ -8,6 +8,7 @@ import ru.sibdigital.jopsd.service.elbudget.execution.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -140,6 +141,9 @@ public class SuperServiceImpl implements SuperService {
     @Autowired
     protected OrganizationRepository organizationRepository;
 
+    @Autowired
+    protected TargetRiskRepository targetRiskRepository;
+
     protected static Unmarshaller getUnmarshaller(Class clazz) {
         Unmarshaller unmarshaller = null;
         try {
@@ -149,6 +153,17 @@ public class SuperServiceImpl implements SuperService {
             e.printStackTrace();
         }
         return unmarshaller;
+    }
+
+    protected static Marshaller getMarshaller(Class clazz) {
+        Marshaller marshaller = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            marshaller = context.createMarshaller();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return marshaller;
     }
 
     protected Integer getQuarterByMonth(Integer monthValue) {

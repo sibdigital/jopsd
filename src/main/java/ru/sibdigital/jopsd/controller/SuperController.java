@@ -3,14 +3,11 @@ package ru.sibdigital.jopsd.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import ru.sibdigital.jopsd.config.ApplicationConstants;
 import ru.sibdigital.jopsd.repository.opsd.CostObjectRepo;
 import ru.sibdigital.jopsd.service.*;
-import ru.sibdigital.jopsd.service.elbudget.execution.ExecutionService;
-import ru.sibdigital.jopsd.service.elbudget.execution.FinancialService;
-import ru.sibdigital.jopsd.service.elbudget.execution.TargetService;
+import ru.sibdigital.jopsd.service.elbudget.execution.*;
 import ru.sibdigital.jopsd.service.mp.MPService;
-import ru.sibdigital.jopsd.config.ApplicationConstants;
-import ru.sibdigital.jopsd.service.ProjectService;
 import ru.sibdigital.jopsd.service.opsd.CostTypeService;
 import ru.sibdigital.jopsd.service.opsd.LboService;
 import ru.sibdigital.jopsd.service.opsd.RateService;
@@ -75,4 +72,13 @@ public class SuperController {
 
     @Autowired
     protected CostTypeService costTypeService;
+
+    @Autowired
+    protected ExportExecutionService exportExecutionService;
+
+    @Autowired
+    protected RiskService riskService;
+
+    @Autowired
+    protected ExecutionParseService executionParseService;
 }
