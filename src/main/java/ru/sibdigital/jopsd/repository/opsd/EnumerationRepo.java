@@ -25,6 +25,8 @@ public interface EnumerationRepo extends JpaRepository<Enumeration, Long>, JpaSp
 
     List<Enumeration> findAllByActiveAndTypeAndNameIn(Boolean active, String type, List<String> names);
 
+    Enumeration findEnumerationByTypeAndPositionAndActive(String type, Integer position, Boolean active);
+
     @Override
     List<Enumeration> findAll();
 }

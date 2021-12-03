@@ -1,6 +1,7 @@
 package ru.sibdigital.jopsd.controller.elbudget.execution;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.sibdigital.jopsd.config.user.details.CustomUserDetails;
 import ru.sibdigital.jopsd.controller.SuperController;
 import ru.sibdigital.jopsd.dto.TargetMatch;
+import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
 import ru.sibdigital.jopsd.model.opsd.CostObject;
 import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
@@ -53,10 +55,8 @@ public class ImportExecutionController extends SuperController {
                                                   HttpSession session) {
         Map<Object, Object> result;
         try (InputStream inputStream = multipartFile.getInputStream()) {
-            CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = currentUser.getUser();
-
-            WorkPackage workPackage = executionService.putMetaIdToWorkPackage(inputStream, workPackageId);
+            Resultsexecution resultsexecution = executionParseService.unmarshalInputStream(inputStream);
+            WorkPackage workPackage = executionService.putMetaIdToWorkPackage(resultsexecution, workPackageId);
 
             if (workPackage == null) {
                 return DataFormatUtils.buildOkResponse(Map.of("status", "server", "name", "null", "cause", "Не найден по id workPackage"));
@@ -88,7 +88,8 @@ public class ImportExecutionController extends SuperController {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
 
-            WorkPackage workPackage = executionService.createWorkPackage(inputStream, workPackageName, projectId, projectName, user.getId(), organizationId);
+            Resultsexecution resultsexecution = executionParseService.unmarshalInputStream(inputStream);
+            WorkPackage workPackage = executionService.createWorkPackage(resultsexecution, workPackageName, projectId, projectName, user.getId(), organizationId);
 
             if (workPackage == null) {
                 return DataFormatUtils.buildOkResponse(Map.of("status", "server", "name", "null", "cause", "Ошибка сохранения"));
@@ -108,13 +109,39 @@ public class ImportExecutionController extends SuperController {
         return DataFormatUtils.buildInternalServerErrorResponse(result);
     }
 
+    @PostMapping("/import/execution/save_risks")
+    public @ResponseBody ResponseEntity saveRisks(
+            @RequestParam("file") MultipartFile multipartFile,
+            @RequestParam("workPackageId") Long workPackageId) {
+        Map<Object, Object> result;
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("workPackageId", workPackageId);
+
+            riskService.saveRisks(inputStream, params);
+            result = Map.of("status", "server", "name", "Риски сохранены");
+            return ResponseEntity.ok().body(result);
+        }
+        catch (IOException ioException) {
+            log.error("Ошибка чтения файла {}", multipartFile.getOriginalFilename());
+            result = Map.of("status", "server", "name", "Ошибка чтения файла", "cause", "Ошибка чтения файла");
+            return DataFormatUtils.buildInternalServerErrorResponse(result);
+        }
+        catch (Exception e) {
+            log.error("Ошибка при сохранении рисков. {}", e.getMessage());
+            String message =  e.getMessage() == null ? "" : e.getMessage();
+            result =  Map.of("status", "server", "name", "Ошибка сохранения", "cause", message);
+            return DataFormatUtils.buildInternalServerErrorResponse(result);
+        }
+    }
+
     @PostMapping("/import/execution/save_finance")
     public @ResponseBody Object saveFinance(
             @RequestParam("file") MultipartFile multipartFile,
             @RequestParam("workPackageId") Long workPackageId,
             HttpSession session) {
         Map<Object, Object> result;
-        try (InputStream inputStream = multipartFile.getInputStream();) {
+        try (InputStream inputStream = multipartFile.getInputStream()) {
             CustomUserDetails currentUser = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = currentUser.getUser();
 

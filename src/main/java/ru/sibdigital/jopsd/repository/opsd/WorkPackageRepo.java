@@ -37,4 +37,20 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
     @Override
     @RestResource(exported = false)
     void delete(WorkPackage workPackage);
+
+    @Query(nativeQuery = true, value ="SELECT wp.*\n" +
+            "FROM work_packages wp\n" +
+            "INNER JOIN work_package_targets wpt\n" +
+            "    ON wp.id = wpt.work_package_id\n" +
+            "INNER JOIN targets\n" +
+            "    ON wpt.target_id = targets.id\n" +
+            "INNER JOIN projects\n" +
+            "    ON wp.project_id = projects.id\n" +
+            "WHERE\n" +
+            "    wp.id = :id_wp\n" +
+            "    AND wp.meta_id IS NOT NULL\n" +
+            "    AND targets.meta_id IS NOT NULL AND targets.type_id = 41\n" +
+            "    AND wpt.month = 12 AND wpt.year = :year\n" +
+            "    AND wp.project_id IS NOT NULL")
+    WorkPackage getWorkPackageReadyForEB(@Param("id_wp") Long idWorkPackage, @Param("year") Integer year);
 }

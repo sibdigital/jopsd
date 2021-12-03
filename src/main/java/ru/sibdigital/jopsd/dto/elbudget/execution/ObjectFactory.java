@@ -8,6 +8,8 @@
 
 package ru.sibdigital.jopsd.dto.elbudget.execution;
 
+import org.springframework.stereotype.Component;
+
 import javax.xml.bind.annotation.XmlRegistry;
 
 
@@ -25,6 +27,7 @@ import javax.xml.bind.annotation.XmlRegistry;
  * provided in this class.
  * 
  */
+@Component
 @XmlRegistry
 public class ObjectFactory {
 

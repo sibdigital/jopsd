@@ -4787,7 +4787,7 @@ public class Resultsexecution {
                  * Gets the value of the isSolved property.
                  * 
                  */
-                public boolean isIsSolved() {
+                public boolean getIsSolved() {
                     return isSolved;
                 }
 
@@ -5786,6 +5786,10 @@ public class Resultsexecution {
                 return this.purposeCriteria;
             }
 
+            public void setPurposeCriteria(List<PurposeCriteria> purposeCriteria) {
+                this.purposeCriteria = purposeCriteria;
+            }
+
 
             /**
              * <p>Java class for anonymous complex type.
@@ -6259,6 +6263,10 @@ public class Resultsexecution {
                     return this.executionConfirmingDocuments;
                 }
 
+                public void setExecutionConfirmingDocuments(List<ExecutionConfirmingDocuments> executionConfirmingDocuments) {
+                    this.executionConfirmingDocuments = executionConfirmingDocuments;
+                }
+
                 /**
                  * Gets the value of the risks property.
                  * 
@@ -6286,6 +6294,10 @@ public class Resultsexecution {
                         risks = new ArrayList<Risks>();
                     }
                     return this.risks;
+                }
+
+                public void setRisks(List<Risks> risks) {
+                    this.risks = risks;
                 }
 
 
@@ -6884,6 +6896,10 @@ public class Resultsexecution {
                         return this.purposeCriteriaMonthlyExecution;
                     }
 
+                    public void setPurposeCriteriaMonthlyExecution(List<PurposeCriteriaMonthlyExecution> purposeCriteriaMonthlyExecution) {
+                        this.purposeCriteriaMonthlyExecution = purposeCriteriaMonthlyExecution;
+                    }
+
 
                     /**
                      * <p>Java class for anonymous complex type.
@@ -7207,10 +7223,10 @@ public class Resultsexecution {
                 @XmlType(name = "", propOrder = {
                     "risk"
                 })
-                public static class Risks {
+                public static class Risks<E extends EbRisk>{
 
                     @XmlElement(name = "Risk", required = true)
-                    protected Risk risk;
+                    protected E risk;
 
                     /**
                      * Gets the value of the risk property.
@@ -7220,7 +7236,7 @@ public class Resultsexecution {
                      *     {@link Risk }
                      *     
                      */
-                    public Risk getRisk() {
+                    public E getRisk() {
                         return risk;
                     }
 
@@ -7232,7 +7248,7 @@ public class Resultsexecution {
                      *     {@link Risk }
                      *     
                      */
-                    public void setRisk(Risk value) {
+                    public void setRisk(E value) {
                         this.risk = value;
                     }
 
@@ -7420,7 +7436,7 @@ public class Resultsexecution {
                         "powerDecision",
                         "proposedSolutions"
                     })
-                    public static class Risk {
+                    public static class Risk extends EbRisk {
 
                         @XmlElement(name = "Name", required = true)
                         protected String name;
@@ -7479,7 +7495,7 @@ public class Resultsexecution {
                          * Gets the value of the isSolved property.
                          * 
                          */
-                        public boolean isIsSolved() {
+                        public boolean getIsSolved() {
                             return isSolved;
                         }
 
@@ -7751,7 +7767,7 @@ public class Resultsexecution {
                          * Objects of the following type(s) are allowed in the list
                          * {@link ProposedSolutions }
                          * 
-                         * 
+                         *
                          */
                         public List<ProposedSolutions> getProposedSolutions() {
                             if (proposedSolutions == null) {
@@ -7821,7 +7837,7 @@ public class Resultsexecution {
                         @XmlType(name = "", propOrder = {
                             "proposedSolution"
                         })
-                        public static class ProposedSolutions {
+                        public static class ProposedSolutions extends EbProposedSolutions {
 
                             @XmlElement(name = "ProposedSolution", required = true)
                             protected ProposedSolution proposedSolution;
@@ -7904,7 +7920,7 @@ public class Resultsexecution {
                                 "description",
                                 "comment"
                             })
-                            public static class ProposedSolution {
+                            public static class ProposedSolution extends EbProposedSolution {
 
                                 @XmlElement(name = "ExecutionPeriod", required = true)
                                 protected XMLGregorianCalendar executionPeriod;
@@ -12354,7 +12370,7 @@ public class Resultsexecution {
                             "powerDecision",
                             "proposedSolutions"
                         })
-                        public static class Risk {
+                        public static class Risk extends EbRisk {
 
                             @XmlElement(name = "Name", required = true)
                             protected String name;
@@ -12413,7 +12429,7 @@ public class Resultsexecution {
                              * Gets the value of the isSolved property.
                              * 
                              */
-                            public boolean isIsSolved() {
+                            public boolean getIsSolved() {
                                 return isSolved;
                             }
 
@@ -12755,7 +12771,7 @@ public class Resultsexecution {
                             @XmlType(name = "", propOrder = {
                                 "proposedSolution"
                             })
-                            public static class ProposedSolutions {
+                            public static class ProposedSolutions extends EbProposedSolutions {
 
                                 @XmlElement(name = "ProposedSolution", required = true)
                                 protected ProposedSolution proposedSolution;
@@ -12838,7 +12854,7 @@ public class Resultsexecution {
                                     "description",
                                     "comment"
                                 })
-                                public static class ProposedSolution {
+                                public static class ProposedSolution extends EbProposedSolution{
 
                                     @XmlElement(name = "ExecutionPeriod", required = true)
                                     protected XMLGregorianCalendar executionPeriod;
@@ -13905,7 +13921,7 @@ public class Resultsexecution {
                         "powerDecision",
                         "proposedSolutions"
                     })
-                    public static class Risk {
+                    public static class Risk extends EbRisk{
 
                         @XmlElement(name = "Name", required = true)
                         protected String name;
@@ -13964,7 +13980,7 @@ public class Resultsexecution {
                          * Gets the value of the isSolved property.
                          * 
                          */
-                        public boolean isIsSolved() {
+                        public boolean getIsSolved() {
                             return isSolved;
                         }
 
@@ -14306,7 +14322,7 @@ public class Resultsexecution {
                         @XmlType(name = "", propOrder = {
                             "proposedSolution"
                         })
-                        public static class ProposedSolutions {
+                        public static class ProposedSolutions extends EbProposedSolutions {
 
                             @XmlElement(name = "ProposedSolution", required = true)
                             protected ProposedSolution proposedSolution;
@@ -14389,7 +14405,7 @@ public class Resultsexecution {
                                 "description",
                                 "comment"
                             })
-                            public static class ProposedSolution {
+                            public static class ProposedSolution extends EbProposedSolution{
 
                                 @XmlElement(name = "ExecutionPeriod", required = true)
                                 protected XMLGregorianCalendar executionPeriod;
@@ -15357,6 +15373,10 @@ public class Resultsexecution {
                             rpResultIndicator = new ArrayList<RpResultIndicator>();
                         }
                         return this.rpResultIndicator;
+                    }
+
+                    public void setRpResultIndicator(List<RpResultIndicator> rpResultIndicator) {
+                        this.rpResultIndicator = rpResultIndicator;
                     }
 
 
@@ -16372,6 +16392,10 @@ public class Resultsexecution {
                                 risks = new ArrayList<Risks>();
                             }
                             return this.risks;
+                        }
+
+                        public void setRisks(List<Risks> risks) {
+                            this.risks = risks;
                         }
 
                         /**
@@ -19299,7 +19323,7 @@ public class Resultsexecution {
                                         "powerDecision",
                                         "proposedSolutions"
                                     })
-                                    public static class Risk {
+                                    public static class Risk extends EbRisk{
 
                                         @XmlElement(name = "Name", required = true)
                                         protected String name;
@@ -19358,7 +19382,7 @@ public class Resultsexecution {
                                          * Gets the value of the isSolved property.
                                          * 
                                          */
-                                        public boolean isIsSolved() {
+                                        public boolean getIsSolved() {
                                             return isSolved;
                                         }
 
@@ -19700,7 +19724,7 @@ public class Resultsexecution {
                                         @XmlType(name = "", propOrder = {
                                             "proposedSolution"
                                         })
-                                        public static class ProposedSolutions {
+                                        public static class ProposedSolutions extends EbProposedSolutions {
 
                                             @XmlElement(name = "ProposedSolution", required = true)
                                             protected ProposedSolution proposedSolution;
@@ -19783,7 +19807,7 @@ public class Resultsexecution {
                                                 "description",
                                                 "comment"
                                             })
-                                            public static class ProposedSolution {
+                                            public static class ProposedSolution extends EbProposedSolution {
 
                                                 @XmlElement(name = "ExecutionPeriod", required = true)
                                                 protected XMLGregorianCalendar executionPeriod;
@@ -20572,10 +20596,10 @@ public class Resultsexecution {
                         @XmlType(name = "", propOrder = {
                             "risk"
                         })
-                        public static class Risks {
+                        public static class Risks<E extends EbRisk> {
 
                             @XmlElement(name = "Risk", required = true)
-                            protected Risk risk;
+                            protected E risk;
 
                             /**
                              * Gets the value of the risk property.
@@ -20585,7 +20609,7 @@ public class Resultsexecution {
                              *     {@link Risk }
                              *     
                              */
-                            public Risk getRisk() {
+                            public E getRisk() {
                                 return risk;
                             }
 
@@ -20597,7 +20621,7 @@ public class Resultsexecution {
                              *     {@link Risk }
                              *     
                              */
-                            public void setRisk(Risk value) {
+                            public void setRisk(E value) {
                                 this.risk = value;
                             }
 
@@ -20785,7 +20809,7 @@ public class Resultsexecution {
                                 "powerDecision",
                                 "proposedSolutions"
                             })
-                            public static class Risk {
+                            public static class Risk extends EbRisk {
 
                                 @XmlElement(name = "Name", required = true)
                                 protected String name;
@@ -20844,7 +20868,7 @@ public class Resultsexecution {
                                  * Gets the value of the isSolved property.
                                  * 
                                  */
-                                public boolean isIsSolved() {
+                                public boolean getIsSolved() {
                                     return isSolved;
                                 }
 
@@ -21116,7 +21140,8 @@ public class Resultsexecution {
                                  * Objects of the following type(s) are allowed in the list
                                  * {@link ProposedSolutions }
                                  * 
-                                 * 
+                                 *
+                                 * @return
                                  */
                                 public List<ProposedSolutions> getProposedSolutions() {
                                     if (proposedSolutions == null) {
@@ -21186,7 +21211,7 @@ public class Resultsexecution {
                                 @XmlType(name = "", propOrder = {
                                     "proposedSolution"
                                 })
-                                public static class ProposedSolutions {
+                                public static class ProposedSolutions extends EbProposedSolutions{
 
                                     @XmlElement(name = "ProposedSolution", required = true)
                                     protected ProposedSolution proposedSolution;
@@ -21269,7 +21294,7 @@ public class Resultsexecution {
                                         "description",
                                         "comment"
                                     })
-                                    public static class ProposedSolution {
+                                    public static class ProposedSolution extends EbProposedSolution{
 
                                         @XmlElement(name = "ExecutionPeriod", required = true)
                                         protected XMLGregorianCalendar executionPeriod;
