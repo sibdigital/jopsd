@@ -8,6 +8,7 @@ import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
 import ru.sibdigital.jopsd.model.enums.TargetTypes;
 import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
+import ru.sibdigital.jopsd.utils.DateTimeUtils;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.InputStream;
@@ -90,7 +91,7 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
 
             for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
                 Integer month =  getMonth(monthlyExecution);
-                Integer quarter = getQuarterByMonth(month);
+                Integer quarter = DateTimeUtils.getQuarterByMonth(month);
 
                 WorkPackageTarget workPackageTarget = workPackageTargetMap.get(month);
                 if (workPackageTarget != null) {

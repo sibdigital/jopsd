@@ -11,6 +11,7 @@ import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.model.enums.Statuses;
 import ru.sibdigital.jopsd.model.enums.Types;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
+import ru.sibdigital.jopsd.utils.DateTimeUtils;
 
 import java.io.InputStream;
 import java.util.*;
@@ -144,8 +145,8 @@ public class MPServiceImpl extends SuperServiceImpl implements MPService {
                 .type(type)
                 .subject(task.getName())
                 .description(task.getNotes())
-                .startDate(convertToLocalDateTimeViaInstant(task.getStart()))
-                .dueDate(convertToLocalDateTimeViaInstant(task.getFinish()))
+                .startDate(DateTimeUtils.convertToLocalDateTimeViaInstant(task.getStart()))
+                .dueDate(DateTimeUtils.convertToLocalDateTimeViaInstant(task.getFinish()))
                 .status(status)
                 .author(user)
                 .lockVersion(Long.valueOf(0)) // 0

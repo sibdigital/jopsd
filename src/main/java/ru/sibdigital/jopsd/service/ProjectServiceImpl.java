@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.model.enums.ProjectStatuses;
 import ru.sibdigital.jopsd.model.opsd.*;
+import ru.sibdigital.jopsd.utils.TranscriptorUtils;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -28,7 +29,7 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
                 .description("")
                 .createdOn(Timestamp.from(Instant.now()))
                 .updatedOn(Timestamp.from(Instant.now()))
-                .identifier(transcriptorService.getLatinIdentifier(projectName))
+                .identifier(TranscriptorUtils.getLatinIdentifier(projectName))
                 .isPublic(false)
                 .status(ProjectStatuses.STATUS_ACTIVE.getValue())
                 .type("project")
