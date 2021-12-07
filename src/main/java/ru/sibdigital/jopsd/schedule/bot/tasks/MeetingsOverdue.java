@@ -1,4 +1,4 @@
-package ru.sibdigital.jopsd.schedule.tasks;
+package ru.sibdigital.jopsd.schedule.bot.tasks;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -9,8 +9,6 @@ import ru.sibdigital.jopsd.dto.bot.Request;
 import ru.sibdigital.jopsd.service.SettingService;
 import ru.sibdigital.jopsd.service.bot.BotService;
 import ru.sibdigital.jopsd.utils.RequestUtils;
-
-import java.util.Date;
 
 @Slf4j
 @Component
@@ -26,8 +24,6 @@ public class MeetingsOverdue implements Runnable {
 
     @Override
     public void run() {
-
-        botLogger.info("run " + new Date());
 
         try {
             final Request request = Request.builder()
