@@ -2,10 +2,8 @@ package ru.sibdigital.jopsd.service.bot;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.bot.*;
 import ru.sibdigital.jopsd.model.opsd.*;
@@ -58,7 +56,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -126,7 +124,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -156,7 +154,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -186,7 +184,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -224,7 +222,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -259,7 +257,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -291,12 +289,12 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
 
-    public String processFindProj(String url, String json) {
+    public String processFindProject(String url, String json) {
 
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
@@ -321,7 +319,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -356,12 +354,12 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
 
-    public String processFindMemb(String url, String json) {
+    public String processFindMember(String url, String json) {
 
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
@@ -386,12 +384,12 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
 
-    public String processFoundMemb(String url, String json) {
+    public String processFoundMember(String url, String json) {
 
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
@@ -436,7 +434,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -460,7 +458,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("users", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlCreateUserBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlCreateUserBrbo(), request, ArrayList.class);
         }
         return "";
     }

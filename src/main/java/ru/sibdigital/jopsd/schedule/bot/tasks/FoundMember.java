@@ -29,7 +29,7 @@ public class FoundMember implements Runnable {
         final String jsonRequest = RequestUtils.toJSON(request);
 
         try {
-              botService.processFoundMemb(settingService.getUrlRequestBrbo(), jsonRequest);
+              botService.processFoundMember(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
             log.error(e.getMessage());

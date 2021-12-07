@@ -29,7 +29,7 @@ public class FindProject implements Runnable {
         final String jsonRequest = RequestUtils.toJSON(request);
 
         try {
-              botService.processFindProj(settingService.getUrlRequestBrbo(), jsonRequest);
+              botService.processFindProject(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
             log.error(e.getMessage());
