@@ -35,12 +35,11 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
         String urlContextPathBrbo = settingRepository.findByName("url_context_path_brbo")
                 .map(Setting::getValue)
                 .orElse("api");
-
-        if (urlBrbo.contains("localhost")){
-            return protocolBrbo + "://" + urlBrbo +":" + uroPortBrbo + "/" + urlContextPathBrbo ;
+        if(urlBrbo.contains("localhost")){
+            return protocolBrbo + "://" + urlBrbo + ":" + uroPortBrbo + "/" + urlContextPathBrbo;
         }
         else{
-            return protocolBrbo + "://" + urlBrbo + "/" + urlContextPathBrbo ;
+            return protocolBrbo + "://" + urlBrbo + "/" + urlContextPathBrbo;
         }
     }
     @Override
@@ -69,6 +68,15 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
                 .orElse("/event_type/parentEvents");
 
         return getBaseBrbo() + urlEventParentBrbo;
+    }
+    @Override
+    public String getUrlCreateUserBrbo() {
+
+        String urlCreateUser = settingRepository.findByName("url_create_user_brbo")
+                .map(Setting::getValue)
+                .orElse("/url");
+
+        return getBaseBrbo() + urlCreateUser;
     }
 
     @Override

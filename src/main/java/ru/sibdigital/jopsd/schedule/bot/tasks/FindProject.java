@@ -1,4 +1,4 @@
-package ru.sibdigital.jopsd.schedule.tasks;
+package ru.sibdigital.jopsd.schedule.bot.tasks;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +8,9 @@ import ru.sibdigital.jopsd.service.SettingService;
 import ru.sibdigital.jopsd.service.bot.BotService;
 import ru.sibdigital.jopsd.utils.RequestUtils;
 
-import java.util.Date;
-
 @Slf4j
 @Component
-public class FoundMember implements Runnable {
+public class FindProject implements Runnable {
 
     @Autowired
     private BotService botService;
@@ -26,12 +24,12 @@ public class FoundMember implements Runnable {
         //log.info("run " + new Date());
 
         final Request request = Request.builder()
-                .eventTypeCode(settingService.getEventMembMessage())
+                .eventTypeCode(settingService.getEventFindProject())
                 .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
         final String jsonRequest = RequestUtils.toJSON(request);
 
         try {
-              botService.processFoundMemb(settingService.getUrlRequestBrbo(), jsonRequest);
+              botService.processFindProj(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
             log.error(e.getMessage());

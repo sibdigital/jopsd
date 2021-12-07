@@ -22,6 +22,7 @@ public interface SettingService {
     String getEventFindMember();
     String getEventMembMessage();
     String getSizeProjectsForReestr();
+    String getUrlCreateUserBrbo();
 
     Setting findByName(String name);
 }

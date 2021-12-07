@@ -25,14 +25,13 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
     public String processProjectRegistry(String url, String json) {
 
-
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
 
         for (RegIncomRequest ir: incomRequests) {
             User user = userRepository.findByIdent(ir.getUserId());
             final List<Project> userProjects = projectRepo.findProjectsByUserRoles(user.getId());
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
             List<Button> buttonProjects = new ArrayList<>();
             for (ClsEventType parentCode: eventParentCode) {
@@ -70,7 +69,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         final List<RegSentMessage> messages = new ArrayList<>();
 
         for (RegIncomRequest ir: incomRequests) {
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             List<Button> buttonProjects = new ArrayList<>();
@@ -200,7 +199,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             List<User> membersProject = userRepository.findMembersByProjectId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             for (ClsEventType parentCode: eventParentCode) {
@@ -213,11 +212,13 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     buttonProjects.add(button);
                 }
             }
+            Map text = Map.of("text", "Выведены первые " + settingService.getSizeProjectsForReestr() + " участников");
             RegSentMessage rsm  = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventMembersProject())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
                     .settings(RequestUtils.toJSON(buttonProjects))
+                    .text(RequestUtils.toJSON(text))
                     .build();
             messages.add(rsm);
         }
@@ -236,7 +237,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir : incomRequests) {
 
             List<Button> buttonProjects = new ArrayList<>();
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             for (ClsEventType parentCode: eventParentCode) {
@@ -410,23 +411,6 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     String firstname = fioList.size() > 1 ? fioList.get(1) : "#";
                     String patronymic = fioList.size() > 2 ? fioList.get(2) : "#";
 
-                    //                String [] fioArr = fio.split(" ");
-//                String firstname = "#";
-//                String lastname = "#";
-//                String patronymic = "#";
-//                if(fioArr.length == 3){
-//                     lastname = fioArr[0];
-//                     firstname = fioArr[1];
-//                     patronymic = fioArr[2];
-//                }
-//                else if(fioArr.length == 2) {
-//                     lastname = fioArr[0];
-//                     firstname = fioArr[1];
-//                }
-//                else if(fioArr.length == 1) {
-//                     lastname = fioArr[0];
-//                }
-
                     List<User> members = userRepository.findMembersByProjectIdAndFio(idProject, lastname, firstname, patronymic);
                     String eventType = settingService.getEventMeetingsMemberElem();
 
@@ -453,6 +437,30 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
             List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+        }
+        return "";
+    }
+
+    public String checkRegTargetSystemUser() {
+
+        final List<User> users = userRepository.findUsersWithIdentificator();
+        final List<RegTargetSystemUser> messages = new ArrayList<>();
+        for (User user : users) {
+            RegTargetSystemUser regTargetSystemUser = RegTargetSystemUser.builder()
+                    .login(user.getLogin())
+                    .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
+                    .patronymic(user.getPatronymic())
+                    .email(user.getMail())
+                    .identificator(user.getIdentificator())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
+                    .build();
+
+            messages.add(regTargetSystemUser);
+        }
+        if (!messages.isEmpty()) {
+            Map request = Map.of("users", messages);
+            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlCreateUserBrbo(), request, ArrayList.class);
         }
         return "";
     }

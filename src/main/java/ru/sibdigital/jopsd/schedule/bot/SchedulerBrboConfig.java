@@ -1,4 +1,4 @@
-package ru.sibdigital.jopsd.schedule;
+package ru.sibdigital.jopsd.schedule.bot;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,8 @@ import org.springframework.scheduling.support.CronTrigger;
 @Configuration
 @ComponentScan(basePackages = "ru.sibdigital.jopsd.schedule", basePackageClasses = { SchedulerBrbo.class })
 public class SchedulerBrboConfig {
-    @Value("${expression}") String expression;
+    @Value("${expressionBrbo}") String expression;
+    @Value("${expressionCheckRegTargetSystemUserBrbo}") String expressionCheckRegTargetSystemUser;
     @Bean
     public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
@@ -24,6 +25,10 @@ public class SchedulerBrboConfig {
     @Bean
     public CronTrigger cronTrigger() {
         return new CronTrigger(expression);
+    }
+    @Bean
+    public CronTrigger cronTriggerCheckRegTargetSystemUser() {
+        return new CronTrigger(expressionCheckRegTargetSystemUser);
     }
 
 }

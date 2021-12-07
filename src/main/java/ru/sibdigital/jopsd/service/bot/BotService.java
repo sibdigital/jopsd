@@ -17,4 +17,5 @@ public interface BotService {
     String processFoundProject(String url, String json);
     String processFindMemb(String url, String json);
     String processFoundMemb(String url, String json);
+    String checkRegTargetSystemUser();
 }
