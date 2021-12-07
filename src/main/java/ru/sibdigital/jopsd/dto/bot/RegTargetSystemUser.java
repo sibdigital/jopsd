@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Button {
+public class RegTargetSystemUser {
 
-
+    private String login;
+    private String targetSystemCode;
+    private String firstname;
+    private String lastname;
+    private String patronymic;
+    private String email;
     private String identificator;
-    private String label;
-    private String eventTypeCode;
-    private String text;
-    private String idBot;
-
 }

@@ -1,14 +1,13 @@
 package ru.sibdigital.jopsd.service.bot;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.sibdigital.jopsd.dto.bot.Button;
-import ru.sibdigital.jopsd.dto.bot.ClsEventType;
-import ru.sibdigital.jopsd.dto.bot.RegIncomRequest;
-import ru.sibdigital.jopsd.dto.bot.RegSentMessage;
+import ru.sibdigital.jopsd.dto.bot.*;
 import ru.sibdigital.jopsd.model.opsd.Meeting;
 import ru.sibdigital.jopsd.model.opsd.Project;
 import ru.sibdigital.jopsd.model.opsd.User;
@@ -18,6 +17,8 @@ import ru.sibdigital.jopsd.utils.RequestUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,14 +28,13 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
     public String processProjectRegistry(String url, String json) {
 
-
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
 
         for (RegIncomRequest ir: incomRequests) {
             User user = userRepository.findByIdent(ir.getUserId());
             final List<Project> userProjects = projectRepo.findProjectsByUserRoles(user.getId());
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
             List<Button> buttonProjects = new ArrayList<>();
             for (ClsEventType parentCode: eventParentCode) {
@@ -43,20 +43,25 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     button.setEventTypeCode(parentCode.getCode());
                     button.setIdentificator(project.getId().toString());
                     button.setLabel(project.getName());
+                    button.setIdBot(ir.getIdBot());
+                    //button.setText("Информация по последним " + settingService.getSizeProjectsForReestr() + " проектам в которых есть изменения");
                     buttonProjects.add(button);
                 }
+
             }
+            Map text = Map.of("text", "Информация по последним " + settingService.getSizeProjectsForReestr() + " проектам в которых есть изменения");
             RegSentMessage rsm  = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventProjReestr())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
+                    .text(RequestUtils.toJSON(text))
                     .settings(RequestUtils.toJSON(buttonProjects))
                     .build();
             messages.add(rsm);
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -67,7 +72,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         final List<RegSentMessage> messages = new ArrayList<>();
 
         for (RegIncomRequest ir: incomRequests) {
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             List<Button> buttonProjects = new ArrayList<>();
@@ -78,6 +83,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     button.setEventTypeCode(parentCode.getCode());
                     button.setIdentificator(ir.getRequestBody());
                     button.setLabel(parentCode.getName());
+                    button.setIdBot(ir.getIdBot());
                     buttonProjects.add(button);
             }
 
@@ -110,6 +116,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
                 Button button = new Button();
                 button.setLabel(meeting.getTitle());
+                button.setIdBot(ir.getIdBot());
                 buttonProjects.add(button);
             }
             RegSentMessage rsm  = RegSentMessage.builder()
@@ -122,7 +129,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -139,6 +146,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                 for(Map<String, Object> status: statusesMeeting) {
                     Button button = new Button();
                     button.setLabel(status.get("name") + ":" + status.get("count"));
+                    button.setIdBot(ir.getIdBot());
                     buttonProjects.add(button);
                 }
             RegSentMessage rsm  = RegSentMessage.builder()
@@ -151,7 +159,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -168,6 +176,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
             for(Meeting meeting: overdueMeetings) {
                 Button button = new Button();
                 button.setLabel(meeting.getTitle());
+                button.setIdBot(ir.getIdBot());
                 buttonProjects.add(button);
             }
             RegSentMessage rsm  = RegSentMessage.builder()
@@ -180,7 +189,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -193,7 +202,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             List<User> membersProject = userRepository.findMembersByProjectId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             for (ClsEventType parentCode: eventParentCode) {
@@ -201,21 +210,24 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     Button button = new Button();
                     button.setLabel(member.getLastname() + " " + member.getFirstname());
                     button.setIdentificator(String.valueOf(member.getId()));
+                    button.setIdBot(ir.getIdBot());
                     button.setEventTypeCode(parentCode.getCode());
                     buttonProjects.add(button);
                 }
             }
+            Map text = Map.of("text", "Выведены первые " + settingService.getSizeProjectsForReestr() + " участников");
             RegSentMessage rsm  = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventMembersProject())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
                     .settings(RequestUtils.toJSON(buttonProjects))
+                    .text(RequestUtils.toJSON(text))
                     .build();
             messages.add(rsm);
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -228,13 +240,14 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir : incomRequests) {
 
             List<Button> buttonProjects = new ArrayList<>();
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             for (ClsEventType parentCode: eventParentCode) {
                 Button button = new Button();
                 button.setLabel(parentCode.getName());
                 button.setIdentificator(ir.getRequestBody());
+                button.setIdBot(ir.getIdBot());
                 button.setEventTypeCode(parentCode.getCode());
                 buttonProjects.add(button);
             }
@@ -249,7 +262,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
@@ -266,6 +279,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
             for (Meeting meeting : membersExpiredProject) {
                 Button button = new Button();
                 button.setLabel(meeting.getTitle());
+                button.setIdBot(ir.getIdBot());
                 button.setIdentificator(ir.getRequestBody());
                 buttonProjects.add(button);
             }
@@ -280,8 +294,178 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
-            List response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
         }
         return "";
     }
+
+    public String processFindProject(String url, String json) {
+
+        final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
+        final List<RegSentMessage> messages = new ArrayList<>();
+
+        for (RegIncomRequest ir : incomRequests) {
+            List<Button> buttonProjects = new ArrayList<>();
+
+            Button button = new Button();
+            button.setLabel("Введите название проекта");
+            button.setIdentificator(ir.getRequestBody());
+            button.setIdBot(ir.getIdBot());
+            button.setEventTypeCode(ir.getEventTypeCode());
+            buttonProjects.add(button);
+
+            RegSentMessage rsm = RegSentMessage.builder()
+                    .eventTypeCode(settingService.getEventFindProject())
+                    .idIncomRequest(ir.getIdIncomRequest())
+                    .userId(ir.getUserId())
+                    .text(RequestUtils.toJSON(buttonProjects))
+                    .build();
+            messages.add(rsm);
+        }
+        if (!messages.isEmpty()) {
+            Map request = Map.of("messages", messages);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+        }
+        return "";
+    }
+
+    public String processFoundProject(String url, String json) {
+
+        final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
+        final List<RegSentMessage> messages = new ArrayList<>();
+
+        for (RegIncomRequest ir : incomRequests) {
+            List<Button> buttonProjects = new ArrayList<>();
+            User user = userRepository.findByIdent(ir.getUserId());
+            List<Project> projects = projectRepo.findProjectsByName(ir.getRequestBody(), user.getId());
+            String eventType = settingService.getEventProjReestrElem();
+            for (Project project : projects) {
+
+                Button button = new Button();
+                button.setEventTypeCode(eventType);
+                button.setLabel(project.getName());
+                button.setIdBot(ir.getIdBot());
+                button.setIdentificator(project.getId().toString());
+                buttonProjects.add(button);
+            }
+
+            RegSentMessage rsm = RegSentMessage.builder()
+                    .eventTypeCode(settingService.getEventProjMessage())
+                    .idIncomRequest(ir.getIdIncomRequest())
+                    .userId(ir.getUserId())
+                    .settings(RequestUtils.toJSON(buttonProjects))
+                    .build();
+            messages.add(rsm);
+        }
+        if (!messages.isEmpty()) {
+            Map request = Map.of("messages", messages);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+        }
+        return "";
+    }
+
+    public String processFindMember(String url, String json) {
+
+        final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
+        final List<RegSentMessage> messages = new ArrayList<>();
+
+        for (RegIncomRequest ir : incomRequests) {
+            List<Button> buttonProjects = new ArrayList<>();
+
+            Button button = new Button();
+            button.setLabel("Введите ФИО участника");
+            button.setIdentificator(ir.getRequestBody());
+            button.setIdBot(ir.getIdBot());
+            button.setEventTypeCode(ir.getEventTypeCode());
+            buttonProjects.add(button);
+
+            RegSentMessage rsm = RegSentMessage.builder()
+                    .eventTypeCode(settingService.getEventFindProject())
+                    .idIncomRequest(ir.getIdIncomRequest())
+                    .userId(ir.getUserId())
+                    .text(RequestUtils.toJSON(buttonProjects))
+                    .build();
+            messages.add(rsm);
+        }
+        if (!messages.isEmpty()) {
+            Map request = Map.of("messages", messages);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+        }
+        return "";
+    }
+
+    public String processFoundMember(String url, String json) {
+
+        final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
+        final List<RegSentMessage> messages = new ArrayList<>();
+
+        for (RegIncomRequest ir : incomRequests) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                RequestBody requestBody = objectMapper.readValue(ir.getRequestBody(), RequestBody.class);
+                List<Button> buttonProjects = new ArrayList<>();
+                Long idProject = Long.valueOf(requestBody.getIdProject());
+                String fio = requestBody.getFio();
+                List<String> fioList = Pattern.compile(" ")
+                        .splitAsStream(fio)
+                        .collect(Collectors.toList());
+
+                    String lastname = fioList.size() > 0 ? fioList.get(0) : "#";
+                    String firstname = fioList.size() > 1 ? fioList.get(1) : "#";
+                    String patronymic = fioList.size() > 2 ? fioList.get(2) : "#";
+
+                    List<User> members = userRepository.findMembersByProjectIdAndFio(idProject, lastname, firstname, patronymic);
+                    String eventType = settingService.getEventMeetingsMemberElem();
+
+                    for (User user : members) {
+                        Button button = new Button();
+                        button.setLabel(user.getLastname() + " " + user.getFirstname());
+                        button.setIdBot(ir.getIdBot());
+                        button.setIdentificator(String.valueOf(user.getId()));
+                        button.setEventTypeCode(eventType);
+                        buttonProjects.add(button);
+                    }
+
+                    RegSentMessage rsm = RegSentMessage.builder()
+                            .eventTypeCode(settingService.getEventMembMessage())
+                            .idIncomRequest(ir.getIdIncomRequest())
+                            .userId(ir.getUserId())
+                            .settings(RequestUtils.toJSON(buttonProjects))
+                            .build();
+                    messages.add(rsm);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!messages.isEmpty()) {
+            Map request = Map.of("messages", messages);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlMessageBrbo(), request, ArrayList.class);
+        }
+        return "";
+    }
+
+    public String checkRegTargetSystemUser() {
+
+        final List<User> users = userRepository.findUsersWithIdentificator();
+        final List<RegTargetSystemUser> messages = new ArrayList<>();
+        for (User user : users) {
+            RegTargetSystemUser regTargetSystemUser = RegTargetSystemUser.builder()
+                    .login(user.getLogin())
+                    .firstname(user.getFirstname())
+                    .lastname(user.getLastname())
+                    .patronymic(user.getPatronymic())
+                    .email(user.getMail())
+                    .identificator(user.getIdentificator())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
+                    .build();
+
+            messages.add(regTargetSystemUser);
+        }
+        if (!messages.isEmpty()) {
+            Map request = Map.of("users", messages);
+            List<String> response = RequestUtils.<String, Map<String, RegSentMessage>>postEntities(settingService.getUrlCreateUserBrbo(), request, ArrayList.class);
+        }
+        return "";
+    }
+
 }

@@ -1,7 +1,6 @@
 package ru.sibdigital.jopsd.service.bot;
 
 import org.springframework.stereotype.Service;
-import ru.sibdigital.jopsd.model.opsd.User;
 
 @Service
 public interface BotService {
@@ -13,4 +12,9 @@ public interface BotService {
     String processMembersProject (String url, String json);
     String processMeetingsMemberElem(String url, String json);
     String processMeetingsMemberOverdue(String url, String json);
+    String processFindProject(String url, String json);
+    String processFoundProject(String url, String json);
+    String processFindMember(String url, String json);
+    String processFoundMember(String url, String json);
+    String checkRegTargetSystemUser();
 }

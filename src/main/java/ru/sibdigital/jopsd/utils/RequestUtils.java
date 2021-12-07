@@ -1,5 +1,5 @@
 package ru.sibdigital.jopsd.utils;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -14,15 +14,17 @@ public class RequestUtils {
 
     public static<T, K> List<T> postEntities(String url, K request, Class clazz){
         List<T> entities = new ArrayList<>();
+        ResponseEntity<String[]> response = null;
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
             final HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             final HttpEntity<K> httpEntity = new HttpEntity<>(request, headers);
 
             final RestTemplate restTemplate = new RestTemplate();
-            final ResponseEntity<String[]> response = restTemplate.postForEntity(url, httpEntity, String[].class);
+            response = restTemplate.postForEntity(url, httpEntity,  String[].class);
             final String[] stringEntities = response.getBody();
 
             Arrays.stream(stringEntities).forEach(se -> {

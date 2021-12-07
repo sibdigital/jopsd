@@ -1,4 +1,4 @@
-package ru.sibdigital.jopsd.schedule.tasks;
+package ru.sibdigital.jopsd.schedule.bot.tasks;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -10,11 +10,9 @@ import ru.sibdigital.jopsd.service.SettingService;
 import ru.sibdigital.jopsd.service.bot.BotService;
 import ru.sibdigital.jopsd.utils.RequestUtils;
 
-import java.util.Date;
-
 @Slf4j
 @Component
-public class StatusesMeeting implements Runnable {
+public class MemberMeetings implements Runnable {
 
     @Autowired
     private BotService botService;
@@ -27,18 +25,16 @@ public class StatusesMeeting implements Runnable {
     @Override
     public void run() {
 
-        botLogger.info("run " + new Date());
-
         try {
             final Request request = Request.builder()
-                    .eventTypeCode(settingService.getEventStatuses())
+                    .eventTypeCode(settingService.getEventMeetingsMemberElem())
                     .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
             final String jsonRequest = RequestUtils.toJSON(request);
 
-            botService.processEventsStatus(settingService.getUrlRequestBrbo(), jsonRequest);
+            botService.processMeetingsMemberElem(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
-            botLogger.error("ERROR at StatusesMeeting: ", e);
+            botLogger.error("ERROR at MemberMeetings: ", e);
         }
     }
 

@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegSentMessage {
+public class RequestBody {
 
-    private String userId;
-    private String idIncomRequest;
-    private String text;
-    private String eventTypeCode;
-    private String settings;
+
+    private String idProject;
+    private String fio;
+
 }
