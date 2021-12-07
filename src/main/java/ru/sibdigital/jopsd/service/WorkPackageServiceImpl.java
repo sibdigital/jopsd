@@ -23,4 +23,9 @@ public class WorkPackageServiceImpl extends SuperServiceImpl implements WorkPack
     public List<WorkPackage> getWorkPackagesByProject(Long projectId) {
         return workPackageRepo.findAllByProjectId(projectId);
     }
+
+    @Override
+    public WorkPackage getWorkPackageById(Long workPackageId) {
+        return workPackageRepo.findById(workPackageId).orElse(null);
+    }
 }

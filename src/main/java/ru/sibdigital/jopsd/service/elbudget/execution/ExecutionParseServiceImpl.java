@@ -5,19 +5,22 @@ import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class ExecutionParseServiceImpl extends SuperServiceImpl implements ExecutionParseService {
 
     @Override
-    public Resultsexecution unmarshalInputStream(InputStream inputStream) throws Exception {
+    public Resultsexecution unmarshalInputStream(InputStream inputStream) throws JAXBException {
         Unmarshaller unmarshaller = getUnmarshaller(Resultsexecution.class);
         if (unmarshaller == null) {
-            throw new Exception("Не удалось создать демаршаллизатор");
+            throw new JAXBException("Не удалось создать демаршаллизатор");
         }
 
         Resultsexecution resultsExecution = (Resultsexecution) unmarshaller.unmarshal(inputStream);
@@ -68,12 +71,36 @@ public class ExecutionParseServiceImpl extends SuperServiceImpl implements Execu
 
     @Override
     public List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> getPurposeCriteriaList(Resultsexecution.RegProject regProject) {
-        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> purposeCriteriaList = null;
+        List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria> purposeCriteriaList = new ArrayList<>();
         Resultsexecution.RegProject.PurposeCriterias criterias = regProject.getPurposeCriterias();
         if (criterias != null) {
             purposeCriteriaList = criterias.getPurposeCriteria();
         }
 
         return purposeCriteriaList;
+    }
+
+    @Override
+    public List<Resultsexecution.RegProject.Results.Result.Risks.Risk> getResultRiskList(Resultsexecution resultsexecution) {
+        List<Resultsexecution.RegProject.Results.Result> result = resultsexecution.getRegProject().getResults().getResult();
+        if (!result.isEmpty()) {
+            return result.get(0).getRisks().stream()
+                    .map(item -> item.getRisk())
+                    .filter(item -> item != null)
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator getRpResultIndicator(Resultsexecution resultsexecution) {
+        Resultsexecution.RegProject.Results.Result result = getResult(resultsexecution);
+        List<Resultsexecution.RegProject.Results.Result.RpResultIndicators.RpResultIndicator> rpResultIndicatorList = result.getRpResultIndicators().getRpResultIndicator();
+        if (!rpResultIndicatorList.isEmpty()) {
+            return rpResultIndicatorList.get(0);
+        } else {
+            return null;
+        }
     }
 }

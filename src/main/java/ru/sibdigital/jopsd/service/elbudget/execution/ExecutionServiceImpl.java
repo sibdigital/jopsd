@@ -9,8 +9,7 @@ import ru.sibdigital.jopsd.model.enums.Types;
 import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 
-import javax.xml.bind.Unmarshaller;
-import java.io.IOException;
+import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -22,24 +21,12 @@ import java.util.Map;
 public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionService {
 
     @Override
-    public void importFile(InputStream inputStream, Map<String, Object> params) throws Exception {
-        Unmarshaller unmarshaller = getUnmarshaller(Resultsexecution.class);
-        if (unmarshaller == null) {
-            throw new Exception("Не удалось создать демаршаллизатор");
-        }
-
-        Resultsexecution resultsExecution = (Resultsexecution) unmarshaller.unmarshal(inputStream);
-        WorkPackage workPackage = getWorkPackage(params);
-        processResultExecution(resultsExecution, workPackage, params);
-    }
-
-    @Override
     public Resultsexecution getResultsexecutionInInputStream(InputStream inputStream) {
         try {
             return executionParseService.unmarshalInputStream(inputStream);
         }
-        catch (IOException ioException) {
-            log.error("Ошибка чтения ResultExecution. {}", ioException.getMessage());
+        catch (JAXBException jaxbException) {
+            log.error("Не удалось распарсить ResultExecution. {}", jaxbException.getMessage());
         }
         catch (Exception e) {
             log.error("Ошибка при создании мероприятия по файлу исполнения. {}", e.getMessage());
@@ -80,9 +67,8 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
     }
 
     @Override
-    public WorkPackage putMetaIdToWorkPackage(InputStream inputStream, Long workPackageId) throws Exception {
+    public WorkPackage putMetaIdToWorkPackage(Resultsexecution resultsexecution, Long workPackageId) throws Exception {
         WorkPackage workPackage = null;
-        Resultsexecution resultsexecution = getResultsexecutionInInputStream(inputStream);
         if (resultsexecution != null) {
             Long resultMetaId = getResultMetaIdFromResultsexecution(resultsexecution);
             if (resultMetaId != null) {
@@ -101,13 +87,12 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
 
     @Override
     @Transactional
-    public WorkPackage createWorkPackage(InputStream inputStream, String workPackageName, Long projectId, String projectName, Long authorId, Long organizationId) throws Exception {
+    public WorkPackage createWorkPackage(Resultsexecution resultsexecution, String workPackageName, Long projectId, String projectName, Long authorId, Long organizationId) throws Exception {
         if (projectId == 0) {
             Project project = createProjectWithSettings(projectName);
             projectId = project.getId();
         }
 
-        Resultsexecution resultsexecution = getResultsexecutionInInputStream(inputStream);
         if (resultsexecution != null) {
             Long resultMetaId = getResultMetaIdFromResultsexecution(resultsexecution);
             Type type = typeRepository.findById(Types.EVENT.getValue()).orElse(null);
@@ -134,6 +119,7 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
                     .metaId(resultMetaId)
                     .build();
             workPackageRepo.save(workPackage);
+
             return workPackage;
         } else {
             return null;
@@ -175,9 +161,4 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
         return  workPackage;
     }
 
-    @Override
-    public void matchData(InputStream inputStream, Map<String, Object> params) throws Exception {
-        Resultsexecution resultsExecution = executionParseService.unmarshalInputStream(inputStream);
-
-    }
 }

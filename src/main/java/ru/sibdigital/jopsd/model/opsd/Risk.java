@@ -8,7 +8,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "risks", schema = "public")
@@ -99,6 +99,8 @@ public class Risk {
     private Boolean isApprove;
     private Boolean isPossibility;
     private String solution;
+    private Integer probabilityValue;
+    private LocalDate expectedDate;
 
     @Basic
     @Column(name = "name")
@@ -179,4 +181,24 @@ public class Risk {
         this.solution = solution;
     }
 
+    @Basic
+    @Column(name = "probability_value")
+    public Integer getProbabilityValue() {
+        return probabilityValue;
+    }
+
+    public void setProbabilityValue(Integer probabilityValue) {
+        this.probabilityValue = probabilityValue;
+    }
+
+    @Basic
+    @Column(name = "expected_date")
+    public LocalDate getExpectedDate() {
+        return expectedDate;
+    }
+
+    public void setExpectedDate(LocalDate expectedDate) {
+        this.expectedDate = expectedDate;
+    }
 }
+
