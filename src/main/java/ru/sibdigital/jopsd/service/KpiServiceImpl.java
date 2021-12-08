@@ -21,8 +21,6 @@ public class KpiServiceImpl extends SuperServiceImpl implements KpiService {
     @Override
     public Object execute(KpiDto kpiDto) {
         String queryString = kpiDto.getKpi().getQuery().toLowerCase();
-        queryString = queryString.replaceAll(queryString,"delete");
-        queryString = queryString.replaceAll(queryString,"drop");
         NativeQueryImpl query = (NativeQueryImpl) entityManager.createNativeQuery(queryString);
         kpiDto.getKpiVariables().stream()
                 .filter(kpiVariable -> kpiVariable.getName() != null)
