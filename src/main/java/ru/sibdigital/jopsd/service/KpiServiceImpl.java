@@ -1,6 +1,8 @@
 package ru.sibdigital.jopsd.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.internal.NativeQueryImpl;
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.KpiDto;
 import ru.sibdigital.jopsd.model.opsd.Kpi;
@@ -8,7 +10,6 @@ import ru.sibdigital.jopsd.model.opsd.KpiVariable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 @Service
@@ -19,12 +20,16 @@ public class KpiServiceImpl extends SuperServiceImpl implements KpiService {
 
     @Override
     public Object execute(KpiDto kpiDto) {
-        Query query = entityManager.createNativeQuery(kpiDto.getKpi().getQuery());
+        String queryString = kpiDto.getKpi().getQuery().toLowerCase();
+        queryString = queryString.replaceAll(queryString,"delete");
+        queryString = queryString.replaceAll(queryString,"drop");
+        NativeQueryImpl query = (NativeQueryImpl) entityManager.createNativeQuery(queryString);
         kpiDto.getKpiVariables().stream()
                 .filter(kpiVariable -> kpiVariable.getName() != null)
                 .forEach(kpiVariable -> {
                     query.setParameter(kpiVariable.getName(), Integer.valueOf(kpiVariable.getValue()));
         });
+        query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
         return query.getResultList();
     }
 

@@ -42,16 +42,11 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="20" splitType="Stretch"/>
-	</title>
 	<detail>
-		<band height="200" splitType="Stretch">
+		<band height="40" splitType="Immediate">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<componentElement>
-				<reportElement x="-20" y="0" width="595" height="200" uuid="7786bb05-503a-4b6a-991a-a7bcf3abad07">
+				<reportElement stretchType="ContainerHeight" x="-20" y="-20" width="595" height="60" uuid="7786bb05-503a-4b6a-991a-a7bcf3abad07">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
