@@ -56,4 +56,27 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
             "    AND wpt.month = 12 AND wpt.year = :year\n" +
             "    AND wp.project_id IS NOT NULL")
     WorkPackage getWorkPackageReadyForEB(@Param("id_wp") Long idWorkPackage, @Param("year") Integer year);
+
+    @Query(value = "SELECT *\n" +
+            "FROM work_packages\n" +
+            "WHERE current_timestamp > due_date\n" +
+            "AND assigned_to_id =:id\n" +
+            "AND status_id in (1,2,6)"
+            , nativeQuery = true)
+    List<WorkPackage> findExpiredWorkPackagesByUserId(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM work_packages\n" +
+            "WHERE project_id =:id\n" +
+            "AND current_timestamp > due_date\n" +
+            "AND status_id in (1,2,6)"
+            , nativeQuery = true)
+    List<WorkPackage> findExpiredWorkPackagesByProjectId(Long id);
+
+    @Query(value = "SELECT * FROM work_packages\n" +
+            "WHERE project_id =:id\n" +
+            "AND cast(due_date as date) - CURRENT_DATE < 14\n" +
+            "AND cast(due_date as date) - CURRENT_DATE >= 0\n" +
+            "AND status_id in (1,2,6)"
+            , nativeQuery = true)
+    List <WorkPackage> findWorkPackagesOverDays(Long id);
 }

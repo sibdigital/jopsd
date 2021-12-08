@@ -215,6 +215,15 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
 
         return sizeProjects;
     }
+    @Override
+    public String getHostName() {
+
+        String name = settingRepository.findByName("host_name")
+                .map(Setting::getValue)
+                .orElse("188.72.76.241:3001");
+
+        return name;
+    }
 
 
     @Override

@@ -23,6 +23,7 @@ public interface SettingService {
     String getEventMembMessage();
     String getSizeProjectsForReestr();
     String getUrlCreateUserBrbo();
+    String getHostName();
 
     Setting findByName(String name);
 }

@@ -17,5 +17,6 @@ public class Button {
     private String eventTypeCode;
     private String text;
     private String idBot;
+    private String WorkPackageLink;
 
 }
