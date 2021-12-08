@@ -112,7 +112,7 @@
 							</staticText>
 						</jr:tableHeader>
 						<jr:detailCell style="Table_TD" height="30">
-							<textField>
+							<textField textAdjust="StretchHeight">
 								<reportElement x="0" y="0" width="180" height="30" uuid="918cbde1-1b7b-4118-85f3-dcd591d3aa26"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="12"/>

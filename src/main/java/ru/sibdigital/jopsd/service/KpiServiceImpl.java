@@ -20,8 +20,10 @@ public class KpiServiceImpl extends SuperServiceImpl implements KpiService {
     @Override
     public Object execute(KpiDto kpiDto) {
         Query query = entityManager.createNativeQuery(kpiDto.getKpi().getQuery());
-        kpiDto.getKpiVariables().forEach(kpiVariable -> {
-            query.setParameter(kpiVariable.getName(), kpiVariable.getValue());
+        kpiDto.getKpiVariables().stream()
+                .filter(kpiVariable -> kpiVariable.getName() != null)
+                .forEach(kpiVariable -> {
+                    query.setParameter(kpiVariable.getName(), Integer.valueOf(kpiVariable.getValue()));
         });
         return query.getResultList();
     }
