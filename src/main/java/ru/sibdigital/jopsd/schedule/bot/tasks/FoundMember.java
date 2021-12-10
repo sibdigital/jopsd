@@ -25,13 +25,17 @@ public class FoundMember implements Runnable {
     @Override
     public void run() {
 
-        final Request request = Request.builder()
-                .eventTypeCode(settingService.getEventMembMessage())
-                .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
-        final String jsonRequest = RequestUtils.toJSON(request);
+
 
         try {
-              botService.processFoundMember(settingService.getUrlRequestBrbo(), jsonRequest);
+            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+                return;
+            }
+            final Request request = Request.builder()
+                    .eventTypeCode(settingService.getEventMembMessage())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
+            final String jsonRequest = RequestUtils.toJSON(request);
+            botService.processFoundMember(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
             botLogger.error("ERROR at FoundMember: ", e);

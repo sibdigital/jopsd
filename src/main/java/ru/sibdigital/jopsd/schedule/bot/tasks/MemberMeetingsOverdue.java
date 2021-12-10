@@ -26,6 +26,9 @@ public class MemberMeetingsOverdue implements Runnable {
     public void run() {
 
         try {
+            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+                return;
+            }
             final Request request = Request.builder()
                     .eventTypeCode(settingService.getEventMeetingsMemberElemOverdue())
                     .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();

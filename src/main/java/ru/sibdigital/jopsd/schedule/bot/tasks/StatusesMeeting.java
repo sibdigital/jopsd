@@ -26,6 +26,9 @@ public class StatusesMeeting implements Runnable {
     public void run() {
 
         try {
+            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+                return;
+            }
             final Request request = Request.builder()
                     .eventTypeCode(settingService.getEventStatuses())
                     .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();

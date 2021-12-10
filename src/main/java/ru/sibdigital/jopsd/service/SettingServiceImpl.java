@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.model.opsd.Setting;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 public class SettingServiceImpl extends SuperServiceImpl implements SettingService {
@@ -14,32 +16,29 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
                                             .orElse("http");
 
         String host_name = settingRepository.findByName("host_name")
-                .map(Setting::getValue)
-                .orElse("");
+                .map(Setting::getValue).
+                orElse("");
         return protocol + "://" + host_name;
     }
     @Override
     public String getBaseBrbo() {
-        String protocolBrbo = settingRepository.findByName("protocol_brbo")
-                .map(Setting::getValue)
-                .orElse("http");
+        Optional<String> protocolBrbo = settingRepository.findByName("protocol_brbo")
+                .map(Setting::getValue);
 
-        String urlBrbo = settingRepository.findByName("url_brbo")
-                .map(Setting::getValue)
-                .orElse("localhost");
+        Optional<String>  urlBrbo = settingRepository.findByName("url_brbo")
+                .map(Setting::getValue);
 
-        String uroPortBrbo = settingRepository.findByName("url_port_brbo")
-                .map(Setting::getValue)
-                .orElse("3000");
+        Optional<String>  uroPortBrbo = settingRepository.findByName("url_port_brbo")
+                .map(Setting::getValue);
 
-        String urlContextPathBrbo = settingRepository.findByName("url_context_path_brbo")
-                .map(Setting::getValue)
-                .orElse("api");
-        if(urlBrbo.contains("localhost")){
-            return protocolBrbo + "://" + urlBrbo + ":" + uroPortBrbo + "/" + urlContextPathBrbo;
+        Optional<String>  urlContextPathBrbo = settingRepository.findByName("url_context_path_brbo")
+                .map(Setting::getValue);
+
+        if(urlBrbo.isPresent() && urlContextPathBrbo.isPresent() && protocolBrbo.isPresent() && uroPortBrbo.isPresent()){
+            return protocolBrbo.get() + "://" + urlBrbo.get() + ":" + uroPortBrbo.get() + "/" + urlContextPathBrbo.get();
         }
         else{
-            return protocolBrbo + "://" + urlBrbo + "/" + urlContextPathBrbo;
+            return "";
         }
     }
     @Override

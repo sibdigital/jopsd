@@ -26,6 +26,9 @@ public class MembersProject implements Runnable {
     public void run() {
 
         try {
+            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+                return;
+            }
             final Request request = Request.builder()
                     .eventTypeCode(settingService.getEventMembersProject())
                     .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();

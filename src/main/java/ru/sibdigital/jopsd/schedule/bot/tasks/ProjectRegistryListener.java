@@ -24,7 +24,9 @@ public class ProjectRegistryListener implements Runnable {
 
     @Override
     public void run() {
-
+        if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+            return;
+        }
         try {
             final Request request = Request.builder()
                     .eventTypeCode(settingService.getEventProjReestr())

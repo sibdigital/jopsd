@@ -25,12 +25,16 @@ public class FoundProjects implements Runnable {
     @Override
     public void run() {
 
-        final Request request = Request.builder()
-                .eventTypeCode(settingService.getEventProjMessage())
-                .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
-        final String jsonRequest = RequestUtils.toJSON(request);
+
 
         try {
+            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+                return;
+            }
+            final Request request = Request.builder()
+                    .eventTypeCode(settingService.getEventProjMessage())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
+            final String jsonRequest = RequestUtils.toJSON(request);
               botService.processFoundProject(settingService.getUrlRequestBrbo(), jsonRequest);
 
         } catch (Exception e) {
