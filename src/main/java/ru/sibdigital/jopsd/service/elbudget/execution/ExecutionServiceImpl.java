@@ -60,6 +60,12 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
             Long resultMetaId = getResultMetaIdFromResultsexecution(resultsexecution);
             if (resultMetaId != null) {
                 workPackage = workPackageRepo.findWorkPackageByMetaId(resultMetaId).orElse(null);
+                if (workPackage != null) {
+                    Project project = workPackage.getProject();
+                    if (project.getMetaId() == null) {
+                        putMetaIdToProject(resultsexecution, project);
+                    }
+                }
             }
         }
 
@@ -76,13 +82,17 @@ public class ExecutionServiceImpl extends SuperServiceImpl implements ExecutionS
             }
 
             // Set regProjectMetaId to project
-            Long regProjectMetaId = getRegProjectMetaIdFromResultsexecution(resultsexecution);
             Project project = workPackage.getProject();
-            project.setMetaId(regProjectMetaId);
-            projectRepo.save(project);
+            putMetaIdToProject(resultsexecution, project);
         }
 
         return workPackage;
+    }
+
+    private void putMetaIdToProject(Resultsexecution resultsexecution, Project project) {
+        Long regProjectMetaId = getRegProjectMetaIdFromResultsexecution(resultsexecution);
+        project.setMetaId(regProjectMetaId);
+        projectRepo.save(project);
     }
 
     @Override
