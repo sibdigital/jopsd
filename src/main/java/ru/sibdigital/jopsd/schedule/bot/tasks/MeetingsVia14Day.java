@@ -26,6 +26,9 @@ public class MeetingsVia14Day implements Runnable {
     public void run() {
 
         try {
+            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
+                return;
+            }
             final Request request = Request.builder()
                     .eventTypeCode(settingService.getEventVia14Day())
                     .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
