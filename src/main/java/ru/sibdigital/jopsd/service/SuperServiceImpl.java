@@ -127,9 +127,6 @@ public class SuperServiceImpl implements SuperService {
     protected SettingService settingService;
 
     @Autowired
-    protected MeetingRepository meetingRepository;
-
-    @Autowired
     protected RateRepository rateRepository;
 
     @Autowired

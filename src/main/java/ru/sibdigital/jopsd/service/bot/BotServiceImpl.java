@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.bot.*;
-import ru.sibdigital.jopsd.model.opsd.Meeting;
 import ru.sibdigital.jopsd.model.opsd.Project;
 import ru.sibdigital.jopsd.model.opsd.User;
+import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
 import ru.sibdigital.jopsd.utils.RequestUtils;
 
@@ -34,7 +34,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             User user = userRepository.findByIdent(ir.getUserId());
             final List<Project> userProjects = projectRepo.findProjectsByUserRoles(user.getId());
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot(), "id_user", ir.getUserId());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
             List<Button> buttonProjects = new ArrayList<>();
             for (ClsEventType parentCode: eventParentCode) {
@@ -72,7 +72,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         final List<RegSentMessage> messages = new ArrayList<>();
 
         for (RegIncomRequest ir: incomRequests) {
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot(), "id_user", ir.getUserId());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             List<Button> buttonProjects = new ArrayList<>();
@@ -109,14 +109,16 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
 
         for (RegIncomRequest ir: incomRequests) {
-            List<Meeting> userMeetings = meetingRepository.findMeetingsOverDays(Long.valueOf(ir.getRequestBody()));
+            List<WorkPackage> userWorkPackages = workPackageRepo.findWorkPackagesOverDays(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
+            String hostName = settingService.getHostName();
 
-            for (Meeting meeting: userMeetings) {
-
+            for (WorkPackage workPackage: userWorkPackages) {
+                Map mapLink = Map.of("idWorkPackage", workPackage.getId(), "link", "http://"+hostName+"/work_packages/"+workPackage.getId()+ "/");
                 Button button = new Button();
-                button.setLabel(meeting.getTitle());
+                button.setLabel(workPackage.getSubject());
                 button.setIdBot(ir.getIdBot());
+                button.setWorkPackageLink(RequestUtils.toJSON(mapLink));
                 buttonProjects.add(button);
             }
             RegSentMessage rsm  = RegSentMessage.builder()
@@ -168,14 +170,18 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
+        String hostName = settingService.getHostName();
 
         for (RegIncomRequest ir: incomRequests) {
-            List<Meeting> overdueMeetings = meetingRepository.findExpiredMeetingsByProjectId(Long.valueOf(ir.getRequestBody()));
+            List<WorkPackage> overdueWorkPackages = workPackageRepo.findExpiredWorkPackagesByProjectId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
 
-            for(Meeting meeting: overdueMeetings) {
+            for(WorkPackage workPackage: overdueWorkPackages) {
+
+                Map mapLink = Map.of("idWorkPackage", workPackage.getId(), "link", "http://"+hostName+"/work_packages/"+workPackage.getId()+ "/");
                 Button button = new Button();
-                button.setLabel(meeting.getTitle());
+                button.setLabel(workPackage.getSubject());
+                button.setWorkPackageLink(RequestUtils.toJSON(mapLink));
                 button.setIdBot(ir.getIdBot());
                 buttonProjects.add(button);
             }
@@ -202,7 +208,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             List<User> membersProject = userRepository.findMembersByProjectId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot(), "id_user", ir.getUserId());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             for (ClsEventType parentCode: eventParentCode) {
@@ -240,7 +246,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir : incomRequests) {
 
             List<Button> buttonProjects = new ArrayList<>();
-            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot());
+            Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot(), "id_user", ir.getUserId());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
 
             for (ClsEventType parentCode: eventParentCode) {
@@ -271,15 +277,18 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
+        String hostName = settingService.getHostName();
 
         for (RegIncomRequest ir : incomRequests) {
-            List<Meeting> membersExpiredProject = meetingRepository.findExpiredMeetingsByUserId(Long.valueOf(ir.getRequestBody()));
+            List<WorkPackage> membersExpiredProject = workPackageRepo.findExpiredWorkPackagesByUserId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
 
-            for (Meeting meeting : membersExpiredProject) {
+            for (WorkPackage workPackage : membersExpiredProject) {
+                Map mapLink = Map.of("idWorkPackage", workPackage.getId(), "link", "http://"+hostName+"/work_packages/"+workPackage.getId()+ "/");
                 Button button = new Button();
-                button.setLabel(meeting.getTitle());
+                button.setLabel(workPackage.getSubject());
                 button.setIdBot(ir.getIdBot());
+                button.setWorkPackageLink(RequestUtils.toJSON(mapLink));
                 button.setIdentificator(ir.getRequestBody());
                 buttonProjects.add(button);
             }
