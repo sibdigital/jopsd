@@ -34,7 +34,10 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
         Optional<String>  urlContextPathBrbo = settingRepository.findByName("url_context_path_brbo")
                 .map(Setting::getValue);
 
-        if(urlBrbo.isPresent() && urlContextPathBrbo.isPresent() && protocolBrbo.isPresent()){
+        if(urlBrbo.isPresent() && urlContextPathBrbo.isPresent() && protocolBrbo.isPresent() && uroPortBrbo.isPresent()){
+            return protocolBrbo.get() + "://" + urlBrbo.get() + ":" + uroPortBrbo.get() + "/" + urlContextPathBrbo.get();
+        }
+        else if (urlBrbo.isPresent() && urlContextPathBrbo.isPresent() && protocolBrbo.isPresent()){
             return protocolBrbo.get() + "://" + urlBrbo.get() + "/" + urlContextPathBrbo.get();
         }
         else{

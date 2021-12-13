@@ -1,8 +1,6 @@
 package ru.sibdigital.jopsd.service.bot;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,7 @@ import ru.sibdigital.jopsd.model.opsd.Project;
 import ru.sibdigital.jopsd.model.opsd.User;
 import ru.sibdigital.jopsd.model.opsd.WorkPackage;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
+import ru.sibdigital.jopsd.utils.BotUtils;
 import ru.sibdigital.jopsd.utils.RequestUtils;
 
 import java.util.ArrayList;
@@ -31,31 +30,39 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
 
-        for (RegIncomRequest ir: incomRequests) {
+        for (RegIncomRequest ir : incomRequests) {
             User user = userRepository.findByIdent(ir.getUserId());
             final List<Project> userProjects = projectRepo.findProjectsByUserRoles(user.getId());
             Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot(), "id_user", ir.getUserId());
-            List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
+            List<ClsEventType> eventParentCode = RequestUtils.<String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
             List<Button> buttonProjects = new ArrayList<>();
-            for (ClsEventType parentCode: eventParentCode) {
+            for (ClsEventType parentCode : eventParentCode) {
                 for (Project project : userProjects) {
-                    Button button = new Button();
-                    button.setEventTypeCode(parentCode.getCode());
-                    button.setIdentificator(project.getId().toString());
-                    button.setLabel(project.getName());
-                    button.setIdBot(ir.getIdBot());
-                    //button.setText("Информация по последним " + settingService.getSizeProjectsForReestr() + " проектам в которых есть изменения");
-                    buttonProjects.add(button);
+                    List<WorkPackage> totalWP = workPackageRepo.findAllByProjectIdAndStatuses(project.getId());
+                    List<WorkPackage> overdueWP = workPackageRepo.findExpiredWorkPackagesByProjectId(project.getId());
+                        double countTotalWp = totalWP.size();
+                        double countOverdueWp = overdueWP.size();
+                        double result = countOverdueWp / countTotalWp;
+
+                        Button button = new Button();
+                        button.setShareOverdue(result);
+                        button.setEventTypeCode(parentCode.getCode());
+                        button.setIdentificator(project.getId().toString());
+                        button.setLabel(project.getName());
+                        button.setIdBot(ir.getIdBot());
+                        button.setIdProject(project.getId().toString());
+                        buttonProjects.add(button);
+
                 }
 
             }
-            Map text = Map.of("text", "Информация по последним " + settingService.getSizeProjectsForReestr() + " проектам в которых есть изменения");
-            RegSentMessage rsm  = RegSentMessage.builder()
+            List<Object> messageList = BotUtils.createMessage(buttonProjects, ir.getCodeMessenger());
+            RegSentMessage rsm = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventProjReestr())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
-                    .text(RequestUtils.toJSON(text))
-                    .settings(RequestUtils.toJSON(buttonProjects))
+                    .settings(RequestUtils.toJSON(messageList))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .build();
             messages.add(rsm);
         }
@@ -74,24 +81,27 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             Map requestParentEvents = Map.of("event_types", ir.getEventTypeCode(), "id_bot", ir.getIdBot(), "id_user", ir.getUserId());
             List<ClsEventType> eventParentCode = RequestUtils. <String, Map<String, ClsEventType>>postEntities(settingService.getUrlEventParentBrbo(), requestParentEvents, ClsEventType.class);
-
             List<Button> buttonProjects = new ArrayList<>();
 
             for (ClsEventType parentCode: eventParentCode) {
 
-                    Button button = new Button();
+
+                Button button = new Button();
                     button.setEventTypeCode(parentCode.getCode());
                     button.setIdentificator(ir.getRequestBody());
                     button.setLabel(parentCode.getName());
                     button.setIdBot(ir.getIdBot());
                     buttonProjects.add(button);
+
             }
 
+            List<Object> messageList = BotUtils.createMessage(buttonProjects, ir.getCodeMessenger());
             RegSentMessage rsm  = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventProjReestrElem())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
-                    .settings(RequestUtils.toJSON(buttonProjects))
+                    .settings(RequestUtils.toJSON(messageList))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .build();
             messages.add(rsm);
         }
@@ -112,13 +122,15 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
             List<WorkPackage> userWorkPackages = workPackageRepo.findWorkPackagesOverDays(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
             String hostName = settingService.getHostName();
+            String check_mark = new String(Character.toChars(0x1F5F8));
 
             for (WorkPackage workPackage: userWorkPackages) {
-                Map mapLink = Map.of("idWorkPackage", workPackage.getId(), "link", "http://"+hostName+"/work_packages/"+workPackage.getId()+ "/");
                 Button button = new Button();
                 button.setLabel(workPackage.getSubject());
                 button.setIdBot(ir.getIdBot());
-                button.setWorkPackageLink(RequestUtils.toJSON(mapLink));
+                button.setLink(BotUtils.createLink(ir.getCodeMessenger(), hostName, workPackage.getId()));
+                button.setEmoji(check_mark);
+                button.setText(workPackage.getSubject());
                 buttonProjects.add(button);
             }
             RegSentMessage rsm  = RegSentMessage.builder()
@@ -126,6 +138,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
                     .text(RequestUtils.toJSON(buttonProjects))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .build();
             messages.add(rsm);
         }
@@ -144,11 +157,13 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             List<Map<String, Object>> statusesMeeting = statusRepository.findCountWorkPackagesByProjectId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
+            String check_mark = new String(Character.toChars(0x1F5F8));
 
                 for(Map<String, Object> status: statusesMeeting) {
                     Button button = new Button();
                     button.setLabel(status.get("name") + ":" + status.get("count"));
                     button.setIdBot(ir.getIdBot());
+                    button.setEmoji(check_mark);
                     buttonProjects.add(button);
                 }
             RegSentMessage rsm  = RegSentMessage.builder()
@@ -156,6 +171,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
                     .text(RequestUtils.toJSON(buttonProjects))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .build();
             messages.add(rsm);
         }
@@ -175,13 +191,14 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         for (RegIncomRequest ir: incomRequests) {
             List<WorkPackage> overdueWorkPackages = workPackageRepo.findExpiredWorkPackagesByProjectId(Long.valueOf(ir.getRequestBody()));
             List<Button> buttonProjects = new ArrayList<>();
+            String check_mark = new String(Character.toChars(0x1F5F8));
 
             for(WorkPackage workPackage: overdueWorkPackages) {
-
-                Map mapLink = Map.of("idWorkPackage", workPackage.getId(), "link", "http://"+hostName+"/work_packages/"+workPackage.getId()+ "/");
                 Button button = new Button();
                 button.setLabel(workPackage.getSubject());
-                button.setWorkPackageLink(RequestUtils.toJSON(mapLink));
+                button.setLink(BotUtils.createLink(ir.getCodeMessenger(), hostName, workPackage.getId()));
+                button.setEmoji(check_mark);
+                button.setText(workPackage.getSubject());
                 button.setIdBot(ir.getIdBot());
                 buttonProjects.add(button);
             }
@@ -189,6 +206,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     .eventTypeCode(settingService.getEventOverdue())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .text(RequestUtils.toJSON(buttonProjects))
                     .build();
             messages.add(rsm);
@@ -213,23 +231,35 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
 
             for (ClsEventType parentCode: eventParentCode) {
                 for (User member : membersProject) {
+                    List<WorkPackage> totalWp = workPackageRepo.findAllByUserIdIdAndStatuses(member.getId(), Long.valueOf(ir.getIdProject()));
+                    List<WorkPackage> overdueWp = workPackageRepo.findExpiredWorkPackagesByUserIdAndProject(member.getId(), Long.valueOf(ir.getIdProject()));
+                    double countTotalWp =  totalWp.size();
+                    double countOverdueWp = overdueWp.size();
+                    double result = countOverdueWp/countTotalWp;
+
+                    String patronymic = member.getPatronymic()!= null && !member.getPatronymic().equals("") ? member.getPatronymic().trim() : " ";
+                    String firstname = member.getFirstname()!= null && !member.getFirstname().equals("") ? member.getFirstname().trim() : " ";
+                    String lastname = member.getLastname()!= null && !member.getLastname().equals("") ? member.getLastname().trim() : " ";
+
                     Button button = new Button();
-                    button.setLabel(member.getLastname() + " " + member.getFirstname());
+                    button.setShareOverdue(result);
+                    button.setLabel(lastname + " " + firstname.charAt(0) + "." + patronymic.charAt(0));
                     button.setIdentificator(String.valueOf(member.getId()));
                     button.setIdBot(ir.getIdBot());
                     button.setEventTypeCode(parentCode.getCode());
                     buttonProjects.add(button);
                 }
             }
-            Map text = Map.of("text", "Выведены первые " + settingService.getSizeProjectsForReestr() + " участников");
-            RegSentMessage rsm  = RegSentMessage.builder()
+            List<List<Object>> messageListTelegram = BotUtils.createSplitKeyboardTelegram(buttonProjects, ir.getCodeMessenger());
+            RegSentMessage rsm = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventMembersProject())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
-                    .settings(RequestUtils.toJSON(buttonProjects))
-                    .text(RequestUtils.toJSON(text))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
+                    .settings(RequestUtils.toJSON(messageListTelegram))
                     .build();
             messages.add(rsm);
+
         }
         if (!messages.isEmpty()) {
             Map request = Map.of("messages", messages);
@@ -257,12 +287,13 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                 button.setEventTypeCode(parentCode.getCode());
                 buttonProjects.add(button);
             }
-
+            List<Object> messageList = BotUtils.createMessage(buttonProjects, ir.getCodeMessenger());
             RegSentMessage rsm  = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventMeetingsMemberElem())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
-                    .settings(RequestUtils.toJSON(buttonProjects))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
+                    .settings(RequestUtils.toJSON(messageList))
                     .build();
             messages.add(rsm);
         }
@@ -278,24 +309,25 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         final List<RegIncomRequest> incomRequests = RequestUtils.<RegIncomRequest, String>postEntities(url, json, RegIncomRequest.class);
         final List<RegSentMessage> messages = new ArrayList<>();
         String hostName = settingService.getHostName();
+        String check_mark = new String(Character.toChars(0x1F5F8));
 
         for (RegIncomRequest ir : incomRequests) {
-            List<WorkPackage> membersExpiredProject = workPackageRepo.findExpiredWorkPackagesByUserId(Long.valueOf(ir.getRequestBody()));
+            List<WorkPackage> membersExpiredProject = workPackageRepo.findExpiredWorkPackagesByUserIdAndProject(Long.valueOf(ir.getRequestBody()), Long.valueOf(ir.getIdProject()));
             List<Button> buttonProjects = new ArrayList<>();
 
             for (WorkPackage workPackage : membersExpiredProject) {
-                Map mapLink = Map.of("idWorkPackage", workPackage.getId(), "link", "http://"+hostName+"/work_packages/"+workPackage.getId()+ "/");
                 Button button = new Button();
                 button.setLabel(workPackage.getSubject());
                 button.setIdBot(ir.getIdBot());
-                button.setWorkPackageLink(RequestUtils.toJSON(mapLink));
+                button.setLink(BotUtils.createLink(ir.getCodeMessenger(), hostName, workPackage.getId()));
                 button.setIdentificator(ir.getRequestBody());
                 buttonProjects.add(button);
+                button.setEmoji(check_mark);
             }
-
             RegSentMessage rsm  = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventMeetingsMemberElemOverdue())
                     .idIncomRequest(ir.getIdIncomRequest())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .userId(ir.getUserId())
                     .text(RequestUtils.toJSON(buttonProjects))
                     .build();
@@ -327,6 +359,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     .eventTypeCode(settingService.getEventFindProject())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .text(RequestUtils.toJSON(buttonProjects))
                     .build();
             messages.add(rsm);
@@ -349,20 +382,29 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
             List<Project> projects = projectRepo.findProjectsByName(ir.getRequestBody(), user.getId());
             String eventType = settingService.getEventProjReestrElem();
             for (Project project : projects) {
+                List<WorkPackage> totalWP = workPackageRepo.findAllByProjectIdAndStatuses(project.getId());
+                List<WorkPackage> overdueWP = workPackageRepo.findExpiredWorkPackagesByProjectId(project.getId());
+                double countTotalWp = totalWP.size();
+                double countOverdueWp = overdueWP.size();
+                double result = countOverdueWp / countTotalWp;
 
                 Button button = new Button();
                 button.setEventTypeCode(eventType);
+                button.setShareOverdue(result);
                 button.setLabel(project.getName());
                 button.setIdBot(ir.getIdBot());
+                button.setIdProject(project.getId().toString());
                 button.setIdentificator(project.getId().toString());
                 buttonProjects.add(button);
             }
 
+            List<Object> messageList = BotUtils.createMessage(buttonProjects, ir.getCodeMessenger());
             RegSentMessage rsm = RegSentMessage.builder()
                     .eventTypeCode(settingService.getEventProjMessage())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
-                    .settings(RequestUtils.toJSON(buttonProjects))
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
+                    .settings(RequestUtils.toJSON(messageList))
                     .build();
             messages.add(rsm);
         }
@@ -392,6 +434,7 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
                     .eventTypeCode(settingService.getEventFindProject())
                     .idIncomRequest(ir.getIdIncomRequest())
                     .userId(ir.getUserId())
+                    .targetSystemCode(settingService.getTargetSystemCodeBrbo())
                     .text(RequestUtils.toJSON(buttonProjects))
                     .build();
             messages.add(rsm);
@@ -409,40 +452,47 @@ public class BotServiceImpl extends SuperServiceImpl implements BotService{
         final List<RegSentMessage> messages = new ArrayList<>();
 
         for (RegIncomRequest ir : incomRequests) {
-            ObjectMapper objectMapper = new ObjectMapper();
             try {
-                RequestBody requestBody = objectMapper.readValue(ir.getRequestBody(), RequestBody.class);
                 List<Button> buttonProjects = new ArrayList<>();
-                Long idProject = Long.valueOf(requestBody.getIdProject());
-                String fio = requestBody.getFio();
+                Long idProject = Long.valueOf(ir.getIdProject());
+                String fio = ir.getRequestBody();
                 List<String> fioList = Pattern.compile(" ")
                         .splitAsStream(fio)
                         .collect(Collectors.toList());
 
-                    String lastname = fioList.size() > 0 ? fioList.get(0) : "#";
-                    String firstname = fioList.size() > 1 ? fioList.get(1) : "#";
-                    String patronymic = fioList.size() > 2 ? fioList.get(2) : "#";
+                    String lastname = fioList.size() > 0 ? fioList.get(0) : "";
+                    String firstname = fioList.size() > 1 ? fioList.get(1) : "";
+                    String patronymic = fioList.size() > 2 ? fioList.get(2) : "";
 
                     List<User> members = userRepository.findMembersByProjectIdAndFio(idProject, lastname, firstname, patronymic);
                     String eventType = settingService.getEventMeetingsMemberElem();
 
                     for (User user : members) {
+                        List<WorkPackage> totalWp = workPackageRepo.findAllByUserIdIdAndStatuses(user.getId(), Long.valueOf(ir.getIdProject()));
+                        List<WorkPackage> overdueWp = workPackageRepo.findExpiredWorkPackagesByUserIdAndProject(user.getId(), Long.valueOf(ir.getIdProject()));
+                        double countTotalWp =  totalWp.size();
+                        double countOverdueWp = overdueWp.size();
+                        double result = countOverdueWp/countTotalWp;
+
                         Button button = new Button();
-                        button.setLabel(user.getLastname() + " " + user.getFirstname());
+                        button.setShareOverdue(result);
+                        button.setLabel(user.getLastname() + " " + user.getFirstname().charAt(0) + "." + user.getPatronymic().charAt(0));
                         button.setIdBot(ir.getIdBot());
                         button.setIdentificator(String.valueOf(user.getId()));
                         button.setEventTypeCode(eventType);
                         buttonProjects.add(button);
                     }
 
+                    List<Object> messageList = BotUtils.createMessage(buttonProjects, ir.getCodeMessenger());
                     RegSentMessage rsm = RegSentMessage.builder()
                             .eventTypeCode(settingService.getEventMembMessage())
                             .idIncomRequest(ir.getIdIncomRequest())
                             .userId(ir.getUserId())
-                            .settings(RequestUtils.toJSON(buttonProjects))
+                            .targetSystemCode(settingService.getTargetSystemCodeBrbo())
+                            .settings(RequestUtils.toJSON(messageList))
                             .build();
                     messages.add(rsm);
-            } catch (JsonProcessingException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestBody {
+public class KeyboardTelegram {
 
-
-    private String idProject;
-    private String fio;
+    private String text;
+    private String callback_data;
 
 }

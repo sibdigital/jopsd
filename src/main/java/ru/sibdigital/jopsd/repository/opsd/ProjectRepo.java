@@ -11,7 +11,6 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Project;
 
 import java.util.List;
-import java.util.Map;
 
 @RepositoryRestResource
 public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project> {
@@ -143,14 +142,14 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
             "                            FROM members\n" +
             "                            WHERE user_id = :id\n" +
             "                )\n" +
-            "ORDER BY date DESC LIMIT 20"
+            "ORDER BY date DESC"
             , nativeQuery = true)
     List<Project> findProjectsByUserRoles(Long id);
 
     @Query(value = "SELECT *\n" +
             "FROM (SELECT *\n" +
             "       FROM projects\n" +
-            "       WHERE NOT status IN (3, 4) and name LIKE %:name%\n" +
+            "       WHERE NOT status IN (3, 4) and name ILIKE %:name%\n" +
             "       ) AS proj\n" +
             "WHERE exists(SELECT DISTINCT type\n" +
             "             FROM roles as r\n" +
