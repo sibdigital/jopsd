@@ -16,4 +16,6 @@ public class RegSentMessage {
     private String text;
     private String eventTypeCode;
     private String settings;
+    private String targetSystemCode;
+
 }

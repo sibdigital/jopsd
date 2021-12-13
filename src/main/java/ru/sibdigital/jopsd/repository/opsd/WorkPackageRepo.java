@@ -60,10 +60,11 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
     @Query(value = "SELECT *\n" +
             "FROM work_packages\n" +
             "WHERE current_timestamp > due_date\n" +
-            "AND assigned_to_id =:id\n" +
-            "AND status_id in (1,2,6)"
+            "  AND assigned_to_id = :idUser\n" +
+            "  AND project_id = :idProject\n" +
+            "  AND status_id in (1, 2, 6)"
             , nativeQuery = true)
-    List<WorkPackage> findExpiredWorkPackagesByUserId(@Param("id") Long id);
+    List<WorkPackage> findExpiredWorkPackagesByUserIdAndProject(Long idUser, Long idProject);
 
     @Query(value = "SELECT * FROM work_packages\n" +
             "WHERE project_id =:id\n" +
@@ -79,4 +80,27 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
             "AND status_id in (1,2,6)"
             , nativeQuery = true)
     List <WorkPackage> findWorkPackagesOverDays(Long id);
+
+    @Query(value = "SELECT * " +
+            "FROM work_packages " +
+            "WHERE status_id IN (1,2,6) " +
+            "AND project_id =:id"
+            , nativeQuery = true)
+    List <WorkPackage> findAllByProjectIdAndStatuses(Long id);
+
+    @Query(value = "SELECT *\n" +
+            "FROM work_packages\n" +
+            "WHERE assigned_to_id =:idUser\n" +
+            "AND project_id =:idProject\n" +
+            "AND status_id in (1,2,6)"
+            , nativeQuery = true)
+    List <WorkPackage> findAllByUserIdIdAndStatuses(Long idUser, Long idProject);
+
+    @Query(value = "SELECT *\n" +
+            "FROM work_packages\n" +
+            "WHERE current_timestamp > due_date\n" +
+            "AND assigned_to_id =:idUser\n" +
+            "AND status_id in (1,2,6)"
+            , nativeQuery = true)
+    List<WorkPackage> findExpiredWorkPackagesByUserId(Long idUser);
 }

@@ -17,6 +17,10 @@ public class Button {
     private String eventTypeCode;
     private String text;
     private String idBot;
-    private String WorkPackageLink;
-
+    @Builder.Default
+    private String emoji = new String(Character.toChars(0x1F5F8));;
+    private String link;
+    private Double shareOverdue;
+    @Builder.Default
+    private String idProject = ":";
 }

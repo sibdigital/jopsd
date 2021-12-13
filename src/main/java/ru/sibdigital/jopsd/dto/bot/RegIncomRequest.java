@@ -16,4 +16,6 @@ public class RegIncomRequest {
     private String requestBody;
     private String eventTypeCode;
     private String idBot;
+    private String codeMessenger;
+    private String idProject;
 }
