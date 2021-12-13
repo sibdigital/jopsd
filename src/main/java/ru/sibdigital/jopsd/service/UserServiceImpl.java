@@ -25,4 +25,5 @@ public class UserServiceImpl extends SuperServiceImpl implements UserService{
     public List<Map<String, Object>> checkPermissions(Long projectId, Long userId, Set<String> permissions) {
         return rolePermissionRepository.checkPermissions(projectId, userId, permissions);
     }
+
 }

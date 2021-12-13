@@ -54,7 +54,7 @@ public interface WorkPackageRepo extends JpaRepository<WorkPackage, Long>, JpaSp
             "    AND wp.meta_id IS NOT NULL\n" +
             "    AND targets.meta_id IS NOT NULL AND targets.type_id = 41\n" +
             "    AND wpt.month = 12 AND wpt.year = :year\n" +
-            "    AND wp.project_id IS NOT NULL")
+            "    AND projects.meta_id IS NOT NULL")
     WorkPackage getWorkPackageReadyForEB(@Param("id_wp") Long idWorkPackage, @Param("year") Integer year);
 
     @Query(value = "SELECT *\n" +

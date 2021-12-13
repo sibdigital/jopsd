@@ -17,9 +17,14 @@ public class KpiController extends SuperController{
     }
 
     @GetMapping("kpi/report")
-    public @ResponseBody String report (@RequestParam("userId") Long userId) {
-        byte[] bytes = kpiReportService.exportKpiReport(userId);
-        String template = new String(bytes);
-        return template;
+    public @ResponseBody String report (@RequestParam(value = "userId", required = false) Long userId,
+                                        @RequestParam(value = "projectId", required = false) Long projectId) {
+        byte[] bytes = null;
+        if (userId != null) {
+            bytes = kpiReportService.exportKpiReport(userId);
+        } else if (projectId != null) {
+            bytes = kpiReportService.exportKpiReportProject(projectId);
+        }
+        return new String(bytes);
     }
 }

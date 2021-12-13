@@ -8,6 +8,7 @@ import ru.sibdigital.jopsd.dto.elbudget.execution.Resultsexecution;
 import ru.sibdigital.jopsd.model.enums.TargetTypes;
 import ru.sibdigital.jopsd.model.opsd.*;
 import ru.sibdigital.jopsd.service.SuperServiceImpl;
+import ru.sibdigital.jopsd.utils.DateTimeUtils;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.InputStream;
@@ -90,7 +91,7 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
 
             for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
                 Integer month =  getMonth(monthlyExecution);
-                Integer quarter = getQuarterByMonth(month);
+                Integer quarter = DateTimeUtils.getQuarterByMonth(month);
 
                 WorkPackageTarget workPackageTarget = workPackageTargetMap.get(month);
                 if (workPackageTarget != null) {
@@ -186,18 +187,25 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
 
             targetRepo.save(target);
 
-            WorkPackageTarget workPackageTarget = WorkPackageTarget.builder()
-                                                    .workPackage(workPackage)
-                                                    .target(target)
-                                                    .project(workPackage.getProject())
-                                                    .value((target.getBasicValue() != null) ? BigDecimal.valueOf(target.getBasicValue()) : null)
-                                                    .planValue((target.getPlanValue() != null) ? BigDecimal.valueOf(target.getPlanValue()) : null)
-                                                    .month(12)
-                                                    .quarter(4)
-                                                    .year(Calendar.getInstance().get(Calendar.YEAR))
-                                                    .createdAt(Timestamp.from(Instant.now()))
-                                                    .updatedAt(Timestamp.from(Instant.now()))
-                                                    .build();
+            WorkPackageTarget workPackageTarget = workPackageTargetRepo.findWorkPackageTargetAsRpResultIndicator(workPackage.getId(), Calendar.getInstance().get(Calendar.YEAR));
+            if (workPackageTarget == null) {
+                workPackageTarget = WorkPackageTarget.builder()
+                        .workPackage(workPackage)
+                        .target(target)
+                        .project(workPackage.getProject())
+                        .value((target.getBasicValue() != null) ? BigDecimal.valueOf(target.getBasicValue()) : null)
+                        .planValue((target.getPlanValue() != null) ? BigDecimal.valueOf(target.getPlanValue()) : null)
+                        .month(12)
+                        .quarter(4)
+                        .year(Calendar.getInstance().get(Calendar.YEAR))
+                        .createdAt(Timestamp.from(Instant.now()))
+                        .updatedAt(Timestamp.from(Instant.now()))
+                        .build();
+            } else {
+                workPackageTarget.setPlanValue((target.getPlanValue() != null) ? BigDecimal.valueOf(target.getPlanValue()) : null);
+                workPackageTarget.setValue((target.getBasicValue() != null) ? BigDecimal.valueOf(target.getBasicValue()) : null);
+            }
+
             workPackageTargetRepo.save(workPackageTarget);
 
             List<EbRisk> riskList =

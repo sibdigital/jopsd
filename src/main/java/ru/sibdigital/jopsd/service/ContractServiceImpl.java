@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sibdigital.jopsd.dto.ContractDto;
 import ru.sibdigital.jopsd.model.opsd.*;
+import ru.sibdigital.jopsd.utils.DateTimeUtils;
 
 import java.sql.Timestamp;
 
@@ -27,7 +28,7 @@ public class ContractServiceImpl extends SuperServiceImpl implements ContractSer
         Contract contract = Contract.builder()
                             .id(contractDto.getId())
                             .contractSubject(contractDto.getContractSubject())
-                            .contractDate(convertToLocalDateTimeViaInstant(contractDto.getContractDate()))
+                            .contractDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getContractDate()))
                             .price(contractDto.getPrice())
                             .executor(contractDto.getExecutor())
                             .createdAt(createdAt)
@@ -38,27 +39,27 @@ public class ContractServiceImpl extends SuperServiceImpl implements ContractSer
                             .name(contractDto.getName())
                             .sposob(contractDto.getSposob())
                             .gosZakaz(contractDto.getGosZakaz())
-                            .dateBegin(convertToLocalDateTimeViaInstant(contractDto.getDateBegin()))
-                            .dateEnd(convertToLocalDateTimeViaInstant(contractDto.getDateEnd()))
+                            .dateBegin(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getDateBegin()))
+                            .dateEnd(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getDateEnd()))
                             .etaps(contractDto.getEtaps())
                             .project(project)
-                            .auctionDate(convertToLocalDateTimeViaInstant(contractDto.getAuctionDate()))
-                            .scheduleDate(convertToLocalDateTimeViaInstant(contractDto.getScheduleDate()))
+                            .auctionDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getAuctionDate()))
+                            .scheduleDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getScheduleDate()))
                             .nmck(contractDto.getNmck())
-                            .scheduleDatePlan(convertToLocalDateTimeViaInstant(contractDto.getScheduleDatePlan()))
-                            .notificationDate(convertToLocalDateTimeViaInstant(contractDto.getNotificationDate()))
-                            .notificationDatePlan(convertToLocalDateTimeViaInstant(contractDto.getNotificationDatePlan()))
-                            .auctionDatePlan(convertToLocalDateTimeViaInstant(contractDto.getAuctionDatePlan()))
-                            .contractDatePlan(convertToLocalDateTimeViaInstant(contractDto.getContractDatePlan()))
-                            .dateEndPlan(convertToLocalDateTimeViaInstant(contractDto.getDateEndPlan()))
+                            .scheduleDatePlan(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getScheduleDatePlan()))
+                            .notificationDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getNotificationDate()))
+                            .notificationDatePlan(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getNotificationDatePlan()))
+                            .auctionDatePlan(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getAuctionDatePlan()))
+                            .contractDatePlan(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getContractDatePlan()))
+                            .dateEndPlan(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getDateEndPlan()))
                             .note(contractDto.getNote())
                             .conclusionOfEstimatedCostDetails(contractDto.getConclusionOfEstimatedCostDetails())
                             .conclusionOfEstimatedCostNumber(contractDto.getConclusionOfEstimatedCostNumber())
-                            .conclusionOfEstimatedCostDate(convertToLocalDateTimeViaInstant(contractDto.getConclusionOfEstimatedCostDate()))
+                            .conclusionOfEstimatedCostDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getConclusionOfEstimatedCostDate()))
                             .conclusionOfProjectDocumentationDetails(contractDto.getConclusionOfProjectDocumentationDetails())
                             .conclusionOfProjectDocumentationNumber(contractDto.getConclusionOfProjectDocumentationNumber())
-                            .conclusionOfProjectDocumentationDate(convertToLocalDateTimeViaInstant(contractDto.getConclusionOfProjectDocumentationDate()))
-                            .conclusionOfEcologicalExpertiseDate(convertToLocalDateTimeViaInstant(contractDto.getConclusionOfEcologicalExpertiseDate()))
+                            .conclusionOfProjectDocumentationDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getConclusionOfProjectDocumentationDate()))
+                            .conclusionOfEcologicalExpertiseDate(DateTimeUtils.convertToLocalDateTimeViaInstant(contractDto.getConclusionOfEcologicalExpertiseDate()))
                             .conclusionOfEcologicalExpertiseNumber(contractDto.getConclusionOfEcologicalExpertiseNumber())
                             .conclusionOfEcologicalExpertiseDetails(contractDto.getConclusionOfEcologicalExpertiseDetails())
                             .build();

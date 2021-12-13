@@ -368,7 +368,7 @@ public class User {
     @JsonIgnore
     public String getFIO() {
         return this.lastname + " "
-                + ((this.firstname != null) ? (this.firstname.toUpperCase().charAt(0) + ". ") : "")
-                + ((this.patronymic != null) ? (this.patronymic.toUpperCase().charAt(0) + ".") : "");
+                + ((this.firstname != null && !this.firstname.isEmpty()) ? (this.firstname.toUpperCase().charAt(0) + ". ") : "")
+                + ((this.patronymic != null && !this.patronymic.isEmpty()) ? (this.patronymic.toUpperCase().charAt(0) + ".") : "");
     }
 }
