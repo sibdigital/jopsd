@@ -19,7 +19,7 @@ public class BotUtils {
         List<T> list = new ArrayList<>();
         try {
             buttons.forEach(value -> {
-                if(messenger.equals("telegram")) {
+                if(messenger != null && messenger.equals("telegram")) {
                     String green_circle = new String(Character.toChars(0x1F7E2));
                     String orange_circle = new String(Character.toChars(0x1F7E0));
                     String red_circle = new String(Character.toChars(0x1f534));
@@ -39,7 +39,7 @@ public class BotUtils {
                     keyboardTelegram.setCallback_data(value.getEventTypeCode() + projectSpliter + value.getIdentificator());
                     list.add((T) keyboardTelegram);
                 }
-                else if(messenger.equals("viber")){
+                else if(messenger != null && messenger.equals("viber")){
                     String green = "#a9e78e";
                     String orange = "#eda75d";
                     String red = "#ff6666";
@@ -74,31 +74,16 @@ public class BotUtils {
         List<List<T>> splitList = new ArrayList<>();
         try {
             List<T> list = createMessage(buttons, messenger);
-            if (messenger.equals("telegram")) {
+            if (messenger != null && messenger.equals("telegram")) {
                 splitList = ListUtils.partition(list, 2);
             }
-            else if (messenger.equals("viber")){
+            else if (messenger != null && messenger.equals("viber")){
                 List<KeyboardViber> keyboardVibers = (List<KeyboardViber>) list;
                 keyboardVibers.forEach(value->{
                     value.setColumns(2);
                 });
                 splitList = (List<List<T>>) list;
             }
-
-        } catch (Exception e) {
-            botLogger.error(e.getMessage(), e);
-        }
-        return splitList;
-    }
-
-    public static List<KeyboardViber> createSplitKeyboardViber(List<Button> buttons, String messenger) {
-        List<KeyboardViber> splitList = new ArrayList<>();
-        try {
-            List<KeyboardViber> list = createMessage(buttons, messenger);
-            list.forEach(value-> {
-                value.setColumns(3);
-            });
-            splitList = list;
 
         } catch (Exception e) {
             botLogger.error(e.getMessage(), e);
