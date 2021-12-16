@@ -37,14 +37,20 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
             "                             on member_roles.role_id = role_permissions.role_id\n" +
             "         where members.user_id = :user_id\n" +
             "           and members.project_id = :project_id\n" +
+            "     ),\n" +
+            "     global_roles as (\n" +
+            "         select count(pr.*) as cnt\n" +
+            "         from principal_roles pr\n" +
+            "         where pr.principal_id = :user_id\n" +
             "     )\n" +
-            "select input_permissions.permission as permission,\n" +
+            "select input_permissions.permission,\n" +
             "       case\n" +
-            "           when user_permissions.permission is null then false\n" +
-            "           else true\n" +
+            "           when user_permissions.permission is not null or global_roles.cnt > 0 then true\n" +
+            "           else false\n" +
             "           end is_exist\n" +
             "from input_permissions\n" +
-            "         left join user_permissions\n" +
-            "                   on input_permissions.permission = user_permissions.permission")
+            "        left join user_permissions\n" +
+            "               on input_permissions.permission = user_permissions.permission\n" +
+            "        inner join global_roles on true")
     List<Map<String, Object>> checkPermissions(@Param("project_id") Long projectId, @Param("user_id") Long userId, @Param("permissions") Set<String> permissions);
 }
