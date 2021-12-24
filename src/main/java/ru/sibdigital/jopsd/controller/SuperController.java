@@ -54,6 +54,9 @@ public class SuperController {
     protected KpiService kpiService;
 
     @Autowired
+    protected PositionService positionService;
+
+    @Autowired
     protected MapPointService mapPointService;
 
     @Autowired

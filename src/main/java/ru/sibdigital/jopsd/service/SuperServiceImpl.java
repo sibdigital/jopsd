@@ -112,6 +112,9 @@ public class SuperServiceImpl implements SuperService {
     protected KpiRepository kpiRepository;
 
     @Autowired
+    protected PositionRepository positionRepository;
+
+    @Autowired
     protected KpiVariableRepository kpiVariableRepository;
 
     @Autowired

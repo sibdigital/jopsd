@@ -2,6 +2,7 @@ package ru.sibdigital.jopsd.model.opsd;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Table(name = "positions")
 @Entity
@@ -15,13 +16,13 @@ public class Position {
     private String name;
 
     @Column(name = "created_at", nullable = false)
-    private Timestamp createdAt;
+    private Timestamp createdAt = Timestamp.from(Instant.now());
 
     @Column(name = "updated_at", nullable = false)
-    private Timestamp updatedAt;
+    private Timestamp updatedAt = Timestamp.from(Instant.now());
 
     @Column(name = "is_approve")
-    private Boolean isApprove;
+    private Boolean isApprove = false;
 
     public Boolean getIsApprove() {
         return isApprove;
