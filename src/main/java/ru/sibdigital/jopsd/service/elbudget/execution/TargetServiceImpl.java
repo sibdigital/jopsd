@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -83,6 +84,7 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         Integer year = Calendar.getInstance().get(Calendar.YEAR);
         Map<Integer, WorkPackageTarget> workPackageTargetMap = getWorkPackageTargetsByMonths(workPackage, target, year);
         Map<Integer, TargetExecutionValue> targetExecutionValueMap = getTargetExecutionValuesByQuarters(target, year);
+        LocalDate now = LocalDate.now();
 
         Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
         if (monthlyExecutions != null) {
@@ -95,24 +97,48 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
 
                 WorkPackageTarget workPackageTarget = workPackageTargetMap.get(month);
                 if (workPackageTarget != null) {
-                    workPackageTarget.setValue(monthlyExecution.getFactPrognos());
+                    if(((month > now.getMonthValue()) && (year == now.getYear())) || year > now.getYear()){
+                        workPackageTarget.setPlanValue(monthlyExecution.getFactPrognos());
+//                        workPackageTarget.setValue(null); //should be null?
+                    }
+                    else {
+                        workPackageTarget.setValue(monthlyExecution.getFactPrognos());
+//                        workPackageTarget.setPlanValue(null); //should be null?
+                    }
+
                     workPackageTarget.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
                 } else {
                     TargetExecutionValue targetExecutionValue = targetExecutionValueMap.get(quarter);
                     BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
 
-                    workPackageTarget= WorkPackageTarget.builder()
-                            .project(workPackage.getProject())
-                            .workPackage(workPackage)
-                            .target(target)
-                            .year(year)
-                            .quarter(quarter)
-                            .month(month)
-                            .value(monthlyExecution.getFactPrognos())
-                            .createdAt(new Timestamp(System.currentTimeMillis()))
-                            .updatedAt(new Timestamp(System.currentTimeMillis()))
-                            .planValue(planValue)
-                            .build();
+                    if(((month > now.getMonthValue()) && (year == now.getYear())) || year > now.getYear()){
+                        workPackageTarget= WorkPackageTarget.builder()
+                                .project(workPackage.getProject())
+                                .workPackage(workPackage)
+                                .target(target)
+                                .year(year)
+                                .quarter(quarter)
+                                .month(month)
+                                .value(null)    //!should be preset null?
+                                .createdAt(new Timestamp(System.currentTimeMillis()))
+                                .updatedAt(new Timestamp(System.currentTimeMillis()))
+                                .planValue(monthlyExecution.getFactPrognos())
+                                .build();
+                    }
+                    else {
+                        workPackageTarget= WorkPackageTarget.builder()
+                                .project(workPackage.getProject())
+                                .workPackage(workPackage)
+                                .target(target)
+                                .year(year)
+                                .quarter(quarter)
+                                .month(month)
+                                .value(monthlyExecution.getFactPrognos())
+                                .createdAt(new Timestamp(System.currentTimeMillis()))
+                                .updatedAt(new Timestamp(System.currentTimeMillis()))
+                                .planValue(planValue)   //!should be preset null?
+                                .build();
+                    }
                 }
 
                 workPackageTargets.add(workPackageTarget);
