@@ -85,6 +85,8 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         Map<Integer, WorkPackageTarget> workPackageTargetMap = getWorkPackageTargetsByMonths(workPackage, target, year);
         Map<Integer, TargetExecutionValue> targetExecutionValueMap = getTargetExecutionValuesByQuarters(target, year);
         LocalDate now = LocalDate.now();
+        BigDecimal varValue = null;
+        BigDecimal varPlanValue = null;
 
         Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
         if (monthlyExecutions != null) {
@@ -111,34 +113,28 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
                     TargetExecutionValue targetExecutionValue = targetExecutionValueMap.get(quarter);
                     BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
 
+
                     if(((month > now.getMonthValue()) && (year == now.getYear())) || year > now.getYear()){
-                        workPackageTarget= WorkPackageTarget.builder()
-                                .project(workPackage.getProject())
-                                .workPackage(workPackage)
-                                .target(target)
-                                .year(year)
-                                .quarter(quarter)
-                                .month(month)
-                                .value(null)    //!should be preset null?
-                                .createdAt(new Timestamp(System.currentTimeMillis()))
-                                .updatedAt(new Timestamp(System.currentTimeMillis()))
-                                .planValue(monthlyExecution.getFactPrognos())
-                                .build();
+                        varValue=null;
+                        varPlanValue=monthlyExecution.getFactPrognos();
+                    } else {
+                        varValue=monthlyExecution.getFactPrognos();
+                        varPlanValue=null;
                     }
-                    else {
-                        workPackageTarget= WorkPackageTarget.builder()
-                                .project(workPackage.getProject())
-                                .workPackage(workPackage)
-                                .target(target)
-                                .year(year)
-                                .quarter(quarter)
-                                .month(month)
-                                .value(monthlyExecution.getFactPrognos())
-                                .createdAt(new Timestamp(System.currentTimeMillis()))
-                                .updatedAt(new Timestamp(System.currentTimeMillis()))
-                                .planValue(planValue)   //!should be preset null?
-                                .build();
-                    }
+
+                    workPackageTarget= WorkPackageTarget.builder()
+                            .project(workPackage.getProject())
+                            .workPackage(workPackage)
+                            .target(target)
+                            .year(year)
+                            .quarter(quarter)
+                            .month(month)
+                            .value(varValue)
+                            .createdAt(new Timestamp(System.currentTimeMillis()))
+                            .updatedAt(new Timestamp(System.currentTimeMillis()))
+                            .planValue(varPlanValue)
+                            .build();
+
                 }
 
                 workPackageTargets.add(workPackageTarget);
