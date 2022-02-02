@@ -78,50 +78,29 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
         return targetMatchesAfterProcess;
     }
 
-    private List<WorkPackageTarget> parsePurposeCriteria(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria, Target target, WorkPackage workPackage) {
+    private List<WorkPackageTarget> parsePurposeCriteria(Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria criteria,
+                                                         Target target, WorkPackage workPackage) {
         List<WorkPackageTarget> workPackageTargets = new ArrayList<>();
 
         Integer year = Calendar.getInstance().get(Calendar.YEAR);
         Map<Integer, WorkPackageTarget> workPackageTargetMap = getWorkPackageTargetsByMonths(workPackage, target, year);
         Map<Integer, TargetExecutionValue> targetExecutionValueMap = getTargetExecutionValuesByQuarters(target, year);
         LocalDate now = LocalDate.now();
-        BigDecimal varValue = null;
-        BigDecimal varPlanValue = null;
 
-        Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions = criteria.getPurposeCriteriaMonthlyExecutions();
+        Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions monthlyExecutions
+                = criteria.getPurposeCriteriaMonthlyExecutions();
         if (monthlyExecutions != null) {
-            List<Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution> monthlyExecutionList =
-                    monthlyExecutions.getPurposeCriteriaMonthlyExecution();
+            var monthlyExecutionList = monthlyExecutions.getPurposeCriteriaMonthlyExecution();
 
-            for (Resultsexecution.RegProject.PurposeCriterias.PurposeCriteria.PurposeCriteriaMonthlyExecutions.PurposeCriteriaMonthlyExecution monthlyExecution : monthlyExecutionList) {
+            for (var monthlyExecution : monthlyExecutionList) {
                 Integer month =  getMonth(monthlyExecution);
                 Integer quarter = DateTimeUtils.getQuarterByMonth(month);
-
                 WorkPackageTarget workPackageTarget = workPackageTargetMap.get(month);
-                if (workPackageTarget != null) {
-                    if(((month > now.getMonthValue()) && (year == now.getYear())) || year > now.getYear()){
-                        workPackageTarget.setPlanValue(monthlyExecution.getFactPrognos());
-//                        workPackageTarget.setValue(null); //should be null?
-                    }
-                    else {
-                        workPackageTarget.setValue(monthlyExecution.getFactPrognos());
-//                        workPackageTarget.setPlanValue(null); //should be null?
-                    }
+                boolean isFuture = ((month > now.getMonthValue()) && (year == now.getYear())) || year > now.getYear();
+                BigDecimal planValue = isFuture == true ? monthlyExecution.getFactPrognos() : null;
+                BigDecimal factValue = isFuture == false ? monthlyExecution.getFactPrognos() : null;
 
-                    workPackageTarget.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-                } else {
-                    TargetExecutionValue targetExecutionValue = targetExecutionValueMap.get(quarter);
-                    BigDecimal planValue = (targetExecutionValue != null) ? targetExecutionValue.getValue() : null;
-
-
-                    if(((month > now.getMonthValue()) && (year == now.getYear())) || year > now.getYear()){
-                        varValue=null;
-                        varPlanValue=monthlyExecution.getFactPrognos();
-                    } else {
-                        varValue=monthlyExecution.getFactPrognos();
-                        varPlanValue=null;
-                    }
-
+                if (workPackageTarget == null) {
                     workPackageTarget= WorkPackageTarget.builder()
                             .project(workPackage.getProject())
                             .workPackage(workPackage)
@@ -129,12 +108,19 @@ public class TargetServiceImpl extends SuperServiceImpl implements TargetService
                             .year(year)
                             .quarter(quarter)
                             .month(month)
-                            .value(varValue)
                             .createdAt(new Timestamp(System.currentTimeMillis()))
                             .updatedAt(new Timestamp(System.currentTimeMillis()))
-                            .planValue(varPlanValue)
                             .build();
+                }else{
+                    workPackageTarget.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+                }
 
+                if(isFuture == true){
+                    workPackageTarget.setPlanValue(planValue);
+                    workPackageTarget.setValue(null);
+                } else {
+                    workPackageTarget.setValue(factValue);
+                    workPackageTarget.setPlanValue(null);
                 }
 
                 workPackageTargets.add(workPackageTarget);
