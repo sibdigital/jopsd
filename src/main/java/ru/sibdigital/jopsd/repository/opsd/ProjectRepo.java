@@ -9,10 +9,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import ru.sibdigital.jopsd.model.opsd.Project;
+import ru.sibdigital.jopsd.model.opsd.projection.ProjectRegisteryProjection;
 
 import java.util.List;
 
-@RepositoryRestResource
+@RepositoryRestResource(excerptProjection = ProjectRegisteryProjection.class)
 public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificationExecutor<Project> {
 
     @Query(value = "SELECT *\n" +
@@ -165,4 +166,23 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
             , nativeQuery = true)
     List<Project> findProjectsByName(String name, Long id);
 
+    @Query(value = "select count(*)\n" +
+            "from projects as p\n" +
+            "    inner join work_packages as wp on wp.project_id = p.id\n" +
+            "    inner join versions as v on v.project_id = p.id\n" +
+            "where p.parent_id = :id or p.id = :id\n" +
+            "  AND wp.fixed_version_id IN (v.id)", nativeQuery = true)
+    Long archiveClauseByProjectId(Long id);
+
+    @Query(value = "with recursive r\n" +
+            "    as (select * from projects as p where p.id = :start\n" +
+            "        union all select child.* from projects child join r on child.parent_id = r.id)\n" +
+            "select * from r", nativeQuery = true)
+    List<Project> findSelfAndDescendantsById(Long start);
+
+    @Query(value = "with recursive r\n" +
+            "    as (select * from projects as p where p.id = :start\n" +
+            "        union all select parent.* from projects parent join r on parent.id = r.parent_id)\n" +
+            "select * from r", nativeQuery = true)
+    List<Project> findSelfAndAncestorsById(Long start);
 }

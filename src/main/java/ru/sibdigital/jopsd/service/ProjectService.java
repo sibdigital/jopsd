@@ -11,4 +11,6 @@ public interface ProjectService {
     Board createDefaultBoard(Project project);
     Wiki createDefaultWiki(Project project);
     List<ProjectType> createDefaultProjectTypes(Project project);
+    Project archiveProject(Long id);
+    Project unarchiveProject(Long id);
 }

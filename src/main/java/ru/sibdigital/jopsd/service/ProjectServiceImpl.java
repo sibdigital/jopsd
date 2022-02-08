@@ -87,6 +87,48 @@ public class ProjectServiceImpl extends SuperServiceImpl implements ProjectServi
         return list;
     }
 
+    @Override
+    public Project archiveProject(Long id) {
+        Project project = projectRepo.findById(id).orElse(null);
+        if (project != null) {
+            if (projectRepo.archiveClauseByProjectId(project.getId()) == 0 && project.getStatus() != 9) {
+                List<Project> children = projectRepo.findSelfAndDescendantsById(project.getId());
+                children.forEach(childProject ->  {
+                    childProject.setStatus(9L);
+                    projectRepo.save(childProject);
+                });
+                return project;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Project unarchiveProject(Long id) {
+        Project archivedProject = projectRepo.findById(id).orElse(null);
+        if (archivedProject != null) {
+            if (archivedProject.getStatus() == 1){
+                return null;                        
+            }
+
+            if (archivedProject.getParent() != null) {
+                if ((archivedProject.getParent()).getStatus() != 9) {
+                    archivedProject.setStatus(1L);
+                    projectRepo.save(archivedProject);
+                    return archivedProject;
+                } else {
+                    return null;
+                }
+            } else {
+                archivedProject.setStatus(1L);
+                projectRepo.save(archivedProject);
+                return archivedProject;
+            }
+
+        }
+        return null;
+    }
+
     private Long getProjectMaxLft() {
         Long lft = Long.valueOf(0);
         Project projectWithMaxLft = projectRepo.findProjectWithMaxLft();
