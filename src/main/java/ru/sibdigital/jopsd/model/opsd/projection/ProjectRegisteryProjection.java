@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 
 @Projection(name = "projectRegisteryProjection", types = { Project.class })
 public interface ProjectRegisteryProjection {
+    Long getId();
     String getName();
     Boolean getPublic();
 
