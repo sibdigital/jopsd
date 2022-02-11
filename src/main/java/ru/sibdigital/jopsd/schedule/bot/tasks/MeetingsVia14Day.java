@@ -10,6 +10,10 @@ import ru.sibdigital.jopsd.service.SettingService;
 import ru.sibdigital.jopsd.service.bot.BotService;
 import ru.sibdigital.jopsd.utils.RequestUtils;
 
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 @Slf4j
 @Component
 public class MeetingsVia14Day implements Runnable {
@@ -20,21 +24,27 @@ public class MeetingsVia14Day implements Runnable {
     @Autowired
     private SettingService settingService;
 
-    private final static Logger botLogger = LoggerFactory.getLogger("botLogger");
+    private final static Logger botLogger = LoggerFactory.getLogger("botLoggerConnectException");
+    private final static Logger botLoggerConnectException = LoggerFactory.getLogger("botLoggerConnectException");
 
     @Override
     public void run() {
 
         try {
-            if(settingService.getBaseBrbo() == null || settingService.getBaseBrbo().isBlank()){
-                return;
-            }
-            final Request request = Request.builder()
-                    .eventTypeCode(settingService.getEventVia14Day())
-                    .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
-            final String jsonRequest = RequestUtils.toJSON(request);
+            try {
+                HttpURLConnection connection = (HttpURLConnection) new URL(settingService.getPingBrbo()).openConnection();
+                if (connection.getResponseCode() == 200) {
+                    final Request request = Request.builder()
+                            .eventTypeCode(settingService.getEventVia14Day())
+                            .targetSystemCode(settingService.getTargetSystemCodeBrbo()).build();
+                    final String jsonRequest = RequestUtils.toJSON(request);
 
-            botService.processEventsVia14Days(settingService.getUrlRequestBrbo(), jsonRequest);
+                    botService.processEventsVia14Days(settingService.getUrlRequestBrbo(), jsonRequest);
+                }
+            }
+            catch (ConnectException e){
+                botLoggerConnectException.error("Connect unavailable", e);
+            }
 
         } catch (Exception e) {
             botLogger.error("ERROR at MeetingsVia14Day: ", e);

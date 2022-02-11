@@ -5,6 +5,7 @@ import ru.sibdigital.jopsd.model.opsd.Setting;
 public interface SettingService {
     String getOpsdHref();
     String getBaseBrbo();
+    String getPingBrbo();
     String getUrlMessageBrbo();
     String getUrlRequestBrbo();
     String getUrlEventParentBrbo();

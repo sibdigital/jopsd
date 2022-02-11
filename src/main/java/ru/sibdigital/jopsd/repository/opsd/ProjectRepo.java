@@ -123,7 +123,7 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
     @Query(value = "SELECT *\n" +
             "            FROM (SELECT *\n" +
             "                  FROM projects\n" +
-            "                  WHERE NOT status IN (3, 4)\n" +
+            "                  WHERE NOT status IN (3, 4, 9)\n" +
             "                 ) AS proj\n" +
             "            JOIN (SELECT project_id, max(updated_at) AS date\n" +
             "                  FROM work_packages\n" +
@@ -149,7 +149,7 @@ public interface ProjectRepo extends JpaRepository<Project, Long>, JpaSpecificat
     @Query(value = "SELECT *\n" +
             "FROM (SELECT *\n" +
             "       FROM projects\n" +
-            "       WHERE NOT status IN (3, 4) and name ILIKE %:name%\n" +
+            "       WHERE NOT status IN (3, 4, 9) and name ILIKE %:name%\n" +
             "       ) AS proj\n" +
             "WHERE exists(SELECT DISTINCT type\n" +
             "             FROM roles as r\n" +
