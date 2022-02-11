@@ -54,15 +54,6 @@ public class SettingServiceImpl extends SuperServiceImpl implements SettingServi
         return getBaseBrbo() + urlMessageBrbo;
     }
     @Override
-    public String getPingBrbo() {
-
-        String urlPingBrbo = settingRepository.findByName("url_ping_brbo")
-                .map(Setting::getValue)
-                .orElse("/ping");
-
-        return getBaseBrbo() + urlPingBrbo;
-    }
-    @Override
     public String getUrlRequestBrbo() {
 
         String urlRequestBrbo = settingRepository.findByName("url_request_brbo")
