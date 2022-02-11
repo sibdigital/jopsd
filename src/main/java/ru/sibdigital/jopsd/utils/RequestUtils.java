@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -34,13 +35,8 @@ public class RequestUtils {
             final HttpEntity<K> httpEntity = new HttpEntity<>(request, headers);
 
             final RestTemplate restTemplate = new RestTemplate();
-            try {
-                response = restTemplate.postForEntity(url, httpEntity, String[].class);
-                stringEntities = response.getBody();
-            } catch (Exception e) {
-                botLoggerConnectException.error("Connect unavailable", e);
-                return null;
-            }
+            response = restTemplate.postForEntity(url, httpEntity, String[].class);
+            stringEntities = response.getBody();
             Arrays.stream(stringEntities).forEach(se -> {
                 try {
                     T entity = (T) objectMapper.readValue(se, clazz);
@@ -49,6 +45,9 @@ public class RequestUtils {
                     log.error(e.getMessage(), e);
                 }
             });
+
+        } catch (RestClientException ex) {
+            botLoggerConnectException.error("Connect unavailable", ex);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
